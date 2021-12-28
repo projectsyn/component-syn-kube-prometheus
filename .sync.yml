@@ -1,15 +1,26 @@
 :global:
-  componentName: monitoring
-  githubUrl: https://github.com/vshn/component-monitoring
+  componentName: kube-prometheus
+  githubUrl: https://github.com/projectsyn/component-kube-prometheus
   feature_goldenTests: true
 
-docs/antora.yml:
-  name: monitoring
-  title: monitoring
 .github/workflows/test.yaml:
-  test_makeTarget: test -e instance=${{ matrix.instance }}
-  goldenTest_makeTarget: golden-diff -e instance=${{ matrix.instance }}
   matrix:
     key: instance
     entries:
       - defaults
+      - kubernetes_1.20
+      - kubernetes_1.21
+  goldenTest_makeTarget: golden-diff -e instance=${{ matrix.instance }}
+  test_makeTarget: test -e instance=${{ matrix.instance }}
+
+docs/antora.yml:
+  name: kube-prometheus
+  title: kube-prometheus
+
+.gitignore:
+  additionalEntries:
+    - jsonnetfile.json
+
+Makefile:
+  includes:
+    - Makefile.custom.mk

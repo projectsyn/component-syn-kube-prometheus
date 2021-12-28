@@ -5,7 +5,7 @@ on:
       - master
 
 env:
-  COMPONENT_NAME: monitoring
+  COMPONENT_NAME: kube-prometheus
 
 jobs:
   linting:
@@ -48,6 +48,8 @@ jobs:
       matrix:
         instance:
           - defaults
+          - kubernetes_1.20
+          - kubernetes_1.21
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}

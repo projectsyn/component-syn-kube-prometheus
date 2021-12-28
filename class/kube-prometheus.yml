@@ -2,10 +2,10 @@ parameters:
   kapitan:
     compile:
       - input_paths:
-          - monitoring/component/app.jsonnet
+          - kube-prometheus/component/app.jsonnet
         input_type: jsonnet
         output_path: apps/
       - input_paths:
-          - monitoring/component/main.jsonnet
+          - kube-prometheus/component/main.jsonnet
         input_type: jsonnet
-        output_path: monitoring/
+        output_path: ${_instance}

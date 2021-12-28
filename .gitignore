@@ -3,6 +3,7 @@
 helmcharts/
 manifests/
 vendor/
+jsonnetfile.json
 jsonnetfile.lock.json
 crds/
 compiled/
@@ -12,3 +13,4 @@ _archive/
 _public/
 
 # Additional entries
+params.yml

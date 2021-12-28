@@ -1,5 +1,5 @@
-name: monitoring
-title: monitoring
+name: kube-prometheus
+title: kube-prometheus
 version: master
 start_page: ROOT:index.adoc
 nav:

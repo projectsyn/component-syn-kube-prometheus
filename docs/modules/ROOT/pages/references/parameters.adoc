@@ -1,19 +1,78 @@
 = Parameters
 
-The parent key for all of the following parameters is `monitoring`.
+The parent key for all of the following parameters is `kube_prometheus`.
+
+The following kube-prometheus components can be configured:
+
+* prometheus_operator
+* prometheus
+* alertmanager
+* grafana
+* node_exporter
+* blackbox_exporter
+* kubernetes_control_plane
+* prometheus_adapter
+* kube_state_metrics
+
 
 == `namespace`
 
 [horizontal]
 type:: string
-default:: `syn-monitoring`
-
-The namespace in which to deploy this component.
-
-
-== Example
-
+default:: `${_instance}`
+example::
++
 [source,yaml]
 ----
 namespace: example-namespace
 ----
+
+The namespace in which to deploy this component.
+
+
+== `kubernetes_version`
+
+[horizontal]
+type:: string
+default:: `1.21`
+example::
++
+[source,yaml]
+----
+kubernetes_version: '$dynamic_facts:kubernetesVersion:major}.$dynamic_factskubernetesVersion:minor}'
+----
+
+The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
+
+
+== `<kube-prometheus-component>.enabled`
+
+[horizontal]
+type:: bool
+default:: `false`
+example::
++
+[source,yaml]
+----
+prometheus.enabled: true
+----
+
+Whether this kube-prometheus component should be deployed.
+
+
+== `<kube-prometheus-component>.params`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
++
+[source,yaml]
+----
+prometheus.params:
+  prometheus:
+    spec:
+    retention: '30d'
+----
+
+Parameters to be passed down to the kube-prometheus component.

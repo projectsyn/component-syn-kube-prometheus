@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations: {}
+  labels:
+    SYNMonitoring: main
+    name: kubernetes_1.20
+  name: kubernetes_1.20

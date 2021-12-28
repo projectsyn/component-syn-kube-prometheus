@@ -1,5 +1,5 @@
-= monitoring
+= kube-prometheus
 
-monitoring is a Commodore component to manage monitoring.
+kube-prometheus is a Commodore component to manage https://github.com/prometheus-operator/kube-prometheus[kube-prometheus].
 
 See the xref:references/parameters.adoc[parameters] reference for further details.

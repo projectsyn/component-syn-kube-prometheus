@@ -1,6 +1,6 @@
-# Commodore Component: monitoring
+# Commodore Component: kube-prometheus
 
-This is a [Commodore][commodore] Component for monitoring.
+This is a [Commodore][commodore] Component for kube-prometheus.
 
 This repository is part of Project Syn.
 For documentation on Project Syn and this component, see https://syn.tools.
