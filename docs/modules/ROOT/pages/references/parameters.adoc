@@ -54,7 +54,8 @@ example::
 +
 [source,yaml]
 ----
-prometheus.enabled: true
+prometheus:
+  enabled: true
 ----
 
 Whether this kube-prometheus component should be deployed.
