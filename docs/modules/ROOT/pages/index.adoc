@@ -1,0 +1,5 @@
+= monitoring
+
+monitoring is a Commodore component to manage monitoring.
+
+See the xref:references/parameters.adoc[parameters] reference for further details.

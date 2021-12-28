@@ -1,0 +1,15 @@
+:global:
+  componentName: monitoring
+  githubUrl: https://github.com/vshn/component-monitoring
+  feature_goldenTests: true
+
+docs/antora.yml:
+  name: monitoring
+  title: monitoring
+.github/workflows/test.yaml:
+  test_makeTarget: test -e instance=${{ matrix.instance }}
+  goldenTest_makeTarget: golden-diff -e instance=${{ matrix.instance }}
+  matrix:
+    key: instance
+    entries:
+      - defaults
