@@ -39,7 +39,7 @@ example::
 +
 [source,yaml]
 ----
-kubernetes_version: '$dynamic_facts:kubernetesVersion:major}.$dynamic_factskubernetesVersion:minor}'
+kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_factskubernetesVersion:minor}'
 ----
 
 The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
@@ -69,10 +69,11 @@ example::
 +
 [source,yaml]
 ----
-prometheus.params:
-  prometheus:
-    spec:
-    retention: '30d'
+prometheus:
+  params:
+    prometheus:
+      spec:
+        retention: '30d'
 ----
 
 Parameters to be passed down to the kube-prometheus component.
