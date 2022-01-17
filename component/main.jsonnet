@@ -5,15 +5,16 @@ local inv = kap.inventory();
 // The hiera parameters for the component
 local params = inv.parameters.kube_prometheus;
 
-local prometheus_operator = import 'prometheus-operator.jsonnet';
-local prometheus = import 'prometheus.jsonnet';
-local alertmanager = import 'alertmanager.jsonnet';
-local grafana = import 'grafana.jsonnet';
-local node_exporter = import 'node-exporter.jsonnet';
-local blackbox_exporter = import 'blackbox-exporter.jsonnet';
-local kubernetes_control_plane = import 'kubernetes-control-plane.jsonnet';
-local prometheus_adapter = import 'prometheus-adapter.jsonnet';
-local kube_state_metrics = import 'kube-state-metrics.jsonnet';
+local common = import 'common.libsonnet';
+local prometheus_operator = common.render_component('prometheus_operator', 10);
+local prometheus = common.render_component('prometheus', 20);
+local alertmanager = common.render_component('alertmanager', 30);
+local grafana = common.render_component('grafana', 40);
+local node_exporter = common.render_component('node_exporter', 50);
+local blackbox_exporter = common.render_component('blackbox_exporter', 60);
+local kubernetes_control_plane = common.render_component('kubernetes_control_plane', 70);
+local prometheus_adapter = common.render_component('prometheus_adapter', 80);
+local kube_state_metrics = common.render_component('kube_state_metrics', 90);
 
 local namespace = kube.Namespace(params.namespace) {
   metadata+: {
