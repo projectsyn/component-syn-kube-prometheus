@@ -31,7 +31,7 @@ local render_component(component, prefix) =
     };
 
   {
-    ['%d_%s_%s' % (prefix, component, name)]: kp[kpkey][name]
+    ['%d_%s_%s' % [ prefix, component, name ]]: kp[kpkey][name]
     for name in std.objectFields(kp[kpkey])
   };
 
