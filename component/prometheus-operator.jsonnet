@@ -17,7 +17,5 @@ local kp =
 
 {
   ['10_prometheus-operator-' + name]: kp.prometheusOperator[name]
-  for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
-} +
-{ '10_prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
-{ '10_prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule }
+  for name in std.objectFields(kp.prometheusOperator)
+}
