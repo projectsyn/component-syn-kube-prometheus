@@ -24,7 +24,7 @@ local render_component(component, prefix) =
       values+:: {
         common+: {
           namespace: params.namespace,
-        },
+        } + com.makeMergeable(params.common) + com.makeMergeable(params[component].common),
       },
 
       [kpkey]+: com.makeMergeable(params[component].params),

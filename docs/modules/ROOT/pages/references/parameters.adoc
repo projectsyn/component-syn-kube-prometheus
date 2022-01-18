@@ -44,6 +44,96 @@ kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_factskub
 
 The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
 
+[[common]]
+== `common`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
++
+[source,yaml]
+----
+common:
+  images:
+    alertmanager: 'my.quaymirror.tld/prometheus/alertmanager:v${kube_prometheus.common.versions.alertmanager}'
+----
+
+Default common parameters to be passed down to all components.
+This dict supports the following fields:
+
+=== `common.namespace`
+
+[horizontal]
+type:: string
+default:: `${namespace}`
+example::
++
+[source,yaml]
+----
+namespace: example-namespace
+----
+
+The default namespace for all components.
+
+=== `common.platform`
+
+[horizontal]
+type:: string
+default:: `null``
+example::
++
+[source,yaml]
+----
+platform: aws
+----
+
+Using a predefined mixin for a given platform. A list of supported platforms can be found here: https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/customizations/platform-specific.md
+
+=== `common.ruleLabels`
+
+[horizontal]
+type:: dict
+default:: `{
+  role: 'alert-rules',
+  prometheus: $.values.prometheus.name
+}`
+
+Default ruleLabels for all components.
+
+=== `common.versions`
+
+[horizontal]
+type:: dict
+default:: See https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/versions.json
+example::
++
+[source,yaml]
+----
+common:
+  versions:
+    grafana: 8.0.2
+    prometheus: 2.20.3
+----
+
+The default version to be used for the various components.
+
+=== `common.images`
+
+[horizontal]
+type:: dict
+default:: See https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/main.libsonnet
+example::
++
+[source,yaml]
+----
+common:
+  images:
+    grafana: 'my.quaymirror.tld/grafana/grafana:${kube_prometheus.common.versions.grafana}'
+    prometheus: 'my.quaymirror.tld/prometheus/prometheus:v:${kube_prometheus.common.versions.prometheus}'
+----
+
+The default image to be used for the various components.
 
 == `<kube-prometheus-component>.enabled`
 
@@ -59,6 +149,24 @@ prometheus:
 ----
 
 Whether this kube-prometheus component should be deployed.
+
+== `<kube-prometheus-component>.common`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
++
+[source,yaml]
+----
+prometheus:
+  common:
+    images:
+      alertmanager: 'my.quaymirror.tld/prometheus/alertmanager:v${kube_prometheus.common.versions.alertmanager}'
+----
+
+Common parameters to be passed down to the kube-prometheus component.
+See <<common>> for a list of supported parameters.
 
 
 == `<kube-prometheus-component>.params`
