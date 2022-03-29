@@ -40,9 +40,8 @@ local render_component(component, prefix) =
           namespace: params.namespace,
           images: std.mapWithKey(patch_image, super.images),
         } + com.makeMergeable(params.common) + com.makeMergeable(params[component].common),
+        [kpkey]+: com.makeMergeable(params[component].params),
       },
-
-      [kpkey]+: com.makeMergeable(params[component].params),
     };
 
   {
