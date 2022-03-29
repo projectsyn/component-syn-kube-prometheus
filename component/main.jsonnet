@@ -3,7 +3,7 @@ local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 local inv = kap.inventory();
 // The hiera parameters for the component
-local params = inv.parameters.kube_prometheus;
+local params = inv.parameters.syn_kube_prometheus;
 
 local common = import 'common.libsonnet';
 local prometheus_operator = common.render_component('prometheus_operator', 10);

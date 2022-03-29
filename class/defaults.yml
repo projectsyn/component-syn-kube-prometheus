@@ -1,12 +1,12 @@
 parameters:
-  kube_prometheus:
+  syn_kube_prometheus:
     =_metadata: {}
     multi_instance: true
     namespace: ${_instance}
 
     # Dependency resolution
     jsonnetfile_parameters:
-      kube_prometheus_version: ${kube_prometheus:_kube_prometheus_version:${kube_prometheus:kubernetes_version}}
+      kube_prometheus_version: ${syn_kube_prometheus:_kube_prometheus_version:${syn_kube_prometheus:kubernetes_version}}
     kubernetes_version: 1.21
 
     # Map the Kubernetes version to the correct kube-prometheus version
@@ -20,7 +20,7 @@ parameters:
 
     =_common_labels:
       app.kubernetes.io/managed-by: commodore
-      source: https://github.com/projectsyn/component-kube-prometheus
+      source: https://github.com/projectsyn/component-syn-kube-prometheus
 
     common: {}
     # Use case specific parameters. Overwrite in your inventory hierarchy

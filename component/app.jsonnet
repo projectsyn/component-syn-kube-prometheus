@@ -1,6 +1,6 @@
 local kap = import 'lib/kapitan.libjsonnet';
 local inv = kap.inventory();
-local params = inv.parameters.kube_prometheus;
+local params = inv.parameters.syn_kube_prometheus;
 local argocd = import 'lib/argocd.libjsonnet';
 local instance = inv.parameters._instance;
 

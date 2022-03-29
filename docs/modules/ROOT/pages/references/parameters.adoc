@@ -1,6 +1,6 @@
 = Parameters
 
-The parent key for all of the following parameters is `kube_prometheus`.
+The parent key for all of the following parameters is `syn_kube_prometheus`.
 
 The following kube-prometheus components can be configured:
 
