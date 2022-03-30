@@ -27,36 +27,45 @@ parameters:
     prometheus_operator:
       enabled: false
       common: {}
+      config: {}
       params: {}
     prometheus:
       enabled: false
       common: {}
+      config: {}
       params: {}
     alertmanager:
       enabled: false
       common: {}
+      config: {}
       params: {}
     grafana:
       enabled: false
       common: {}
+      config: {}
       params: {}
     node_exporter:
       enabled: false
       common: {}
+      config: {}
       params: {}
     blackbox_exporter:
       enabled: false
       common: {}
+      config: {}
       params: {}
     kubernetes_control_plane:
       enabled: false
       common: {}
+      config: {}
       params: {}
     prometheus_adapter:
       enabled: false
       common: {}
+      config: {}
       params: {}
     kube_state_metrics:
       enabled: false
       common: {}
+      config: {}
       params: {}
