@@ -34,7 +34,8 @@ local patch_image(key, image) =
 local render_component(component, prefix) =
   local kpkey = componentMap[component];
   local kp =
-    (import 'kube-prometheus/main.libsonnet') {
+    (import 'kube-prometheus/main.libsonnet') +
+    (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {   
       values+:: {
         common+: {
           namespace: params.namespace,
