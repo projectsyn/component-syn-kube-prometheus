@@ -3,7 +3,15 @@ local inv = kap.inventory();
 local com = import 'lib/commodore.libjsonnet';
 // The hiera parameters for the component
 local params = inv.parameters.syn_kube_prometheus;
-local global = inv.parameters.global;
+
+local global = com.getValueOrDefault(inv.parameters, 'global', {
+  registries: {
+    dockerhub: 'docker.io',
+    quay: 'quay.io',
+    k8s_gcr: 'k8s.gcr.io',
+  },
+});
+
 local instance = inv.parameters._instance;
 
 // map from component parameters key to kube-prometheus key
@@ -35,7 +43,7 @@ local render_component(component, prefix) =
   local kpkey = componentMap[component];
   local kp =
     (import 'kube-prometheus/main.libsonnet') +
-    (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {   
+    (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
       values+:: {
         common+: {
           namespace: params.namespace,

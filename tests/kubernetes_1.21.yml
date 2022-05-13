@@ -1,6 +1,6 @@
 ---
 parameters:
-  kube_prometheus:
+  syn_kube_prometheus:
     kubernetes_version: '1.21'
     prometheus_operator:
       enabled: true

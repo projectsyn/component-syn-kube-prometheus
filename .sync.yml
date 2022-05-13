@@ -20,7 +20,3 @@ docs/antora.yml:
 .gitignore:
   additionalEntries:
     - jsonnetfile.json
-
-Makefile:
-  includes:
-    - Makefile.custom.mk

@@ -1,7 +1,5 @@
 parameters:
   syn_kube_prometheus:
-    =_metadata:
-      multi_instance: true
     namespace: ${_instance}
 
     # Dependency resolution

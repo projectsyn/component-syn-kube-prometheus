@@ -1,0 +1,18 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.21.0
+  name: alertmanager-alertmanager-syn-kube-prometheus
+  namespace: syn-kube-prometheus
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      alertmanager: alertmanager-syn-kube-prometheus
+      app.kubernetes.io/component: alert-router
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/part-of: kube-prometheus
