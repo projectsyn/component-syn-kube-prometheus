@@ -5,7 +5,7 @@ on:
       - master
 
 env:
-  COMPONENT_NAME: kube-prometheus
+  COMPONENT_NAME: syn-kube-prometheus
 
 jobs:
   linting:
