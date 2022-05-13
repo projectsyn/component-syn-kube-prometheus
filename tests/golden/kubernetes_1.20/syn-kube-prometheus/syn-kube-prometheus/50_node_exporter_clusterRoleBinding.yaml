@@ -1,10 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
   labels:
     app.kubernetes.io/component: exporter
+    app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: nodeexporter-syn-kube-prometheus
-    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 1.1.2
   name: nodeexporter-syn-kube-prometheus
 roleRef:

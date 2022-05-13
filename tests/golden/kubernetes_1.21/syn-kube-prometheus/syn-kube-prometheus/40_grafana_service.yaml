@@ -1,10 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
   labels:
     app.kubernetes.io/component: grafana
+    app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: grafana-syn-kube-prometheus
-    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 8.1.1
   name: grafana
   namespace: syn-kube-prometheus

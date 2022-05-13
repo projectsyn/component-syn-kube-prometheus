@@ -12,6 +12,20 @@ local global = com.getValueOrDefault(inv.parameters, 'global', {
   },
 });
 
+local commonLabels = {
+  'app.kubernetes.io/managed-by': 'commodore',
+  'app.kubernetes.io/part-of': 'syn',
+};
+
+local commonAnnotations = {
+  source: 'https://github.com/projectsyn/component-syn-kube-prometheus',
+};
+
+local commonMetadata = {
+  labels+: commonLabels,
+  annotations+: commonAnnotations,
+};
+
 local instance = inv.parameters._instance;
 
 // map from component parameters key to kube-prometheus key
@@ -55,7 +69,9 @@ local render_component(component, prefix) =
     };
 
   {
-    ['%d_%s_%s' % [ prefix, component, name ]]: kp[kpkey][name]
+    ['%d_%s_%s' % [ prefix, component, name ]]: kp[kpkey][name] {
+      metadata+: commonMetadata,
+    }
     for name in std.objectFields(kp[kpkey])
   };
 

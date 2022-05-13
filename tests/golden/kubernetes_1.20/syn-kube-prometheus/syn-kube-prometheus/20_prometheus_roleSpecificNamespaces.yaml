@@ -112,3 +112,9 @@ items:
           - list
           - watch
 kind: RoleList
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn

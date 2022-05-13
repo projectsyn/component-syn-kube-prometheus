@@ -16,10 +16,13 @@ data:
     \n    \"tcp\":\n      \"preferred_ip_protocol\": \"ip4\""
 kind: ConfigMap
 metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
   labels:
     app.kubernetes.io/component: exporter
+    app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: blackbox-exporter
-    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.18.0
   name: blackbox-exporter-configuration
   namespace: syn-kube-prometheus

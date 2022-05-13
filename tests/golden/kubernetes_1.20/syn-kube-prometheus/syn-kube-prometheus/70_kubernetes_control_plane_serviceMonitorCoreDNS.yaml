@@ -1,8 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
   labels:
+    app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: coredns
+    app.kubernetes.io/part-of: syn
   name: coredns
   namespace: syn-kube-prometheus
 spec:

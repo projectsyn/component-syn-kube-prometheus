@@ -1,6 +1,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
   name: blackbox-exporter
 rules:
   - apiGroups:

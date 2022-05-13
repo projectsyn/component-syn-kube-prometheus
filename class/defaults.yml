@@ -16,10 +16,6 @@ parameters:
       # renovate: branch=release-0.10
       "1.22": 42ea595d60265b803ad460a971a7186488f6be7e
 
-    =_common_labels:
-      app.kubernetes.io/managed-by: commodore
-      source: https://github.com/projectsyn/component-syn-kube-prometheus
-
     common: {}
     # Use case specific parameters. Overwrite in your inventory hierarchy
     prometheus_operator:

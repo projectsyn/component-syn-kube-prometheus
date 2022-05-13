@@ -1,8 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
   labels:
+    app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kube-controller-manager
+    app.kubernetes.io/part-of: syn
   name: kube-controller-manager
   namespace: syn-kube-prometheus
 spec:

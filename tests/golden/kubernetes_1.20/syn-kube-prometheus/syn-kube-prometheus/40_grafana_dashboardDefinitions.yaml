@@ -18684,3 +18684,9 @@ items:
       name: grafana-dashboard-workload-total
       namespace: syn-kube-prometheus
 kind: ConfigMapList
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn

@@ -3,7 +3,11 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
   creationTimestamp: null
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
   name: prometheuses.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
