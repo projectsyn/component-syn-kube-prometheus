@@ -39,7 +39,7 @@ example::
 +
 [source,yaml]
 ----
-kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_factskubernetesVersion:minor}'
+kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_facts:kubernetesVersion:minor}'
 ----
 
 The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
