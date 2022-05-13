@@ -49,7 +49,7 @@ local render_component(component, prefix) =
           namespace: params.namespace,
           images: std.mapWithKey(patch_image, super.images),
         } + com.makeMergeable(params.common) + com.makeMergeable(params[component].common),
-        [kpkey]+: {name: std.asciiLower(kpkey + '-' + instance) } + com.makeMergeable(params[component].config),
+        [kpkey]+: { name: std.asciiLower(kpkey + '-' + instance) } + com.makeMergeable(params[component].config),
       },
       [kpkey]+: com.makeMergeable(params[component].params),
     };
