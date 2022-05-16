@@ -19,44 +19,36 @@ parameters:
         namespace: syn-prometheus
       prometheus:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       alertmanager:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       grafana:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       node_exporter:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       blackbox_exporter:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       kubernetes_control_plane:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       prometheus_adapter:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
       kube_state_metrics:
         enabled: false
-        common: {}
         config: {}
-        params: {}
+        overrides: {}
 
     prometheus_operator:
       enabled: true

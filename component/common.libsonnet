@@ -59,19 +59,22 @@ local formatComponentName = function(componentName, instanceName)
   std.asciiLower(name);
 
 local stackForInstance = function(instanceName)
+  local confWithCommon = com.makeMergeable(params.common) + com.makeMergeable(params.instances[instanceName]);
+  local cm = std.foldl(function(prev, k) prev {
+    [componentMap[k]]: { name: formatComponentName(componentMap[k], instanceName) } + confWithCommon[k].config,
+  }, std.objectFields(componentMap), {});
+  local overrides = std.foldl(function(prev, k) prev {
+    [componentMap[k]]: confWithCommon[k].overrides,
+  }, std.objectFields(componentMap), {});
+
   (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
-    local confWithCommon = com.makeMergeable(params.common) + com.makeMergeable(params.instances[instanceName]),
-    local cm = std.foldl(function(prev, k) prev {
-      assert std.objectHas(confWithCommon[k], 'config') : 'Invalid instance `%s`: %s' % [ k, std.manifestYamlDoc(confWithCommon[k]) ],
-      [componentMap[k]]: { name: formatComponentName(componentMap[k], instanceName) } + confWithCommon[k].config,
-    }, std.objectFields(componentMap), {}),
     values+:: {
       common+: {
         images: std.mapWithKey(patch_image, super.images),
       } + confWithCommon.common,
     } + com.makeMergeable(cm),
-  };
+  } + com.makeMergeable(overrides);
 
 local render_component(configuredStack, component, prefix) =
   local kp = configuredStack[componentMap[component]];
