@@ -16,5 +16,5 @@ roleRef:
   name: system:auth-delegator
 subjects:
   - kind: ServiceAccount
-    name: prometheusadapter-syn-kube-prometheus
-    namespace: syn-kube-prometheus
+    name: prometheusadapter-default-instance
+    namespace: syn-prometheus

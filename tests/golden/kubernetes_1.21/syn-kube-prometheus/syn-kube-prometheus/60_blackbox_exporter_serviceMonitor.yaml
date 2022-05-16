@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.19.0
   name: blackbox-exporter
-  namespace: syn-kube-prometheus
+  namespace: syn-prometheus
 spec:
   endpoints:
     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token

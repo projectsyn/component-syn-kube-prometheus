@@ -6,15 +6,15 @@ metadata:
   labels:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: kubestatemetrics-syn-kube-prometheus
+    app.kubernetes.io/name: kubestatemetrics-default-instance
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 2.0.0
-  name: kubestatemetrics-syn-kube-prometheus
+  name: kubestatemetrics-default-instance
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubestatemetrics-syn-kube-prometheus
+  name: kubestatemetrics-default-instance
 subjects:
   - kind: ServiceAccount
-    name: kubestatemetrics-syn-kube-prometheus
-    namespace: syn-kube-prometheus
+    name: kubestatemetrics-default-instance
+    namespace: syn-prometheus

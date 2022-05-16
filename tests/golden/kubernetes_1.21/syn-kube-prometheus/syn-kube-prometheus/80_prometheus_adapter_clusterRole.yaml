@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: prometheus-adapter
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.9.0
-  name: prometheusadapter-syn-kube-prometheus
+  name: prometheusadapter-default-instance
 rules:
   - apiGroups:
       - ''

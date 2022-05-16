@@ -7,10 +7,10 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kube-prometheus
     app.kubernetes.io/part-of: syn
-    prometheus: k8s
+    prometheus: default-instance
     role: alert-rules
   name: kubernetes-monitoring-rules
-  namespace: syn-kube-prometheus
+  namespace: syn-prometheus
 spec:
   groups:
     - name: kubernetes-apps

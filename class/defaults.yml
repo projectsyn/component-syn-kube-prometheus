@@ -1,7 +1,5 @@
 parameters:
   syn_kube_prometheus:
-    namespace: ${_instance}
-
     # Dependency resolution
     jsonnetfile_parameters:
       kube_prometheus_version: ${syn_kube_prometheus:_kube_prometheus_version:${syn_kube_prometheus:kubernetes_version}}
@@ -16,50 +14,56 @@ parameters:
       # renovate: branch=release-0.10
       "1.22": 42ea595d60265b803ad460a971a7186488f6be7e
 
-    common: {}
-    # Use case specific parameters. Overwrite in your inventory hierarchy
+    common:
+      common:
+        namespace: syn-prometheus
+      prometheus:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      alertmanager:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      grafana:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      node_exporter:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      blackbox_exporter:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      kubernetes_control_plane:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      prometheus_adapter:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+      kube_state_metrics:
+        enabled: false
+        common: {}
+        config: {}
+        params: {}
+
     prometheus_operator:
-      enabled: false
-      common: {}
+      enabled: true
+      namespace: syn-prometheus-operator
+      common: ${syn_kube_prometheus:common}
       config: {}
-      params: {}
-    prometheus:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    alertmanager:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    grafana:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    node_exporter:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    blackbox_exporter:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    kubernetes_control_plane:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    prometheus_adapter:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
-    kube_state_metrics:
-      enabled: false
-      common: {}
-      config: {}
-      params: {}
+      params:
+        namespace: ${syn_kube_prometheus:prometheus_operator:namespace}
+
+    instances: {}

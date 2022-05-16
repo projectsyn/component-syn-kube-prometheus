@@ -6,13 +6,13 @@ metadata:
   labels:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: kubestatemetrics-syn-kube-prometheus
+    app.kubernetes.io/name: kubestatemetrics-default-instance
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 2.0.0
-    prometheus: k8s
+    prometheus: default-instance
     role: alert-rules
-  name: kubestatemetrics-syn-kube-prometheus-rules
-  namespace: syn-kube-prometheus
+  name: kubestatemetrics-default-instance-rules
+  namespace: syn-prometheus
 spec:
   groups:
     - name: kube-state-metrics
@@ -24,9 +24,9 @@ spec:
               expose metrics about Kubernetes objects correctly or at all.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubestatemetricslisterrors
             summary: kube-state-metrics is experiencing errors in list operations.
-          expr: "(sum(rate(kube_state_metrics_list_total{job=\"kubestatemetrics-syn-kube-prometheus\"\
+          expr: "(sum(rate(kube_state_metrics_list_total{job=\"kubestatemetrics-default-instance\"\
             ,result=\"error\"}[5m]))\n  /\nsum(rate(kube_state_metrics_list_total{job=\"\
-            kubestatemetrics-syn-kube-prometheus\"}[5m])))\n> 0.01\n"
+            kubestatemetrics-default-instance\"}[5m])))\n> 0.01\n"
           for: 15m
           labels:
             severity: critical
@@ -37,9 +37,9 @@ spec:
               expose metrics about Kubernetes objects correctly or at all.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubestatemetricswatcherrors
             summary: kube-state-metrics is experiencing errors in watch operations.
-          expr: "(sum(rate(kube_state_metrics_watch_total{job=\"kubestatemetrics-syn-kube-prometheus\"\
+          expr: "(sum(rate(kube_state_metrics_watch_total{job=\"kubestatemetrics-default-instance\"\
             ,result=\"error\"}[5m]))\n  /\nsum(rate(kube_state_metrics_watch_total{job=\"\
-            kubestatemetrics-syn-kube-prometheus\"}[5m])))\n> 0.01\n"
+            kubestatemetrics-default-instance\"}[5m])))\n> 0.01\n"
           for: 15m
           labels:
             severity: critical

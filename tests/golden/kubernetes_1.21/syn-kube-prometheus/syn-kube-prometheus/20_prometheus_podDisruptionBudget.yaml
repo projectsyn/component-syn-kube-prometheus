@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 2.29.1
-  name: prometheus-prometheus-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+  name: prometheus-default-instance
+  namespace: syn-prometheus
 spec:
   minAvailable: 1
   selector:
@@ -18,4 +18,4 @@ spec:
       app.kubernetes.io/component: prometheus
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      prometheus: prometheus-syn-kube-prometheus
+      prometheus: default-instance

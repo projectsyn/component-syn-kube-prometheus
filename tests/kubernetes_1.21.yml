@@ -2,30 +2,21 @@
 parameters:
   syn_kube_prometheus:
     kubernetes_version: '1.21'
-    prometheus_operator:
-      enabled: true
-      params: {}
-    prometheus:
-      enabled: true
-      params: {}
-    alertmanager:
-      enabled: true
-      params: {}
-    grafana:
-      enabled: true
-      params: {}
-    node_exporter:
-      enabled: true
-      params: {}
-    blackbox_exporter:
-      enabled: true
-      params: {}
-    kubernetes_control_plane:
-      enabled: true
-      params: {}
-    prometheus_adapter:
-      enabled: true
-      params: {}
-    kube_state_metrics:
-      enabled: true
-      params: {}
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+        alertmanager:
+          enabled: true
+        grafana:
+          enabled: true
+        node_exporter:
+          enabled: true
+        blackbox_exporter:
+          enabled: true
+        kubernetes_control_plane:
+          enabled: true
+        prometheus_adapter:
+          enabled: true
+        kube_state_metrics:
+          enabled: true

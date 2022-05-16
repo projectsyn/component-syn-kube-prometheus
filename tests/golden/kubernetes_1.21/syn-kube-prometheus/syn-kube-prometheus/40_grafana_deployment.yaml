@@ -6,25 +6,25 @@ metadata:
   labels:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: grafana-syn-kube-prometheus
+    app.kubernetes.io/name: grafana-default-instance
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 8.1.1
   name: grafana
-  namespace: syn-kube-prometheus
+  namespace: syn-prometheus
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: grafana
-      app.kubernetes.io/name: grafana-syn-kube-prometheus
+      app.kubernetes.io/name: grafana-default-instance
       app.kubernetes.io/part-of: kube-prometheus
   template:
     metadata:
       annotations:
-        checksum/grafana-datasources: f2b03c32a01a9ef0712a10a19803d9f6
+        checksum/grafana-datasources: 8d54bfa54a061cd1b7c1364c083c60db
       labels:
         app.kubernetes.io/component: grafana
-        app.kubernetes.io/name: grafana-syn-kube-prometheus
+        app.kubernetes.io/name: grafana-default-instance
         app.kubernetes.io/part-of: kube-prometheus
         app.kubernetes.io/version: 8.1.1
     spec:

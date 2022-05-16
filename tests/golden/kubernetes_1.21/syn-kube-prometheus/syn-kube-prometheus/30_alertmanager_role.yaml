@@ -6,8 +6,8 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/part-of: syn
-  name: alertmanager-alertmanager-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+  name: alertmanager-alertmanager-default-instance
+  namespace: syn-prometheus
 rules:
   - apiGroups:
       - policy

@@ -26,8 +26,6 @@ local commonMetadata = {
   annotations+: commonAnnotations,
 };
 
-local instance = inv.parameters._instance;
-
 // map from component parameters key to kube-prometheus key
 local componentMap = {
   alertmanager: 'alertmanager',
@@ -38,7 +36,6 @@ local componentMap = {
   node_exporter: 'nodeExporter',
   prometheus: 'prometheus',
   prometheus_adapter: 'prometheusAdapter',
-  prometheus_operator: 'prometheusOperator',
 };
 
 local patch_image(key, image) =
@@ -53,28 +50,42 @@ local patch_image(key, image) =
     global.registries.dockerhub + '/' + std.join('/', parts)
 ;
 
-local render_component(component, prefix) =
-  local kpkey = componentMap[component];
-  local kp =
-    (import 'kube-prometheus/main.libsonnet') +
-    (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
-      values+:: {
-        common+: {
-          namespace: params.namespace,
-          images: std.mapWithKey(patch_image, super.images),
-        } + com.makeMergeable(params.common) + com.makeMergeable(params[component].common),
-        [kpkey]+: { name: std.asciiLower(kpkey + '-' + instance) } + com.makeMergeable(params[component].config),
-      },
-      [kpkey]+: com.makeMergeable(params[component].params),
-    };
+local formatComponentName = function(componentName, instanceName)
+  local name = if componentName == 'prometheus' then
+    instanceName
+  else
+    componentName + '-' + instanceName;
+
+  std.asciiLower(name);
+
+local stackForInstance = function(instanceName)
+  (import 'kube-prometheus/main.libsonnet') +
+  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
+    local confWithCommon = com.makeMergeable(params.common) + com.makeMergeable(params.instances[instanceName]),
+    local cm = std.foldl(function(prev, k) prev {
+      assert std.objectHas(confWithCommon[k], 'config') : 'Invalid instance `%s`: %s' % [ k, std.manifestYamlDoc(confWithCommon[k]) ],
+      [componentMap[k]]: { name: formatComponentName(componentMap[k], instanceName) } + confWithCommon[k].config,
+    }, std.objectFields(componentMap), {}),
+    values+:: {
+      common+: {
+        images: std.mapWithKey(patch_image, super.images),
+      } + confWithCommon.common,
+    } + com.makeMergeable(cm),
+  };
+
+local render_component(configuredStack, component, prefix) =
+  local kp = configuredStack[componentMap[component]];
 
   {
-    ['%d_%s_%s' % [ prefix, component, name ]]: kp[kpkey][name] {
+    ['%d_%s_%s' % [ prefix, component, name ]]: kp[name] {
       metadata+: commonMetadata,
     }
-    for name in std.objectFields(kp[kpkey])
+    for name in std.objectFields(kp)
   };
 
 {
   render_component: render_component,
+  patch_image: patch_image,
+  stackForInstance: stackForInstance,
+  metadata: commonMetadata,
 }

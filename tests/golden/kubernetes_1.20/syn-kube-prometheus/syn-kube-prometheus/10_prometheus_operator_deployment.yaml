@@ -6,23 +6,23 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: prometheusoperator-syn-kube-prometheus
+    app.kubernetes.io/name: prometheus-operator
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.47.0
-  name: prometheusoperator-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+  name: prometheus-operator
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: controller
-      app.kubernetes.io/name: prometheusoperator-syn-kube-prometheus
+      app.kubernetes.io/name: prometheus-operator
       app.kubernetes.io/part-of: kube-prometheus
   template:
     metadata:
       labels:
         app.kubernetes.io/component: controller
-        app.kubernetes.io/name: prometheusoperator-syn-kube-prometheus
+        app.kubernetes.io/name: prometheus-operator
         app.kubernetes.io/part-of: kube-prometheus
         app.kubernetes.io/version: 0.47.0
     spec:
@@ -31,7 +31,7 @@ spec:
             - --kubelet-service=kube-system/kubelet
             - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.47.0
           image: quay.io/prometheus-operator/prometheus-operator:v0.47.0
-          name: prometheusoperator-syn-kube-prometheus
+          name: prometheus-operator
           ports:
             - containerPort: 8080
               name: http
@@ -70,4 +70,4 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-      serviceAccountName: prometheusoperator-syn-kube-prometheus
+      serviceAccountName: prometheus-operator

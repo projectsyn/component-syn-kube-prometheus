@@ -4,21 +4,21 @@ metadata:
   annotations:
     source: https://github.com/projectsyn/component-syn-kube-prometheus
   labels:
-    alertmanager: alertmanager-syn-kube-prometheus
+    alertmanager: alertmanager-default-instance
     app.kubernetes.io/component: alert-router
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.22.2
-  name: alertmanager-alertmanager-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+  name: alertmanager-alertmanager-default-instance
+  namespace: syn-prometheus
 spec:
   ports:
     - name: web
       port: 9093
       targetPort: web
   selector:
-    alertmanager: alertmanager-syn-kube-prometheus
+    alertmanager: alertmanager-default-instance
     app: alertmanager
     app.kubernetes.io/component: alert-router
     app.kubernetes.io/name: alertmanager

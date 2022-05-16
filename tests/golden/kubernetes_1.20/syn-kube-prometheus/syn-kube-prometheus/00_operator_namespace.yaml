@@ -4,5 +4,5 @@ metadata:
   annotations: {}
   labels:
     SYNMonitoring: main
-    name: syn-kube-prometheus
-  name: syn-kube-prometheus
+    name: syn-prometheus-operator
+  name: syn-prometheus-operator

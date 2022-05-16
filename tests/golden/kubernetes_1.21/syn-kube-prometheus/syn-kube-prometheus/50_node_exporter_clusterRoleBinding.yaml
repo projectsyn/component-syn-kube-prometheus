@@ -6,15 +6,15 @@ metadata:
   labels:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: nodeexporter-syn-kube-prometheus
+    app.kubernetes.io/name: nodeexporter-default-instance
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 1.2.2
-  name: nodeexporter-syn-kube-prometheus
+  name: nodeexporter-default-instance
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: nodeexporter-syn-kube-prometheus
+  name: nodeexporter-default-instance
 subjects:
   - kind: ServiceAccount
-    name: nodeexporter-syn-kube-prometheus
-    namespace: syn-kube-prometheus
+    name: nodeexporter-default-instance
+    namespace: syn-prometheus

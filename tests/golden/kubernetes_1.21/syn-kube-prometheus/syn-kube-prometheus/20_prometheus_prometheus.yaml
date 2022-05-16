@@ -9,15 +9,15 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 2.29.1
-    prometheus: prometheus-syn-kube-prometheus
-  name: prometheus-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+    prometheus: default-instance
+  name: default-instance
+  namespace: syn-prometheus
 spec:
   alerting:
     alertmanagers:
       - apiVersion: v2
-        name: alertmanager-main
-        namespace: syn-kube-prometheus
+        name: alertmanager-alertmanager-default-instance
+        namespace: syn-prometheus
         port: web
   enableFeatures: []
   externalLabels: {}
@@ -44,7 +44,7 @@ spec:
     fsGroup: 2000
     runAsNonRoot: true
     runAsUser: 1000
-  serviceAccountName: prometheus-prometheus-syn-kube-prometheus
+  serviceAccountName: prometheus-default-instance
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   version: 2.29.1

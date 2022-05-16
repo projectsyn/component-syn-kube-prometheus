@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/name: prometheus-adapter
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.8.4
-  name: prometheusadapter-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+  name: prometheusadapter-default-instance
+  namespace: syn-prometheus
 spec:
   endpoints:
     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token

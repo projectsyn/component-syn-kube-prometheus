@@ -6,13 +6,13 @@ metadata:
   labels:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: nodeexporter-syn-kube-prometheus
+    app.kubernetes.io/name: nodeexporter-default-instance
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 1.1.2
-    prometheus: k8s
+    prometheus: default-instance
     role: alert-rules
-  name: nodeexporter-syn-kube-prometheus-rules
-  namespace: syn-kube-prometheus
+  name: nodeexporter-default-instance-rules
+  namespace: syn-prometheus
 spec:
   groups:
     - name: node-exporter
@@ -25,12 +25,12 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemspacefillingup
             summary: Filesystem is predicted to run out of space within the next 24
               hours.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} * 100 < 40\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
-            nodeexporter-syn-kube-prometheus\",fstype!=\"\"}[6h], 24*60*60) < 0\n\
-            and\n  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} == 0\n)\n"
+            nodeexporter-default-instance\",fstype!=\"\"}[6h], 24*60*60) < 0\nand\n\
+            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
+            \"} == 0\n)\n"
           for: 1h
           labels:
             severity: warning
@@ -42,11 +42,11 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemspacefillingup
             summary: Filesystem is predicted to run out of space within the next 4
               hours.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} * 100 < 15\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
-            nodeexporter-syn-kube-prometheus\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
-            \  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\",fstype!=\"\
+            nodeexporter-default-instance\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
+            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
             \"} == 0\n)\n"
           for: 1h
           labels:
@@ -57,9 +57,9 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available space left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutofspace
             summary: Filesystem has less than 5% space left.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} * 100 < 5\nand\n  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} * 100 < 5\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} == 0\n)\n"
           for: 1h
           labels:
@@ -70,9 +70,9 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available space left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutofspace
             summary: Filesystem has less than 3% space left.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} * 100 < 3\nand\n  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} * 100 < 3\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} == 0\n)\n"
           for: 1h
           labels:
@@ -85,12 +85,12 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemfilesfillingup
             summary: Filesystem is predicted to run out of inodes within the next
               24 hours.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} * 100 < 40\nand\n  predict_linear(node_filesystem_files_free{job=\"\
-            nodeexporter-syn-kube-prometheus\",fstype!=\"\"}[6h], 24*60*60) < 0\n\
-            and\n  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} == 0\n)\n"
+            nodeexporter-default-instance\",fstype!=\"\"}[6h], 24*60*60) < 0\nand\n\
+            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
+            \"} == 0\n)\n"
           for: 1h
           labels:
             severity: warning
@@ -102,11 +102,11 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemfilesfillingup
             summary: Filesystem is predicted to run out of inodes within the next
               4 hours.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} * 100 < 20\nand\n  predict_linear(node_filesystem_files_free{job=\"\
-            nodeexporter-syn-kube-prometheus\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
-            \  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\",fstype!=\"\
+            nodeexporter-default-instance\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
+            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
             \"} == 0\n)\n"
           for: 1h
           labels:
@@ -117,9 +117,9 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available inodes left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutoffiles
             summary: Filesystem has less than 5% inodes left.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} * 100 < 5\nand\n  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} * 100 < 5\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} == 0\n)\n"
           for: 1h
           labels:
@@ -130,9 +130,9 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available inodes left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutoffiles
             summary: Filesystem has less than 3% inodes left.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-syn-kube-prometheus\"\
-            ,fstype!=\"\"} * 100 < 3\nand\n  node_filesystem_readonly{job=\"nodeexporter-syn-kube-prometheus\"\
+          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
+            ,fstype!=\"\"} * 100 < 3\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} == 0\n)\n"
           for: 1h
           labels:
@@ -181,8 +181,8 @@ spec:
             description: Node Exporter text file collector failed to scrape.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodetextfilecollectorscrapeerror
             summary: Node Exporter text file collector failed to scrape.
-          expr: 'node_textfile_scrape_error{job="nodeexporter-syn-kube-prometheus"}
-            == 1
+          expr: 'node_textfile_scrape_error{job="nodeexporter-default-instance"} ==
+            1
 
             '
           labels:
@@ -244,41 +244,41 @@ spec:
     - name: node-exporter.rules
       rules:
         - expr: "count without (cpu) (\n  count without (mode) (\n    node_cpu_seconds_total{job=\"\
-            nodeexporter-syn-kube-prometheus\"}\n  )\n)\n"
+            nodeexporter-default-instance\"}\n  )\n)\n"
           record: instance:node_num_cpu:sum
         - expr: "1 - avg without (cpu, mode) (\n  rate(node_cpu_seconds_total{job=\"\
-            nodeexporter-syn-kube-prometheus\", mode=\"idle\"}[1m])\n)\n"
+            nodeexporter-default-instance\", mode=\"idle\"}[1m])\n)\n"
           record: instance:node_cpu_utilisation:rate1m
-        - expr: "(\n  node_load1{job=\"nodeexporter-syn-kube-prometheus\"}\n/\n  instance:node_num_cpu:sum{job=\"\
-            nodeexporter-syn-kube-prometheus\"}\n)\n"
+        - expr: "(\n  node_load1{job=\"nodeexporter-default-instance\"}\n/\n  instance:node_num_cpu:sum{job=\"\
+            nodeexporter-default-instance\"}\n)\n"
           record: instance:node_load1_per_cpu:ratio
-        - expr: "1 - (\n  node_memory_MemAvailable_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
-            }\n/\n  node_memory_MemTotal_bytes{job=\"nodeexporter-syn-kube-prometheus\"\
+        - expr: "1 - (\n  node_memory_MemAvailable_bytes{job=\"nodeexporter-default-instance\"\
+            }\n/\n  node_memory_MemTotal_bytes{job=\"nodeexporter-default-instance\"\
             }\n)\n"
           record: instance:node_memory_utilisation:ratio
-        - expr: 'rate(node_vmstat_pgmajfault{job="nodeexporter-syn-kube-prometheus"}[1m])
+        - expr: 'rate(node_vmstat_pgmajfault{job="nodeexporter-default-instance"}[1m])
 
             '
           record: instance:node_vmstat_pgmajfault:rate1m
-        - expr: 'rate(node_disk_io_time_seconds_total{job="nodeexporter-syn-kube-prometheus",
+        - expr: 'rate(node_disk_io_time_seconds_total{job="nodeexporter-default-instance",
             device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
 
             '
           record: instance_device:node_disk_io_time_seconds:rate1m
-        - expr: 'rate(node_disk_io_time_weighted_seconds_total{job="nodeexporter-syn-kube-prometheus",
+        - expr: 'rate(node_disk_io_time_weighted_seconds_total{job="nodeexporter-default-instance",
             device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
 
             '
           record: instance_device:node_disk_io_time_weighted_seconds:rate1m
         - expr: "sum without (device) (\n  rate(node_network_receive_bytes_total{job=\"\
-            nodeexporter-syn-kube-prometheus\", device!=\"lo\"}[1m])\n)\n"
+            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
           record: instance:node_network_receive_bytes_excluding_lo:rate1m
         - expr: "sum without (device) (\n  rate(node_network_transmit_bytes_total{job=\"\
-            nodeexporter-syn-kube-prometheus\", device!=\"lo\"}[1m])\n)\n"
+            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
           record: instance:node_network_transmit_bytes_excluding_lo:rate1m
         - expr: "sum without (device) (\n  rate(node_network_receive_drop_total{job=\"\
-            nodeexporter-syn-kube-prometheus\", device!=\"lo\"}[1m])\n)\n"
+            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
           record: instance:node_network_receive_drop_excluding_lo:rate1m
         - expr: "sum without (device) (\n  rate(node_network_transmit_drop_total{job=\"\
-            nodeexporter-syn-kube-prometheus\", device!=\"lo\"}[1m])\n)\n"
+            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
           record: instance:node_network_transmit_drop_excluding_lo:rate1m

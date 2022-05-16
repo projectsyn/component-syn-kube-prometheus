@@ -17,5 +17,5 @@ roleRef:
   name: extension-apiserver-authentication-reader
 subjects:
   - kind: ServiceAccount
-    name: prometheusadapter-syn-kube-prometheus
-    namespace: syn-kube-prometheus
+    name: prometheusadapter-default-instance
+    namespace: syn-prometheus

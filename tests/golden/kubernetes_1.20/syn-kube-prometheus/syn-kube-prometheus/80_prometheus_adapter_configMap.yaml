@@ -30,4 +30,4 @@ metadata:
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.8.4
   name: adapter-config
-  namespace: syn-kube-prometheus
+  namespace: syn-prometheus

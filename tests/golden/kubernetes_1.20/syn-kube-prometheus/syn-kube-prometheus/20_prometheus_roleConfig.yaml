@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 2.26.0
-  name: prometheus-prometheus-syn-kube-prometheus-config
-  namespace: syn-kube-prometheus
+  name: prometheus-default-instance-config
+  namespace: syn-prometheus
 rules:
   - apiGroups:
       - ''

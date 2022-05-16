@@ -9,12 +9,12 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 2.29.1
-  name: prometheus-prometheus-syn-kube-prometheus
+  name: prometheus-default-instance
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: prometheus-prometheus-syn-kube-prometheus
+  name: prometheus-default-instance
 subjects:
   - kind: ServiceAccount
-    name: prometheus-prometheus-syn-kube-prometheus
-    namespace: syn-kube-prometheus
+    name: prometheus-default-instance
+    namespace: syn-prometheus

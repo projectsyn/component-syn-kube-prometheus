@@ -6,15 +6,15 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: prometheusoperator-syn-kube-prometheus
+    app.kubernetes.io/name: prometheus-operator
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.47.0
-  name: prometheusoperator-syn-kube-prometheus
+  name: prometheus-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: prometheusoperator-syn-kube-prometheus
+  name: prometheus-operator
 subjects:
   - kind: ServiceAccount
-    name: prometheusoperator-syn-kube-prometheus
-    namespace: syn-kube-prometheus
+    name: prometheus-operator
+    namespace: default

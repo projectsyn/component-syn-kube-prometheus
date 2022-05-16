@@ -9,13 +9,13 @@ metadata:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.22.2
-  name: alertmanager-alertmanager-syn-kube-prometheus
-  namespace: syn-kube-prometheus
+  name: alertmanager-alertmanager-default-instance
+  namespace: syn-prometheus
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      alertmanager: alertmanager-syn-kube-prometheus
+      alertmanager: alertmanager-default-instance
       app.kubernetes.io/component: alert-router
       app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
