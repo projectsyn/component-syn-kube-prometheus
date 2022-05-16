@@ -11,7 +11,7 @@ local prometheus_operator = common.render_component('prometheus_operator', 10);
 local prometheus = common.render_component('prometheus', 20);
 local alertmanager = common.render_component('alertmanager', 30);
 local grafana = common.render_component('grafana', 40);
-local node_exporter = common.render_component('node_exporter', 50) { 
+local node_exporter = common.render_component('node_exporter', 50) {
   '50_node_exporter_daemonset'+: {
     spec+: {
       template+: {
@@ -22,14 +22,15 @@ local node_exporter = common.render_component('node_exporter', 50) {
                 volumeMounts: [
                   vm {
                     mountPropagation: null,
-                  } for vm in super.volumeMounts
+                  }
+                  for vm in super.volumeMounts
                 ],
               }
             else
               c
             for c in super.containers
           ],
-        }
+        },
       },
     },
   },
