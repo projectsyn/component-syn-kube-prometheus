@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: grafana-default-instance
+    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/version: 8.3.3
+  name: grafana-datasources
+  namespace: syn-prometheus
+stringData:
+  datasources.yaml: "{\n    \"apiVersion\": 1,\n    \"datasources\": [\n        {\n\
+    \            \"access\": \"proxy\",\n            \"editable\": false,\n      \
+    \      \"name\": \"prometheus\",\n            \"orgId\": 1,\n            \"type\"\
+    : \"prometheus\",\n            \"url\": \"http://prometheus-k8s.syn-prometheus.svc:9090\"\
+    ,\n            \"version\": 1\n        }\n    ]\n}"
+type: Opaque
