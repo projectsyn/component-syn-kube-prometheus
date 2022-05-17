@@ -4,7 +4,7 @@ local params = inv.parameters.syn_kube_prometheus;
 local argocd = import 'lib/argocd.libjsonnet';
 local instance = inv.parameters._instance;
 
-local app = argocd.App(instance, params.common.common.namespace) {
+local app = argocd.App(instance, null) {
   spec+: {
     ignoreDifferences+: [
       {
