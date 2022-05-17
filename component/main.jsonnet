@@ -9,13 +9,14 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
-local namespace = kube.Namespace(params.namespace) {
-  metadata+: {
-    labels+: {
-      SYNMonitoring: 'main',
-    },
-  },
-};
+local namespaces = std.foldl(
+  function(namespaces, nsName)
+    if params.namespaces[nsName] != null then
+      namespaces { ['00_namespace_%s' % nsName]: kube.Namespace(nsName) + com.makeMergeable(params.namespaces[nsName]) }
+    else
+      namespaces
+  , std.objectFields(params.namespaces), {}
+);
 
 local renderInstance = function(instanceName, instanceParams)
   local p = params.common + com.makeMergeable(instanceParams);
@@ -65,4 +66,4 @@ local renderInstance = function(instanceName, instanceParams)
 
 local instances = std.mapWithKey(function(name, params) renderInstance(name, params), params.instances);
 
-(import 'operator.libsonnet') + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})
+(import 'operator.libsonnet') + namespaces + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})

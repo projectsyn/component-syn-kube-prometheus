@@ -20,6 +20,8 @@ parameters:
 
     addons: []
 
+    namespaces: {}
+
     common:
       common:
         namespace: syn-prometheus
