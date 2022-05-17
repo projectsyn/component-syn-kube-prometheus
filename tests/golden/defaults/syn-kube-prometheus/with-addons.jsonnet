@@ -9,9 +9,22 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
-// %% ADDONS
-local addons = {};
-// %% ADDONS
+local imports = {"anti-affinity": import "kube-prometheus/addons/anti-affinity.libsonnet",
+"ksm-autoscaler": import "kube-prometheus/addons/ksm-autoscaler.libsonnet",
+"external-metrics": import "kube-prometheus/addons/external-metrics.libsonnet",
+"aws-vpc-cni": import "kube-prometheus/addons/aws-vpc-cni.libsonnet",
+"dropping-deprecated-metrics-relabelings": import "kube-prometheus/addons/dropping-deprecated-metrics-relabelings.libsonnet",
+"static-etcd": import "kube-prometheus/addons/static-etcd.libsonnet",
+"node-ports": import "kube-prometheus/addons/node-ports.libsonnet",
+"ksm-lite": import "kube-prometheus/addons/ksm-lite.libsonnet",
+"custom-metrics": import "kube-prometheus/addons/custom-metrics.libsonnet",
+"insecure-kubelet": import "kube-prometheus/addons/insecure-kubelet.libsonnet",
+"managed-cluster": import "kube-prometheus/addons/managed-cluster.libsonnet",
+"config-mixins": import "kube-prometheus/addons/config-mixins.libsonnet",
+"strip-limits": import "kube-prometheus/addons/strip-limits.libsonnet",
+"podsecuritypolicies": import "kube-prometheus/addons/podsecuritypolicies.libsonnet",
+"windows": import "kube-prometheus/addons/windows.libsonnet",
+"all-namespaces": import "kube-prometheus/addons/all-namespaces.libsonnet"};
 
 local namespace = kube.Namespace(params.namespace) {
   metadata+: {

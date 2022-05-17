@@ -12,6 +12,8 @@ local global = com.getValueOrDefault(inv.parameters, 'global', {
   },
 });
 
+// local test = std.trace(import 'compiled/syn-kube-prometheus/with-addons.jsonnet');
+
 local commonLabels = {
   'app.kubernetes.io/managed-by': 'commodore',
   'app.kubernetes.io/part-of': 'syn',
