@@ -9,10 +9,6 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
-// %% ADDONS
-local addons = {};
-// %% ADDONS
-
 local namespace = kube.Namespace(params.namespace) {
   metadata+: {
     labels+: {
@@ -69,4 +65,4 @@ local renderInstance = function(instanceName, instanceParams)
 
 local instances = std.mapWithKey(function(name, params) renderInstance(name, params), params.instances);
 
-(import 'component/operator.libsonnet') + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})
+(import 'operator.libsonnet') + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})

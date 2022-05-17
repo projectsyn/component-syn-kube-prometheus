@@ -12,7 +12,11 @@ parameters:
         input_type: jsonnet
         output_path: apps/
       - input_paths:
-          - compiled/${kapitan:vars:target}/with-addons.jsonnet
-          # - syn-kube-prometheus/component/main.jsonnet
+          - syn-kube-prometheus/component/main.jsonnet
         input_type: jsonnet
         output_path: ${_instance}
+
+      - input_paths:
+          - compiled/syn-kube-prometheus/addons.libsonnet
+        input_type: remove
+        output_path: .

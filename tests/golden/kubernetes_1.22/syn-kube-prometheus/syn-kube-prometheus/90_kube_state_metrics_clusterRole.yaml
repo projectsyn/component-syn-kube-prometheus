@@ -111,11 +111,3 @@ rules:
     verbs:
       - list
       - watch
-  - apiGroups:
-      - policy
-    resourceNames:
-      - kube-state-metrics-psp
-    resources:
-      - podsecuritypolicies
-    verbs:
-      - use

@@ -20,11 +20,3 @@ rules:
       - subjectaccessreviews
     verbs:
       - create
-  - apiGroups:
-      - policy
-    resourceNames:
-      - blackbox-exporter-psp
-    resources:
-      - podsecuritypolicies
-    verbs:
-      - use

@@ -21,11 +21,3 @@ rules:
       - /metrics
     verbs:
       - get
-  - apiGroups:
-      - policy
-    resourceNames:
-      - kube-prometheus-restricted
-    resources:
-      - podsecuritypolicies
-    verbs:
-      - use

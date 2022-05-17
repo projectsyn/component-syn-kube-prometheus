@@ -2,6 +2,8 @@
 parameters:
   syn_kube_prometheus:
     kubernetes_version: '1.20'
+    addons:
+      - podsecuritypolicies
     instances:
       default-instance:
         prometheus:

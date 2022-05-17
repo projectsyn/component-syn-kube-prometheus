@@ -12,7 +12,15 @@ local global = com.getValueOrDefault(inv.parameters, 'global', {
   },
 });
 
-// local test = std.trace(import 'compiled/syn-kube-prometheus/with-addons.jsonnet');
+local addonImports = import 'compiled/syn-kube-prometheus/addons.libsonnet';
+
+local withAddons = function(main, addons)
+  std.foldl(
+    function(main, addonName)
+      assert std.objectHas(addonImports, addonName) : 'Addon `%s` not found' % addonName;
+      main + addonImports[addonName]
+    , com.renderArray(addons), main
+  );
 
 local commonLabels = {
   'app.kubernetes.io/managed-by': 'commodore',
@@ -69,8 +77,7 @@ local stackForInstance = function(instanceName)
     [componentMap[k]]: confWithCommon[k].overrides,
   }, std.objectFields(componentMap), {});
 
-  (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
+  withAddons(import 'kube-prometheus/main.libsonnet', params.addons) {
     values+:: {
       common+: {
         images: std.mapWithKey(patch_image, super.images),

@@ -23,11 +23,3 @@ rules:
       - subjectaccessreviews
     verbs:
       - create
-  - apiGroups:
-      - policy
-    resourceNames:
-      - node-exporter-psp
-    resources:
-      - podsecuritypolicies
-    verbs:
-      - use
