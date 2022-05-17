@@ -18,11 +18,20 @@ local configuredOperator =
     } + com.makeMergeable(params.prometheus_operator.config),
   };
 
+local filterCRDs = function(obj)
+if params.prometheus_operator.install_crds then
+  obj
+else
+  {
+    [if obj[name].kind != 'CustomResourceDefinition' then name]: obj[name]
+    for name in std.objectFields(obj)
+  };
+
 local prometheus_operator = {
   ['10_prometheus_operator_%s' % name]: configuredOperator.prometheusOperator[name] {
     metadata+: common.metadata,
   }
-  for name in std.objectFields(configuredOperator.prometheusOperator)
+  for name in std.objectFields(filterCRDs(configuredOperator.prometheusOperator))
 };
 
 local namespace = kube.Namespace(params.prometheus_operator.namespace) {

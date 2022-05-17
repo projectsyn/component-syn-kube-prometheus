@@ -60,6 +60,7 @@ parameters:
 
     prometheus_operator:
       enabled: true
+      install_crds: true
       namespace: syn-prometheus-operator
       common: ${syn_kube_prometheus:common}
       config: {}
