@@ -1,6 +1,7 @@
 local kap = import 'lib/kapitan.libjsonnet';
 
-local imports = kap.dir_files_list('kube-prometheus/addons/');
+local upstreamAddons = kap.dir_files_list('kube-prometheus/addons/');
+local localAddons = kap.dir_files_list('component/addons/');
 
 local trimSuffix = function(pat, str)
   if std.endsWith(str, pat) then
@@ -8,17 +9,25 @@ local trimSuffix = function(pat, str)
   else
     str;
 
+local formatAddon = function(dir, file)
+  '%s: import %s' % [
+    std.escapeStringJson(trimSuffix('.libsonnet', file)),
+    std.escapeStringJson(dir + file),
+  ];
+
 local renderedImports =
   '{' +
-  std.join(',\n', std.map(
-    function(name) '%s: import %s' % [
-      std.escapeStringJson(trimSuffix('.libsonnet', name)),
-      std.escapeStringJson('kube-prometheus/addons/' + name),
-    ],
-    imports
-  ))
+  std.join(
+    ',\n',
+    std.map(
+      function(file) formatAddon('kube-prometheus/addons/', file),
+      upstreamAddons
+    ) + std.map(
+      function(file) formatAddon('component/addons/', file),
+      localAddons
+    ),
+  )
   + '}'
 ;
-
 
 { 'addons.libsonnet': renderedImports }

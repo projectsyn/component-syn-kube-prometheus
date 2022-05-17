@@ -23,6 +23,9 @@ parameters:
         kube_state_metrics:
           enabled: true
 
+    addons:
+    - remove-securitycontext
+
     namespaces:
       default-instance: {}
 
