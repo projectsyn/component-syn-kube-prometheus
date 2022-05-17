@@ -16,16 +16,38 @@ local configuredOperator =
         images: std.mapWithKey(common.patch_image, super.images),
       } + com.makeMergeable(params.prometheus_operator.common),
     } + com.makeMergeable(params.prometheus_operator.config),
+
+    prometheusOperator+: {
+      deployment+: {
+        spec+: {
+          template+: {
+            spec+: {
+              containers: [
+                if c.name == 'prometheus-operator' then
+                  c {
+                    args+: [
+                      '--prometheus-instance-namespaces=%s' % std.join(',', std.filter(function(name) params.namespaces[name] != null, std.objectFields(params.namespaces))),
+                    ],
+                  }
+                else
+                  c
+                for c in super.containers
+              ],
+            },
+          },
+        },
+      },
+    },
   };
 
 local filterCRDs = function(obj)
-if params.prometheus_operator.install_crds then
-  obj
-else
-  {
-    [if obj[name].kind != 'CustomResourceDefinition' then name]: obj[name]
-    for name in std.objectFields(obj)
-  };
+  if params.prometheus_operator.install_crds then
+    obj
+  else
+    {
+      [if obj[name].kind != 'CustomResourceDefinition' then name]: obj[name]
+      for name in std.objectFields(obj)
+    };
 
 local prometheus_operator = {
   ['10_prometheus_operator_%s' % name]: configuredOperator.prometheusOperator[name] {

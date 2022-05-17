@@ -23,5 +23,8 @@ parameters:
         kube_state_metrics:
           enabled: true
 
+    namespaces:
+      default-instance: {}
+
     prometheus_operator:
       install_crds: false
