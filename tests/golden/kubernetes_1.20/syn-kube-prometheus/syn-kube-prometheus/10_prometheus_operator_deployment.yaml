@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.47.0
   name: prometheus-operator
-  namespace: default
+  namespace: syn-prometheus-operator
 spec:
   replicas: 1
   selector:
@@ -30,6 +30,7 @@ spec:
         - args:
             - --kubelet-service=kube-system/kubelet
             - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.47.0
+            - --prometheus-instance-namespaces=
           image: quay.io/prometheus-operator/prometheus-operator:v0.47.0
           name: prometheus-operator
           ports:

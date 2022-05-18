@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.53.1
   name: prometheus-operator
-  namespace: default
+  namespace: syn-prometheus-operator
 spec:
   replicas: 1
   selector:

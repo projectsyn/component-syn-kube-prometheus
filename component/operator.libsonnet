@@ -14,7 +14,9 @@ local configuredOperator =
     values+:: {
       common+: {
         images: std.mapWithKey(common.patch_image, super.images),
-      } + com.makeMergeable(params.prometheus_operator.common),
+      } + com.makeMergeable(params.prometheus_operator.common) + {
+        namespace: params.prometheus_operator.namespace,
+      },
     } + com.makeMergeable(params.prometheus_operator.config),
 
     prometheusOperator+: {
@@ -37,7 +39,7 @@ local configuredOperator =
           },
         },
       },
-    },
+    } + com.makeMergeable(params.prometheus_operator.overrides),
   };
 
 local filterCRDs = function(obj)

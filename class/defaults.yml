@@ -64,7 +64,6 @@ parameters:
       namespace: syn-prometheus-operator
       common: ${syn_kube_prometheus:base:common}
       config: {}
-      params:
-        namespace: ${syn_kube_prometheus:prometheus_operator:namespace}
+      overrides: {}
 
     instances: {}
