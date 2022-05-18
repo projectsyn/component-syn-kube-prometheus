@@ -1,7 +1,7 @@
 local kap = import 'lib/kapitan.libjsonnet';
 
 local upstreamAddons = kap.dir_files_list('kube-prometheus/addons/');
-local localAddons = kap.dir_files_list('component/addons/');
+local localAddons = kap.dir_files_list('syn-kube-prometheus/component/addons/');
 
 local trimSuffix = function(pat, str)
   if std.endsWith(str, pat) then
@@ -23,7 +23,7 @@ local renderedImports =
       function(file) formatAddon('kube-prometheus/addons/', file),
       upstreamAddons
     ) + std.map(
-      function(file) formatAddon('component/addons/', file),
+      function(file) formatAddon('syn-kube-prometheus/component/addons/', file),
       localAddons
     ),
   )
