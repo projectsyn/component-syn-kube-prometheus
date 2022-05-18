@@ -32,7 +32,7 @@ spec:
         - args:
             - --kubelet-service=kube-system/kubelet
             - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.53.1
-            - --prometheus-instance-namespaces=
+            - -namespaces=
           image: quay.io/prometheus-operator/prometheus-operator:v0.53.1
           name: syn-prometheus-operator
           ports:

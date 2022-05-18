@@ -26,8 +26,9 @@ local configuredOperator =
               containers: [
                 if c.name == config.values.prometheusOperator.name then
                   c {
+                    local opNamespaces = std.join(',', std.filter(function(name) params.namespaces[name] != null, std.objectFields(params.namespaces))),
                     args+: [
-                      '--prometheus-instance-namespaces=%s' % std.join(',', std.filter(function(name) params.namespaces[name] != null, std.objectFields(params.namespaces))),
+                      '-namespaces=%s' % opNamespaces,
                     ],
                   }
                 else
