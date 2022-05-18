@@ -24,30 +24,7 @@ local renderInstance = function(instanceName, instanceParams)
   local prometheus = common.render_component(stack, 'prometheus', 20);
   local alertmanager = common.render_component(stack, 'alertmanager', 30);
   local grafana = common.render_component(stack, 'grafana', 40);
-  local node_exporter = common.render_component(stack, 'node_exporter', 50) {
-    '50_node_exporter_daemonset'+: {
-      spec+: {
-        template+: {
-          spec+: {
-            containers: [
-              if c.name == 'nodeexporter-' + instance then
-                c {
-                  volumeMounts: [
-                    vm {
-                      mountPropagation: null,
-                    }
-                    for vm in super.volumeMounts
-                  ],
-                }
-              else
-                c
-              for c in super.containers
-            ],
-          },
-        },
-      },
-    },
-  };
+  local node_exporter = common.render_component(stack, 'node_exporter', 50);
   local blackbox_exporter = common.render_component(stack, 'blackbox_exporter', 60);
   local kubernetes_control_plane = common.render_component(stack, 'kubernetes_control_plane', 70);
   local prometheus_adapter = common.render_component(stack, 'prometheus_adapter', 80);
