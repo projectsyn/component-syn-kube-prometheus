@@ -10,13 +10,13 @@ parameters:
           enabled: true
         grafana:
           enabled: true
-        node_exporter:
+        nodeExporter:
           enabled: true
-        blackbox_exporter:
+        blackboxExporter:
           enabled: true
-        kubernetes_control_plane:
+        kubernetesControlPlane:
           enabled: true
-        prometheus_adapter:
+        prometheusAdapter:
           enabled: true
-        kube_state_metrics:
+        kubeStateMetrics:
           enabled: true

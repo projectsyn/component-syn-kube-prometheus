@@ -37,33 +37,33 @@ parameters:
         enabled: false
         config: {}
         overrides: {}
-      node_exporter:
+      nodeExporter:
         enabled: false
         config: {}
         overrides: {}
-      blackbox_exporter:
+      blackboxExporter:
         enabled: false
         config: {}
         overrides: {}
-      kubernetes_control_plane:
+      kubernetesControlPlane:
         enabled: false
         config: {}
         overrides: {}
-      prometheus_adapter:
+      prometheusAdapter:
         enabled: false
         config: {}
         overrides: {}
-      kube_state_metrics:
+      kubeStateMetrics:
         enabled: false
         config: {}
         overrides: {}
 
-    prometheus_operator:
+    prometheusOperator:
       enabled: true
-      install_crds: true
+      installCRDs: true
       namespace: syn-prometheus-operator
       common:
-        namespace: ${syn_kube_prometheus:prometheus_operator:namespace}
+        namespace: ${syn_kube_prometheus:prometheusOperator:namespace}
       config:
         name: syn-prometheus-operator
       overrides: {}

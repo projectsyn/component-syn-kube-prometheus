@@ -11,15 +11,15 @@ parameters:
         grafana:
           # Disabled for some speedup since we don't need to modify it for OCP yet
           enabled: false
-        node_exporter:
+        nodeExporter:
           enabled: true
-        blackbox_exporter:
+        blackboxExporter:
           enabled: true
-        kubernetes_control_plane:
+        kubernetesControlPlane:
           enabled: true
-        prometheus_adapter:
+        prometheusAdapter:
           enabled: true
-        kube_state_metrics:
+        kubeStateMetrics:
           enabled: true
 
     addons:
@@ -28,5 +28,5 @@ parameters:
     namespaces:
       default-instance: {}
 
-    prometheus_operator:
-      install_crds: false
+    prometheusOperator:
+      installCRDs: false

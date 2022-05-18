@@ -15,8 +15,8 @@ local configuredOperator =
     values+:: {
       common+: {
         images: std.mapWithKey(common.patch_image, super.images),
-      } + com.makeMergeable(params.base.common) + com.makeMergeable(params.prometheus_operator.common),
-    } + { prometheusOperator+: com.makeMergeable(params.prometheus_operator.config) },
+      } + com.makeMergeable(params.base.common) + com.makeMergeable(params.prometheusOperator.common),
+    } + { prometheusOperator+: com.makeMergeable(params.prometheusOperator.config) },
 
     prometheusOperator+: {
       deployment+: {
@@ -38,11 +38,11 @@ local configuredOperator =
           },
         },
       },
-    } + com.makeMergeable(params.prometheus_operator.overrides),
+    } + com.makeMergeable(params.prometheusOperator.overrides),
   };
 
 local filterCRDs = function(obj)
-  if params.prometheus_operator.install_crds then
+  if params.prometheusOperator.installCRDs then
     obj
   else
     {
@@ -50,14 +50,14 @@ local filterCRDs = function(obj)
       for name in std.objectFields(obj)
     };
 
-local prometheus_operator = {
-  ['10_prometheus_operator_%s' % name]: configuredOperator.prometheusOperator[name] {
+local prometheusOperator = {
+  ['10_prometheusOperator_%s' % name]: configuredOperator.prometheusOperator[name] {
     metadata+: common.metadata,
   }
   for name in std.objectFields(filterCRDs(configuredOperator.prometheusOperator))
 };
 
-local namespace = kube.Namespace(params.prometheus_operator.namespace) {
+local namespace = kube.Namespace(params.prometheusOperator.namespace) {
   metadata+: {
     labels+: {
       SYNMonitoring: 'main',
@@ -65,6 +65,6 @@ local namespace = kube.Namespace(params.prometheus_operator.namespace) {
   },
 };
 
-(if params.prometheus_operator.enabled then prometheus_operator {
+(if params.prometheusOperator.enabled then prometheusOperator {
    '00_operator_namespace': namespace,
  } else {})

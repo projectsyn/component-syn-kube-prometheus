@@ -37,16 +37,16 @@ local commonMetadata = {
 };
 
 // map from component parameters key to kube-prometheus key
-local componentMap = {
-  alertmanager: 'alertmanager',
-  blackbox_exporter: 'blackboxExporter',
-  grafana: 'grafana',
-  kubernetes_control_plane: 'kubernetesControlPlane',
-  kube_state_metrics: 'kubeStateMetrics',
-  node_exporter: 'nodeExporter',
-  prometheus: 'prometheus',
-  prometheus_adapter: 'prometheusAdapter',
-};
+local instanceComponents = [
+  'alertmanager',
+  'blackboxExporter',
+  'grafana',
+  'kubernetesControlPlane',
+  'kubeStateMetrics',
+  'nodeExporter',
+  'prometheus',
+  'prometheusAdapter',
+];
 
 local patch_image(key, image) =
   local parts = std.split(image, '/');
@@ -71,11 +71,11 @@ local formatComponentName = function(componentName, instanceName)
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
-    [componentMap[k]]: { name: formatComponentName(componentMap[k], instanceName) } + confWithBase[k].config,
-  }, std.objectFields(componentMap), {});
+    [k]: { name: formatComponentName(k, instanceName) } + confWithBase[k].config,
+  }, instanceComponents, {});
   local overrides = std.foldl(function(prev, k) prev {
-    [componentMap[k]]: confWithBase[k].overrides,
-  }, std.objectFields(componentMap), {});
+    [k]: confWithBase[k].overrides,
+  }, instanceComponents, {});
 
   withAddons(import 'kube-prometheus/main.libsonnet', params.addons) {
     values+:: {
@@ -86,7 +86,7 @@ local stackForInstance = function(instanceName)
   } + com.makeMergeable(overrides);
 
 local render_component(configuredStack, component, prefix) =
-  local kp = configuredStack[componentMap[component]];
+  local kp = configuredStack[component];
 
   {
     ['%d_%s_%s' % [ prefix, component, name ]]: kp[name] {

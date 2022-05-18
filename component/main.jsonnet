@@ -24,21 +24,21 @@ local renderInstance = function(instanceName, instanceParams)
   local prometheus = common.render_component(stack, 'prometheus', 20);
   local alertmanager = common.render_component(stack, 'alertmanager', 30);
   local grafana = common.render_component(stack, 'grafana', 40);
-  local node_exporter = common.render_component(stack, 'node_exporter', 50);
-  local blackbox_exporter = common.render_component(stack, 'blackbox_exporter', 60);
-  local kubernetes_control_plane = common.render_component(stack, 'kubernetes_control_plane', 70);
-  local prometheus_adapter = common.render_component(stack, 'prometheus_adapter', 80);
-  local kube_state_metrics = common.render_component(stack, 'kube_state_metrics', 90);
+  local nodeExporter = common.render_component(stack, 'nodeExporter', 50);
+  local blackboxExporter = common.render_component(stack, 'blackboxExporter', 60);
+  local kubernetesControlPlane = common.render_component(stack, 'kubernetesControlPlane', 70);
+  local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80);
+  local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90);
 
   {} +
   (if p.prometheus.enabled then prometheus else {}) +
   (if p.alertmanager.enabled then alertmanager else {}) +
   (if p.grafana.enabled then grafana else {}) +
-  (if p.node_exporter.enabled then node_exporter else {}) +
-  (if p.blackbox_exporter.enabled then blackbox_exporter else {}) +
-  (if p.kubernetes_control_plane.enabled then kubernetes_control_plane else {}) +
-  (if p.prometheus_adapter.enabled then prometheus_adapter else {}) +
-  (if p.kube_state_metrics.enabled then kube_state_metrics else {})
+  (if p.nodeExporter.enabled then nodeExporter else {}) +
+  (if p.blackboxExporter.enabled then blackboxExporter else {}) +
+  (if p.kubernetesControlPlane.enabled then kubernetesControlPlane else {}) +
+  (if p.prometheusAdapter.enabled then prometheusAdapter else {}) +
+  (if p.kubeStateMetrics.enabled then kubeStateMetrics else {})
 ;
 
 local instances = std.mapWithKey(function(name, params) renderInstance(name, params), params.instances);
