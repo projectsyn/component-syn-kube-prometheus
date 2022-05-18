@@ -20,8 +20,20 @@ local namespaces = std.foldl(
   , std.objectFields(params.namespaces), {}
 );
 
+
 local secrets = std.foldl(
-  function(secrets, secret) secrets { ['01_secret_%s' % secret.metadata.name]: secret },
+  function(secrets, secret) secrets {
+    ['01_secret_%s' % secret.metadata.name]: secret {
+      stringData: std.mapWithKey(
+        function(name, data)
+          if std.type(data) == 'string' then
+            data
+          else
+            std.manifestYamlDoc(data),
+        super.stringData
+      ),
+    },
+  },
   com.generateResources(
     params.secrets,
     function(name) kube.Secret(name) {
