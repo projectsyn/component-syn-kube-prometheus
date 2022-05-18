@@ -39,7 +39,7 @@ local secrets = std.foldl(
     function(name) kube.Secret(name) {
       metadata+: {
         namespace: params.base.common.namespace,
-      },
+      } + common.metadata,
     }
   ),
   {}
