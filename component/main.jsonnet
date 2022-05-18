@@ -20,6 +20,19 @@ local namespaces = std.foldl(
   , std.objectFields(params.namespaces), {}
 );
 
+local secrets = std.foldl(
+  function(secrets, secret) secrets { ['01_secret_%s' % secret.metadata.name]: secret },
+  com.generateResources(
+    params.secrets,
+    function(name) kube.Secret(name) {
+      metadata+: {
+        namespace: params.base.common.namespace,
+      },
+    }
+  ),
+  {}
+);
+
 local renderInstance = function(instanceName, instanceParams)
   local p = params.base + com.makeMergeable(instanceParams);
   local stack = common.stackForInstance(instanceName);
@@ -44,4 +57,4 @@ local renderInstance = function(instanceName, instanceParams)
 
 local instances = std.mapWithKey(function(name, params) renderInstance(name, params), params.instances);
 
-(import 'operator.libsonnet') + namespaces + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})
+(import 'operator.libsonnet') + namespaces + secrets + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})

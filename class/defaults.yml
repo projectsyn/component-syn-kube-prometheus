@@ -20,6 +20,8 @@ parameters:
 
     namespaces: {}
 
+    secrets: {}
+
     addons: []
 
     base:

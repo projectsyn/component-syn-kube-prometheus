@@ -1,11 +1,32 @@
 ---
 parameters:
   syn_kube_prometheus:
+
+    secrets:
+      thanos-objstore-config:
+        stringData:
+          thanos: |
+            type: s3
+            config:
+              bucket: thanos
+              endpoint: s3.example.com
+              access_key: XXX
+              secret_key: XXX
+      thanos-objstore-config-2:
+        metadata:
+          namespace: foo-bar
+        stringData:
+          thanos: |
+            type: s3
+            config:
+              bucket: thanos2
+              endpoint: s4.example.com
+              access_key: XXX
+              secret_key: XXX
+
     base:
       prometheus:
         enabled: true
-        config:
-          thanos: {}
     instances:
       test:
         prometheus:
@@ -14,4 +35,6 @@ parameters:
             thanos:
               baseImage: quay.io/thanos/thanos
               version: v0.24.0
-
+              objectStorageConfig:
+                key: thanos
+                name: thanos-objstore-config
