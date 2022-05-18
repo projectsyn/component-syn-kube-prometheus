@@ -7,4 +7,20 @@
       },
     },
   },
+  prometheusOperator+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            securityContext:: {},
+            containers: [
+              c {
+                securityContext:: {},
+              } for c in super.containers
+            ],
+          },
+        },
+      },
+    },
+  },
 }

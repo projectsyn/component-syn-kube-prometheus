@@ -9,15 +9,14 @@ local params = inv.parameters.syn_kube_prometheus;
 local common = import 'common.libsonnet';
 
 local configuredOperator =
-  (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
+  common.withAddons(import 'kube-prometheus/main.libsonnet', params.addons) {
     local config = self,
 
     values+:: {
       common+: {
         images: std.mapWithKey(common.patch_image, super.images),
       } + com.makeMergeable(params.base.common) + com.makeMergeable(params.prometheus_operator.common),
-    } + {prometheusOperator+: com.makeMergeable(params.prometheus_operator.config)},
+    } + { prometheusOperator+: com.makeMergeable(params.prometheus_operator.config) },
 
     prometheusOperator+: {
       deployment+: {

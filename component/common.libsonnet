@@ -96,6 +96,7 @@ local render_component(configuredStack, component, prefix) =
   };
 
 {
+  withAddons: withAddons,
   render_component: render_component,
   patch_image: patch_image,
   stackForInstance: stackForInstance,

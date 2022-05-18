@@ -45,8 +45,6 @@ spec:
             requests:
               cpu: 100m
               memory: 100Mi
-          securityContext:
-            allowPrivilegeEscalation: false
         - args:
             - --logtostderr
             - --secure-listen-address=:8443
@@ -64,13 +62,6 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          securityContext:
-            runAsGroup: 65532
-            runAsNonRoot: true
-            runAsUser: 65532
       nodeSelector:
         kubernetes.io/os: linux
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
       serviceAccountName: syn-prometheus-operator

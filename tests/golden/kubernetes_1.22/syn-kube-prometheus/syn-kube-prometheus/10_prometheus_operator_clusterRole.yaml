@@ -93,11 +93,3 @@ rules:
       - subjectaccessreviews
     verbs:
       - create
-  - apiGroups:
-      - policy
-    resourceNames:
-      - kube-prometheus-restricted
-    resources:
-      - podsecuritypolicies
-    verbs:
-      - use
