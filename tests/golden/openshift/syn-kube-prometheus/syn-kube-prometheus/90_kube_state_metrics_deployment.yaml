@@ -43,8 +43,6 @@ spec:
             requests:
               cpu: 10m
               memory: 190Mi
-          securityContext:
-            runAsUser: 65534
         - args:
             - --logtostderr
             - --secure-listen-address=:8443
@@ -62,10 +60,6 @@ spec:
             requests:
               cpu: 20m
               memory: 20Mi
-          securityContext:
-            runAsGroup: 65532
-            runAsNonRoot: true
-            runAsUser: 65532
         - args:
             - --logtostderr
             - --secure-listen-address=:9443
@@ -83,10 +77,6 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          securityContext:
-            runAsGroup: 65532
-            runAsNonRoot: true
-            runAsUser: 65532
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: kubestatemetrics-default-instance

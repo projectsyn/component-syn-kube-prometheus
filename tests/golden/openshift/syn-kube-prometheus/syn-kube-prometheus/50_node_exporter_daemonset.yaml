@@ -78,17 +78,10 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          securityContext:
-            runAsGroup: 65532
-            runAsNonRoot: true
-            runAsUser: 65532
       hostNetwork: true
       hostPID: true
       nodeSelector:
         kubernetes.io/os: linux
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
       serviceAccountName: nodeexporter-default-instance
       tolerations:
         - operator: Exists

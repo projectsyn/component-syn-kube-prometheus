@@ -44,9 +44,6 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 65534
           volumeMounts:
             - mountPath: /etc/blackbox_exporter/
               name: config
@@ -63,9 +60,6 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 65534
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: FallbackToLogsOnError
           volumeMounts:
@@ -89,10 +83,6 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-          securityContext:
-            runAsGroup: 65532
-            runAsNonRoot: true
-            runAsUser: 65532
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: blackbox-exporter

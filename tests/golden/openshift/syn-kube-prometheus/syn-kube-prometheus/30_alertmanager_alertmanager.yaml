@@ -31,9 +31,5 @@ spec:
     requests:
       cpu: 4m
       memory: 100Mi
-  securityContext:
-    fsGroup: 2000
-    runAsNonRoot: true
-    runAsUser: 1000
   serviceAccountName: alertmanager-alertmanager-default-instance
   version: 0.23.0
