@@ -1,4 +1,3 @@
-
 ---
 parameters:
   syn_kube_prometheus:
@@ -24,7 +23,7 @@ parameters:
           enabled: true
 
     addons:
-    - remove-securitycontext
+      - remove-securitycontext
 
     namespaces:
       default-instance: {}
