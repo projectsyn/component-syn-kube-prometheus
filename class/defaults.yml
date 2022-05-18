@@ -18,11 +18,11 @@ parameters:
       # renovate: branch=release-0.10
       "1.24": 42ea595d60265b803ad460a971a7186488f6be7e
 
-    addons: []
-
     namespaces: {}
 
-    common:
+    addons: []
+
+    base:
       common:
         namespace: syn-prometheus
       prometheus:
@@ -62,7 +62,7 @@ parameters:
       enabled: true
       install_crds: true
       namespace: syn-prometheus-operator
-      common: ${syn_kube_prometheus:common}
+      common: ${syn_kube_prometheus:base:common}
       config: {}
       params:
         namespace: ${syn_kube_prometheus:prometheus_operator:namespace}

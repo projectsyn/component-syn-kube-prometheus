@@ -19,7 +19,7 @@ local namespaces = std.foldl(
 );
 
 local renderInstance = function(instanceName, instanceParams)
-  local p = params.common + com.makeMergeable(instanceParams);
+  local p = params.base + com.makeMergeable(instanceParams);
   local stack = common.stackForInstance(instanceName);
   local prometheus = common.render_component(stack, 'prometheus', 20);
   local alertmanager = common.render_component(stack, 'alertmanager', 30);

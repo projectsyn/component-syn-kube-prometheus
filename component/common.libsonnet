@@ -69,19 +69,19 @@ local formatComponentName = function(componentName, instanceName)
   std.asciiLower(name);
 
 local stackForInstance = function(instanceName)
-  local confWithCommon = com.makeMergeable(params.common) + com.makeMergeable(params.instances[instanceName]);
+  local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
-    [componentMap[k]]: { name: formatComponentName(componentMap[k], instanceName) } + confWithCommon[k].config,
+    [componentMap[k]]: { name: formatComponentName(componentMap[k], instanceName) } + confWithBase[k].config,
   }, std.objectFields(componentMap), {});
   local overrides = std.foldl(function(prev, k) prev {
-    [componentMap[k]]: confWithCommon[k].overrides,
+    [componentMap[k]]: confWithBase[k].overrides,
   }, std.objectFields(componentMap), {});
 
   withAddons(import 'kube-prometheus/main.libsonnet', params.addons) {
     values+:: {
       common+: {
         images: std.mapWithKey(patch_image, super.images),
-      } + confWithCommon.common,
+      } + confWithBase.common,
     } + com.makeMergeable(cm),
   } + com.makeMergeable(overrides);
 
