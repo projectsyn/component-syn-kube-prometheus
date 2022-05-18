@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/name: syn-prometheus-operator
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.49.0
   name: prometheus-operator
@@ -22,6 +22,6 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: controller
-      app.kubernetes.io/name: prometheus-operator
+      app.kubernetes.io/name: syn-prometheus-operator
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: 0.49.0

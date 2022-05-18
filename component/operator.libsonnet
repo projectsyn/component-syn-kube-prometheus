@@ -11,13 +11,13 @@ local common = import 'common.libsonnet';
 local configuredOperator =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') {
+    local config = self,
+
     values+:: {
       common+: {
         images: std.mapWithKey(common.patch_image, super.images),
-      } + com.makeMergeable(params.prometheus_operator.common) + {
-        namespace: params.prometheus_operator.namespace,
-      },
-    } + com.makeMergeable(params.prometheus_operator.config),
+      } + com.makeMergeable(params.base.common) + com.makeMergeable(params.prometheus_operator.common),
+    } + {prometheusOperator+: com.makeMergeable(params.prometheus_operator.config)},
 
     prometheusOperator+: {
       deployment+: {
@@ -25,7 +25,7 @@ local configuredOperator =
           template+: {
             spec+: {
               containers: [
-                if c.name == 'prometheus-operator' then
+                if c.name == config.values.prometheusOperator.name then
                   c {
                     args+: [
                       '--prometheus-instance-namespaces=%s' % std.join(',', std.filter(function(name) params.namespaces[name] != null, std.objectFields(params.namespaces))),

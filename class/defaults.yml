@@ -62,8 +62,10 @@ parameters:
       enabled: true
       install_crds: true
       namespace: syn-prometheus-operator
-      common: ${syn_kube_prometheus:base:common}
-      config: {}
+      common:
+        namespace: ${syn_kube_prometheus:prometheus_operator:namespace}
+      config:
+        name: syn-prometheus-operator
       overrides: {}
 
     instances: {}

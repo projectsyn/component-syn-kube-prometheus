@@ -6,10 +6,10 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/name: syn-prometheus-operator
     app.kubernetes.io/part-of: syn
     app.kubernetes.io/version: 0.47.0
-  name: prometheus-operator
+  name: syn-prometheus-operator
   namespace: syn-prometheus-operator
 spec:
   clusterIP: None
@@ -19,5 +19,5 @@ spec:
       targetPort: https
   selector:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/name: syn-prometheus-operator
     app.kubernetes.io/part-of: kube-prometheus
