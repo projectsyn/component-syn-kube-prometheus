@@ -12,7 +12,9 @@ local common = import 'common.libsonnet';
 local namespaces = std.foldl(
   function(namespaces, nsName)
     if params.namespaces[nsName] != null then
-      namespaces { ['00_namespace_%s' % nsName]: kube.Namespace(nsName) + com.makeMergeable(params.namespaces[nsName]) }
+      namespaces { ['00_namespace_%s' % nsName]: kube.Namespace(nsName) + {
+        metadata+: com.makeMergeable(params.namespaces[nsName]),
+      } }
     else
       namespaces
   , std.objectFields(params.namespaces), {}
