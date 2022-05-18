@@ -16,7 +16,8 @@
             containers: [
               c {
                 securityContext:: {},
-              } for c in super.containers
+              }
+              for c in super.containers
             ],
           },
         },
