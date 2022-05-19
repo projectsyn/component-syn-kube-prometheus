@@ -1,9 +1,7 @@
 :global:
   componentName: syn-kube-prometheus
   feature_goldenTests: true
-
-.github/workflows/test.yaml:
-  matrix:
+  testMatrix:
     key: instance
     entries:
       - defaults
@@ -11,8 +9,10 @@
       - kubernetes_1.21
       - kubernetes_1.22
       - openshift
+
+.github/workflows/test.yaml:
   goldenTest_makeTarget: golden-diff -e instance=${{ matrix.instance }}
-  test_makeTarget: test -e instance=${{ matrix.instance }}
+  makeTarget: test -e instance=${{ matrix.instance }}
 
 docs/antora.yml:
   name: syn-kube-prometheus
