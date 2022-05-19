@@ -1,6 +1,5 @@
 :global:
-  componentName: kube-prometheus
-  githubUrl: https://github.com/projectsyn/component-kube-prometheus
+  componentName: syn-kube-prometheus
   feature_goldenTests: true
 
 .github/workflows/test.yaml:
