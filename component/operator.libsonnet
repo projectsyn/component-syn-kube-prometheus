@@ -1,4 +1,4 @@
-// main template for kube_prometheus
+// template for prometheus-operator
 local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
