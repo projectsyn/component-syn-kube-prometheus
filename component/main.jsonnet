@@ -23,14 +23,14 @@ local namespaces = std.foldl(
 local renderInstance = function(instanceName, instanceParams)
   local p = params.base + com.makeMergeable(instanceParams);
   local stack = common.stackForInstance(instanceName);
-  local prometheus = common.render_component(stack, 'prometheus', 20);
-  local alertmanager = common.render_component(stack, 'alertmanager', 30);
-  local grafana = common.render_component(stack, 'grafana', 40);
-  local nodeExporter = common.render_component(stack, 'nodeExporter', 50);
-  local blackboxExporter = common.render_component(stack, 'blackboxExporter', 60);
-  local kubernetesControlPlane = common.render_component(stack, 'kubernetesControlPlane', 70);
-  local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80);
-  local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90);
+  local prometheus = common.render_component(stack, 'prometheus', 20, instanceName);
+  local alertmanager = common.render_component(stack, 'alertmanager', 30, instanceName);
+  local grafana = common.render_component(stack, 'grafana', 40, instanceName);
+  local nodeExporter = common.render_component(stack, 'nodeExporter', 50, instanceName);
+  local blackboxExporter = common.render_component(stack, 'blackboxExporter', 60, instanceName);
+  local kubernetesControlPlane = common.render_component(stack, 'kubernetesControlPlane', 70, instanceName);
+  local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80, instanceName);
+  local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90, instanceName);
 
   (if p.prometheus.enabled then prometheus else {}) +
   (if p.alertmanager.enabled then alertmanager else {}) +

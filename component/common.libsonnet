@@ -85,11 +85,11 @@ local stackForInstance = function(instanceName)
     } + com.makeMergeable(cm),
   } + com.makeMergeable(overrides);
 
-local render_component(configuredStack, component, prefix) =
+local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];
 
   {
-    ['%d_%s_%s' % [ prefix, component, name ]]: kp[name] {
+    ['%d_%s_%s_%s' % [ prefix, instance, component, name ]]: kp[name] {
       metadata:
         commonMetadata
         +
