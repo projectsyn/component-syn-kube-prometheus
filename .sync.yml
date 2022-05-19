@@ -15,8 +15,8 @@
   test_makeTarget: test -e instance=${{ matrix.instance }}
 
 docs/antora.yml:
-  name: kube-prometheus
-  title: kube-prometheus
+  name: syn-kube-prometheus
+  title: syn-kube-prometheus
 
 .gitignore:
   additionalEntries:
