@@ -90,7 +90,12 @@ local render_component(configuredStack, component, prefix) =
 
   {
     ['%d_%s_%s' % [ prefix, component, name ]]: kp[name] {
-      metadata+: commonMetadata,
+      metadata:
+        commonMetadata
+        +
+        com.makeMergeable(
+          com.getValueOrDefault(kp[name], 'metadata', {})
+        ),
     }
     for name in std.objectFields(kp)
   };
