@@ -1,5 +1,5 @@
-apiVersion: policy/v1
-kind: PodDisruptionBudget
+apiVersion: v1
+kind: Service
 metadata:
   annotations:
     source: https://github.com/projectsyn/component-syn-kube-prometheus
@@ -8,15 +8,17 @@ metadata:
     app.kubernetes.io/instance: default-instance
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: prometheus
-    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.32.1
-  name: prometheus-default-instance
+  name: prometheus-default-instance-auth
   namespace: syn-prometheus
 spec:
-  minAvailable: 1
+  ports:
+    - name: web
+      port: 4180
+      targetPort: 4180
   selector:
-    matchLabels:
-      app.kubernetes.io/component: prometheus
-      app.kubernetes.io/instance: default-instance
-      app.kubernetes.io/name: prometheus
-      app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: default-instance
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: kube-prometheus

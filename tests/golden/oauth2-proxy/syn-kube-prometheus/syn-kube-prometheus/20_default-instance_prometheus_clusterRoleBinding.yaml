@@ -1,5 +1,5 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: ClusterRoleBinding
 metadata:
   annotations:
     source: https://github.com/projectsyn/component-syn-kube-prometheus
@@ -8,18 +8,15 @@ metadata:
     app.kubernetes.io/instance: default-instance
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: prometheus
-    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.32.1
   name: prometheus-default-instance
   namespace: syn-prometheus
-rules:
-  - apiGroups:
-      - ''
-    resources:
-      - nodes/metrics
-    verbs:
-      - get
-  - nonResourceURLs:
-      - /metrics
-    verbs:
-      - get
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-default-instance
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-default-instance
+    namespace: syn-prometheus

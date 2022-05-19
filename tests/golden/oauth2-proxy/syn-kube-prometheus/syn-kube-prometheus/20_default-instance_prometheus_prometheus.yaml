@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: default-instance
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: prometheus
-    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.32.1
   name: default-instance
   namespace: syn-prometheus
@@ -19,9 +19,36 @@ spec:
         name: alertmanager-alertmanager-default-instance
         namespace: syn-prometheus
         port: web
+  containers:
+    - args:
+        - --custom-sign-in-logo=https://example.com/_images/logo.png
+        - --email-domain=example.com
+        - --http-address=0.0.0.0:4180
+        - --oidc-issuer-url=https://example.com/auth/realms/example-realm
+        - --provider=keycloak-oidc
+        - --provider-display-name=Example Account
+        - --real-client-ip-header=X-Forwarded-For
+        - --reverse-proxy=true
+        - --silence-ping-logging=true
+        - --skip-provider-button=true
+        - --upstream=http://127.0.0.1:9090
+      env:
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: clientSecret
+              name: oauth2-proxy
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: cookieSecret
+              name: oauth2-proxy
+      image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.1
+      name: oauth2-proxy
   enableFeatures: []
   externalLabels: {}
   image: quay.io/prometheus/prometheus:v2.32.1
+  listenLocal: true
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
