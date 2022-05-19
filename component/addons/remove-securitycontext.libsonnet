@@ -1,4 +1,4 @@
-// This addons removes the securityContext keys from the stack. Used on openshift.
+// This addon removes the securityContext keys from the stack. Used on OpenShift.
 
 local removeFromSpec = function(spec)
   spec {
