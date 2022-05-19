@@ -1,0 +1,17 @@
+---
+parameters:
+  syn_kube_prometheus:
+    kubernetes_version: '1.22'
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+
+    # addons:
+    #   - oauth2-proxy
+
+    namespaces:
+      default-instance: {}
+
+    prometheusOperator:
+      enabled: false
