@@ -1,0 +1,56 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/version: 2.29.1
+    prometheus: test
+    role: alert-rules
+  name: prometheus-test-thanos-sidecar-rules
+  namespace: syn-prometheus
+spec:
+  groups:
+    - name: thanos-sidecar
+      rules:
+        - alert: ThanosSidecarPrometheusDown
+          annotations:
+            description: Thanos Sidecar {{$labels.instance}} cannot connect to Prometheus.
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/thanossidecarprometheusdown
+            summary: Thanos Sidecar cannot connect to Prometheus
+          expr: 'thanos_sidecar_prometheus_up{job="thanos-sidecar"} == 0
+
+            '
+          for: 5m
+          labels:
+            severity: critical
+        - alert: ThanosSidecarBucketOperationsFailed
+          annotations:
+            description: Thanos Sidecar {{$labels.instance}} bucket operations are
+              failing
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/thanossidecarbucketoperationsfailed
+            summary: Thanos Sidecar bucket operations are failing
+          expr: 'sum by (job, instance) (rate(thanos_objstore_bucket_operation_failures_total{job="thanos-sidecar"}[5m]))
+            > 0
+
+            '
+          for: 5m
+          labels:
+            severity: critical
+        - alert: ThanosSidecarUnhealthy
+          annotations:
+            description: Thanos Sidecar {{$labels.instance}} is unhealthy for more
+              than {{$value}} seconds.
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/thanossidecarunhealthy
+            summary: Thanos Sidecar is unhealthy.
+          expr: 'time() - max by (job, instance) (thanos_sidecar_last_heartbeat_success_time_seconds{job="thanos-sidecar"})
+            >= 240
+
+            '
+          for: 5m
+          labels:
+            severity: critical

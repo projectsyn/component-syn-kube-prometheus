@@ -1,0 +1,21 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/version: 2.29.1
+  name: prometheus-test
+  namespace: syn-prometheus
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: kube-prometheus
+      prometheus: test

@@ -1,0 +1,17 @@
+---
+parameters:
+  syn_kube_prometheus:
+    base:
+      prometheus:
+        enabled: true
+        config:
+          thanos: {}
+    instances:
+      test:
+        prometheus:
+          enabled: true
+          config:
+            thanos:
+              baseImage: quay.io/thanos/thanos
+              version: v0.24.0
+
