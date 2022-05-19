@@ -1,0 +1,14 @@
+---
+parameters:
+  syn_kube_prometheus:
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+        prometheusAdapter:
+          enabled: true
+      other-instance:
+        prometheus:
+          enabled: true
+        kubeStateMetrics:
+          enabled: true
