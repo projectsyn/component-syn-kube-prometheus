@@ -1,9 +1,14 @@
+#
+# File managed by ModuleSync - Do Not Edit
+#
+# Additional entries can be added to `.sync.yml` in '.gitignore.additionalEntries'
+#
+
 # Commodore
 .cache/
 helmcharts/
 manifests/
 vendor/
-jsonnetfile.json
 jsonnetfile.lock.json
 crds/
 compiled/
@@ -13,4 +18,4 @@ _archive/
 _public/
 
 # Additional entries
-params.yml
+jsonnetfile.json
