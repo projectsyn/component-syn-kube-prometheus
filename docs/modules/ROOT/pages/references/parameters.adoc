@@ -53,6 +53,7 @@ The `namespaces` parameter can be used to create a list of namespaces for the Pr
 The key is used as the name of the namespace and the value is used as the namespace metadata.
 Namespaces can be removed from the hierarchy by setting the value to `null`.
 
+NOTE: The prometheus-operator deployed by this component will only reconcile resources in these namespaces.
 
 == `addons`
 
@@ -71,7 +72,7 @@ addons:
 
 A list of addons to configure the Prometheus stack.
 Upstream addons can be found in the https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/addons[`addons` folder] of the `kube-prometheus` project.
-This components addons can be found in the https://github.com/projectsyn/component-syn-kube-prometheus/tree/master/component/addons[`component/addons` folder].
+Addons provided by this component can be found in the https://github.com/projectsyn/component-syn-kube-prometheus/tree/master/component/addons[`component/addons` folder].
 
 
 == `base`
@@ -146,7 +147,7 @@ infra:
 Instances contains the configuration for each instance of the stack that should be deployed.
 `base` is used as the default values for the instance.
 
-Every deployable component can be configured by it's corresponding key.
+Every deployable component can be configured in its corresponding key.
 
 == `base.COMPONENT`, `instances.*.COMPONENT`
 
@@ -244,7 +245,7 @@ default:: `{
   prometheus: $.values.prometheus.name
 }`
 
-Default ruleLabels for all components.
+Default alert rule labels for all components.
 
 === `common.versions`
 

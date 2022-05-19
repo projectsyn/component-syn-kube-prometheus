@@ -1,5 +1,5 @@
-name: kube-prometheus
-title: kube-prometheus
+name: syn-kube-prometheus
+title: syn-kube-prometheus
 version: master
 start_page: ROOT:index.adoc
 nav:
