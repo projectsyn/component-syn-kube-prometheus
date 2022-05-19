@@ -1,0 +1,22 @@
+---
+parameters:
+  syn_kube_prometheus:
+    kubernetes_version: '1.21'
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+        alertmanager:
+          enabled: true
+        grafana:
+          enabled: true
+        nodeExporter:
+          enabled: true
+        blackboxExporter:
+          enabled: true
+        kubernetesControlPlane:
+          enabled: true
+        prometheusAdapter:
+          enabled: true
+        kubeStateMetrics:
+          enabled: true

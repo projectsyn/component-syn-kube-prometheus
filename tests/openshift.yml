@@ -1,0 +1,32 @@
+---
+parameters:
+  syn_kube_prometheus:
+    kubernetes_version: '1.22'
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+        alertmanager:
+          enabled: true
+        grafana:
+          # Disabled for some speedup since we don't need to modify it for OCP yet
+          enabled: false
+        nodeExporter:
+          enabled: true
+        blackboxExporter:
+          enabled: true
+        kubernetesControlPlane:
+          enabled: true
+        prometheusAdapter:
+          enabled: true
+        kubeStateMetrics:
+          enabled: true
+
+    addons:
+      - remove-securitycontext
+
+    namespaces:
+      default-instance: {}
+
+    prometheusOperator:
+      installCRDs: false

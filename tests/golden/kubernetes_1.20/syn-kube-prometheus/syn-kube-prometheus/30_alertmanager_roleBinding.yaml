@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-syn-kube-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+  name: alertmanager-alertmanager-default-instance
+  namespace: syn-prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: alertmanager-alertmanager-default-instance
+subjects:
+  - kind: ServiceAccount
+    name: alertmanager-alertmanager-default-instance
+    namespace: syn-prometheus

@@ -1,19 +1,282 @@
 = Parameters
 
-The parent key for all of the following parameters is `monitoring`.
+The parent key for all of the following parameters is `syn_kube_prometheus`.
 
-== `namespace`
+A shared instance of the following kube-prometheus component can be configured:
+
+* prometheus_operator
+
+Multiple instances of the following components can be configured:
+
+* prometheus
+* alertmanager
+* grafana
+* node_exporter
+* blackbox_exporter
+* kubernetes_control_plane
+* prometheus_adapter
+* kube_state_metrics
+
+== `kubernetes_version`
 
 [horizontal]
 type:: string
-default:: `syn-monitoring`
-
-The namespace in which to deploy this component.
-
-
-== Example
-
+default:: `1.21`
+example::
++
 [source,yaml]
 ----
-namespace: example-namespace
+kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_facts:kubernetesVersion:minor}'
 ----
+
+The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
+
+
+== `namespaces`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
++
+[source,yaml]
+----
+namespaces:
+  my-stack:
+    labels:
+      stack: my-stack
+    annotations:
+      description: Used to monitor my stack.
+----
+
+The `namespaces` parameter can be used to create a list of namespaces for the Prometheus stacks to be deployed.
+The key is used as the name of the namespace and the value is used as the namespace metadata.
+Namespaces can be removed from the hierarchy by setting the value to `null`.
+
+NOTE: The prometheus-operator deployed by this component will only reconcile resources in these namespaces.
+
+== `addons`
+
+[horizontal]
+type:: array
+default:: `[]`
+example::
++
+[source,yaml]
+----
+addons:
+  - remove-securitycontext
+  - nodeexporter-remove-mountpropagation
+  - podsecuritypolicies
+----
+
+A list of addons to configure the Prometheus stack.
+Upstream addons can be found in the https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/addons[`addons` folder] of the `kube-prometheus` project.
+Addons provided by this component can be found in the https://github.com/projectsyn/component-syn-kube-prometheus/tree/master/component/addons[`component/addons` folder].
+
+
+== `base`
+
+[horizontal]
+type:: dict
+default::
++
+[source,yaml]
+----
+common:
+  namespace: syn-prometheus
+prometheus:
+  enabled: false
+  config: {}
+  overrides: {}
+alertmanager:
+  enabled: false
+  config: {}
+  overrides: {}
+grafana:
+  enabled: false
+  config: {}
+  overrides: {}
+node_exporter:
+  enabled: false
+  config: {}
+  overrides: {}
+blackbox_exporter:
+  enabled: false
+  config: {}
+  overrides: {}
+kubernetes_control_plane:
+  enabled: false
+  config: {}
+  overrides: {}
+prometheus_adapter:
+  enabled: false
+  config: {}
+  overrides: {}
+kube_state_metrics:
+  enabled: false
+  config: {}
+  overrides: {}
+----
+
+The base configuration shared by all instances.
+Can be overridden by the instance-specific configuration.
+
+== `instances`
+
+[horizontal]
+type:: dict
+default:: {}
+example::
++
+[source,yaml]
+----
+infra:
+  common:
+    namespace: monitoring-infra
+  prometheus:
+    enabled: true
+    config:
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      evaluation_interval: 15s
+  node_exporter:
+    enabled: true
+----
+
+Instances contains the configuration for each instance of the stack that should be deployed.
+`base` is used as the default values for the instance.
+
+Every deployable component can be configured in its corresponding key.
+
+== `base.COMPONENT`, `instances.*.COMPONENT`
+
+[horizontal]
+type:: dict
+default::
++
+[source,yaml]
+----
+prometheus:
+  enabled: false
+  config: {}
+  overrides: {}
+----
+example::
++
+[source,yaml]
+----
+prometheus:
+  enabled: true
+  config:
+    scrape_interval: 15s
+  overrides: {}
+----
+
+Every component can be configured with the following keys:
+
+* `enabled`: Whether the component should be deployed.
+* `config`: The configuration for how the component should be rendered.
+Warning: Configuring one component can have side effects on other components.
+* `overrides`: The configuration overrides for the component.
+Warning: The overrides are applied after the manifests are rendered.
+This means configuration side effects don't apply and the configuration can contain invalid values.
+
+`config` parameters can be found in the corresponding kube-prometheus library https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/components[here].
+The easiest way to find the allowed parameters is to look at the local `defaults` variable.
+See the kube state metrics defaults as an example: https://github.com/prometheus-operator/kube-prometheus/blob/aeb50f066eadf9831c53cdf9228e09dd4e9d28b2/jsonnet/kube-prometheus/components/kube-state-metrics.libsonnet#L7-L48[kube-prometheus/components/kube-state-metrics.libsonnet]
+
+[[common]]
+== `base.common`, `instances.common`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
++
+[source,yaml]
+----
+common:
+  images:
+    alertmanager: 'my.quaymirror.tld/prometheus/alertmanager:v${kube_prometheus.common.versions.alertmanager}'
+----
+
+Common parameters to be passed down to all components.
+The supported fields can be found https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/main.libsonnet[here] under the `values.common` key.
+At the time of writing this dict supported the following fields:
+
+=== `common.namespace`
+
+[horizontal]
+type:: string
+default:: `syn-prometheus`
+example::
++
+[source,yaml]
+----
+common:
+  namespace: my-monitoring-stack
+----
+
+The default namespace for all components.
+
+=== `common.platform`
+
+[horizontal]
+type:: string
+default:: `null`
+example::
++
+[source,yaml]
+----
+common:
+  platform: aws
+----
+
+Using a predefined mixin for a given platform.
+A list of supported platforms can be found here: https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/customizations/platform-specific.md
+
+=== `common.ruleLabels`
+
+[horizontal]
+type:: dict
+default:: `{
+  role: 'alert-rules',
+  prometheus: $.values.prometheus.name
+}`
+
+Default alert rule labels for all components.
+
+=== `common.versions`
+
+[horizontal]
+type:: dict
+default:: See https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/versions.json
+example::
++
+[source,yaml]
+----
+common:
+  versions:
+    grafana: 8.0.2
+    prometheus: 2.20.3
+----
+
+The default version to be used for the various components.
+
+=== `common.images`
+
+[horizontal]
+type:: dict
+default:: See https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/main.libsonnet
+example::
++
+[source,yaml]
+----
+common:
+  images:
+    grafana: 'my.quaymirror.tld/grafana/grafana:${kube_prometheus.common.versions.grafana}'
+    prometheus: 'my.quaymirror.tld/prometheus/prometheus:${kube_prometheus.common.versions.prometheus}'
+----
+
+The default image to be used for the various components.
