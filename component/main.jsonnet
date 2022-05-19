@@ -32,7 +32,6 @@ local renderInstance = function(instanceName, instanceParams)
   local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80);
   local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90);
 
-  {} +
   (if p.prometheus.enabled then prometheus else {}) +
   (if p.alertmanager.enabled then alertmanager else {}) +
   (if p.grafana.enabled then grafana else {}) +
