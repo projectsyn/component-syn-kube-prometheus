@@ -55,6 +55,41 @@ Namespaces can be removed from the hierarchy by setting the value to `null`.
 
 NOTE: The prometheus-operator deployed by this component will only reconcile resources in these namespaces.
 
+== `secrets`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
+
+[source,yaml]
+----
+secrets:
+  my-secret:
+    stringData:
+      foo: bar
+      long: |
+        A long
+        multiline secret
+  object-storage:
+    metadata:
+      namespace: foo-ns
+    stringData:
+      thanos:
+        type: S3
+        config:
+          bucket: thanos
+          endpoint: s3.example.com
+          access_key: '?{vaultkv:${cluster:tenant}/${cluster:name}/s3_access_key}'
+          secret_key: '?{vaultkv:${cluster:tenant}/${cluster:name}/s3_secret_key}'
+----
+
+The `secrets` parameter can be used to create a list of arbitrary secrets.
+The key is used as the name of the secret and the value is transformed into `Secret` resources.
+
+NOTE: When specifying an object as value for a key in `stringData`, the component will render the object as JSON and add it as a string.
+This can be very helpful if you need so specify JSON or YAML configuration through a secret, for example for Thanos object-storage configuration.
+
 == `addons`
 
 [horizontal]

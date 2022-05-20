@@ -82,6 +82,10 @@ local stackForInstance = function(instanceName)
       common+: {
         images: std.mapWithKey(patch_image, super.images),
       } + confWithBase.common,
+      prometheus+: {
+        // We need to explicitly handle enabling thanos, as upstream has a "null" in the field, making standard merge impossible
+        [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
+      },
     } + com.makeMergeable(cm),
   } + com.makeMergeable(overrides);
 
