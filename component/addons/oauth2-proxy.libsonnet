@@ -11,6 +11,10 @@ local defaults = {
     enabled: true,
     host: null,
     annotations: {},
+    tls: {
+      enabled: true,
+      secretName: null,
+    },
   },
 
   proxyEnv: {},
@@ -112,12 +116,15 @@ local defaults = {
             },
           },
         ],
-        tls: [
-          {
-            hosts: [ params.ingress.host ],
-            secretName: ingress.metadata.name + '-tls',
-          },
-        ],
+        tls:
+          if params.ingress.tls.enabled then [
+            {
+              hosts: [ params.ingress.host ],
+              secretName: if params.ingress.tls.secretName == null then ingress.metadata.name + '-tls' else params.ingress.tls.secretName,
+            },
+          ]
+          else
+            [],
       },
     },
   },
