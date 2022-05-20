@@ -87,8 +87,8 @@ secrets:
 The `secrets` parameter can be used to create a list of arbitrary secrets.
 The key is used as the name of the secret and the value is transformed into `Secret` resources.
 
-NOTE: When specifying an object as value for a key in `stringData`, the component will render the object as YAML and add it as a string.
-This can be very helpful if you need so specify YAML configuration through a secret, for example for Thanos object-storage configuration.
+NOTE: When specifying an object as value for a key in `stringData`, the component will render the object as JSON and add it as a string.
+This can be very helpful if you need so specify JSON or YAML configuration through a secret, for example for Thanos object-storage configuration.
 
 == `addons`
 

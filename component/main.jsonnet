@@ -29,7 +29,7 @@ local secrets = std.foldl(
           if std.type(data) == 'string' then
             data
           else
-            std.manifestYamlDoc(data),
+            std.manifestJson(data),
         super.stringData
       ),
     },
