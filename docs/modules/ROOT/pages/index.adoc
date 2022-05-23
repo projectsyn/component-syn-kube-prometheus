@@ -1,5 +1,5 @@
-= kube-prometheus
+= prometheus
 
-kube-prometheus is a Commodore component to manage https://github.com/prometheus-operator/kube-prometheus[kube-prometheus].
+prometheus is a Commodore component to manage Prometheus using https://github.com/prometheus-operator/kube-prometheus[kube-prometheus].
 
 See the xref:references/parameters.adoc[parameters] reference for further details.

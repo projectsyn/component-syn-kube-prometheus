@@ -61,6 +61,7 @@ gen-golden: clean .compile ## Update the reference version for target `golden-di
 	@rm -rf tests/golden/$(instance)
 	@mkdir -p tests/golden/$(instance)
 	@cp -R compiled/. tests/golden/$(instance)/.
+	sleep 3
 
 .PHONY: golden-diff
 golden-diff: commodore_args += -f tests/$(instance).yml

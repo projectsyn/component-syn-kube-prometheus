@@ -1,6 +1,6 @@
 ---
 parameters:
-  syn_kube_prometheus:
+  prometheus:
     kubernetes_version: '1.21'
     instances:
       default-instance:

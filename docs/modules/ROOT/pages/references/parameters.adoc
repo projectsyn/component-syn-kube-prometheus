@@ -1,6 +1,6 @@
 = Parameters
 
-The parent key for all of the following parameters is `syn_kube_prometheus`.
+The parent key for all of the following parameters is `prometheus`.
 
 A shared instance of the following kube-prometheus component can be configured:
 
@@ -107,7 +107,7 @@ addons:
 
 A list of addons to configure the Prometheus stack.
 Upstream addons can be found in the https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/addons[`addons` folder] of the `kube-prometheus` project.
-Addons provided by this component can be found in the https://github.com/projectsyn/component-syn-kube-prometheus/tree/master/component/addons[`component/addons` folder].
+Addons provided by this component can be found in the https://github.com/projectsyn/component-prometheus/tree/master/component/addons[`component/addons` folder].
 
 
 == `base`

@@ -1,7 +1,7 @@
 local kap = import 'lib/kapitan.libjsonnet';
 
 local upstreamAddonsDir = 'kube-prometheus/addons/';
-local localAddonsDir = 'syn-kube-prometheus/component/addons/';
+local localAddonsDir = 'prometheus/component/addons/';
 
 local trimSuffix = function(pat, str)
   if std.endsWith(str, pat) then

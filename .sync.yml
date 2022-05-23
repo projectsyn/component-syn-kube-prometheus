@@ -1,5 +1,5 @@
 :global:
-  componentName: syn-kube-prometheus
+  componentName: prometheus
   feature_goldenTests: true
   testMatrix:
     key: instance
@@ -16,8 +16,8 @@
   makeTarget: test -e instance=${{ matrix.instance }}
 
 docs/antora.yml:
-  name: syn-kube-prometheus
-  title: syn-kube-prometheus
+  name: prometheus
+  title: prometheus
 
 .gitignore:
   additionalEntries:

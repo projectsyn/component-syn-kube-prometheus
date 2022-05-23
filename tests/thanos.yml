@@ -1,6 +1,6 @@
 ---
 parameters:
-  syn_kube_prometheus:
+  prometheus:
 
     secrets:
       thanos-objstore-config:

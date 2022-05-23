@@ -1,8 +1,8 @@
 parameters:
-  syn_kube_prometheus:
+  prometheus:
     # Dependency resolution
     jsonnetfile_parameters:
-      kube_prometheus_version: ${syn_kube_prometheus:_kube_prometheus_version:${syn_kube_prometheus:kubernetes_version}}
+      kube_prometheus_version: ${prometheus:_kube_prometheus_version:${prometheus:kubernetes_version}}
     kubernetes_version: '1.21'
 
     # Map the Kubernetes version to the correct kube-prometheus version
@@ -65,7 +65,7 @@ parameters:
       installCRDs: true
       namespace: syn-prometheus-operator
       common:
-        namespace: ${syn_kube_prometheus:prometheusOperator:namespace}
+        namespace: ${prometheus:prometheusOperator:namespace}
       config:
         name: syn-prometheus-operator
       overrides: {}
