@@ -41,4 +41,4 @@ COMPILE_CMD    ?= $(COMMODORE_CMD) component compile . $(commodore_args)
 JB_CMD         ?= $(DOCKER_CMD) $(DOCKER_ARGS) --entrypoint /usr/local/bin/jb docker.io/projectsyn/commodore:latest install
 
 instance ?= defaults
-test_instances = tests/defaults.yml tests/kubernetes_1.20.yml tests/kubernetes_1.21.yml tests/kubernetes_1.22.yml tests/openshift.yml
+test_instances = tests/defaults.yml tests/kubernetes_1.20.yml tests/kubernetes_1.21.yml tests/kubernetes_1.22.yml tests/openshift.yml tests/thanos.yml
