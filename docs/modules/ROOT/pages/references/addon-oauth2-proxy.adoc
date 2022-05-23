@@ -2,6 +2,8 @@
 
 Adding the `oauth2-proxy` addon will allow you to use the https://github.com/oauth2-proxy/oauth2-proxy[Oauth2 Proxy] to authenticate users using Keycloak or similar Oauth2 providers.
 
+Check the https://oauth2-proxy.github.io/oauth2-proxy/docs/[Oauth2 Proxy docs] for all possible configuration options.
+
 The addon adds the following configuration options under the `INSTANCE.prometheus.config._oauth2Proxy` key:
 
 == `ingress.enabled`

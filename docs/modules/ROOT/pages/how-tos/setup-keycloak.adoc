@@ -70,12 +70,12 @@ prometheus:
                 secretKeyRef:
                   name: oauth2-proxy
                   key: clientSecret
-            proxyArgs:
+            proxyArgs: <7>
               "provider": keycloak-oidc
               "provider-display-name": "Example Account"
-              "client-id": "syn-prometheus-infra" <7>
-              "email-domain": vshn.net <8>
-              "oidc-issuer-url": https://keycloak.example.com/auth/realms/REALM <9>
+              "client-id": "syn-prometheus-infra" <8>
+              "email-domain": vshn.net <9>
+              "oidc-issuer-url": https://keycloak.example.com/auth/realms/REALM <10>
 ----
 <1> The namespace where the prometheus instance is deployed.
 <2> The cookie secret is used to encrypt the cookie.
@@ -86,10 +86,14 @@ Can be generated with `dd if=/dev/urandom bs=1 count=32 | base64`.
 <5> The hostname where the proxy should be exposed.
 Has to match the hostname of the _Valid Redirect URIs_.
 <6> Used to generate the certificate by cert-manager.
-<7> The client id of the client created in the previous step.
-<8> Optional email domain to restrict the users to.
+<7> Check the https://oauth2-proxy.github.io/oauth2-proxy/docs/[Oauth2 Proxy docs] for all possible configuration options.
+<8> The client id of the client created in the previous step.
+<9> Optional email domain to restrict the users to.
 Can be set to `*` to allow all domains.
-<9> The URL of the Keycloak instance.
+<10> The URL of the Keycloak instance.
 Replace `REALM` with the realm name.
+
+NOTE:
+`allowed-group` or `allowed-role` can be used to further restrict the access to prometheus.
 
 . Commit the changes and compile the catalog.
