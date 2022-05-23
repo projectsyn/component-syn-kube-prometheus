@@ -36,7 +36,9 @@ jobs:
           - kubernetes_1.20
           - kubernetes_1.21
           - kubernetes_1.22
+          - multi
           - openshift
+          - thanos
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -55,6 +57,7 @@ jobs:
           - kubernetes_1.20
           - kubernetes_1.21
           - kubernetes_1.22
+          - multi
           - openshift
           - thanos
     defaults:
