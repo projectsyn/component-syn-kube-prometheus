@@ -1,8 +1,8 @@
-apiVersion: policy/v1
-kind: PodDisruptionBudget
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
 metadata:
   annotations:
-    source: https://github.com/projectsyn/component-syn-kube-prometheus
+    source: https://github.com/projectsyn/component-prometheus
   labels:
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/instance: default-instance
@@ -13,7 +13,11 @@ metadata:
   name: prometheus-default-instance
   namespace: syn-prometheus
 spec:
-  minAvailable: 1
+  endpoints:
+    - interval: 30s
+      port: web
+    - interval: 30s
+      port: reloader-web
   selector:
     matchLabels:
       app.kubernetes.io/component: prometheus

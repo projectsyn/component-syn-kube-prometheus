@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    source: https://github.com/projectsyn/component-syn-kube-prometheus
+    source: https://github.com/projectsyn/component-prometheus
   labels:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/part-of: syn

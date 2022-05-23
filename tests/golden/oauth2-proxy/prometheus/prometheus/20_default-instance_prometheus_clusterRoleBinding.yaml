@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    source: https://github.com/projectsyn/component-syn-kube-prometheus
+    source: https://github.com/projectsyn/component-prometheus
   labels:
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/instance: default-instance

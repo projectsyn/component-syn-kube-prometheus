@@ -1,8 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   annotations:
-    source: https://github.com/projectsyn/component-syn-kube-prometheus
+    source: https://github.com/projectsyn/component-prometheus
   labels:
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/instance: default-instance
@@ -10,12 +10,16 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.32.1
-  name: prometheus-default-instance-config
+  name: prometheus-default-instance
   namespace: syn-prometheus
 rules:
   - apiGroups:
       - ''
     resources:
-      - configmaps
+      - nodes/metrics
+    verbs:
+      - get
+  - nonResourceURLs:
+      - /metrics
     verbs:
       - get

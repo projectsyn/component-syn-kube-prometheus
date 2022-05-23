@@ -1,12 +1,12 @@
 ---
 parameters:
-  syn_kube_prometheus:
+  prometheus:
     kubernetes_version: '1.22'
 
     secrets:
       oauth2-proxy:
         metadata:
-          namespace: syn-kube-prometheus
+          namespace: syn-prometheus
         stringData:
           clientSecret: EXAMPLESECRET
           # Must be 16 bytes
