@@ -1,0 +1,95 @@
+= Setup Prometheus with Keycloak
+
+This how-to will help you to setup Prometheus with Keycloak authentication.
+
+== Prerequisites
+
+* A running Keycloak instance
+* A cluster with an ingress controller and this component installed
+* A working Let's Encrypt setup
+
+== Setup
+
+. Login to the Keycloak instances admin console
+. Create a new client using `openid-connect` protocol
+. Configure the client with the following values
++
+[horizontal]
+Access Type:: confidential
+Valid Redirect URIs:: https://prometheus.example.com/oauth2/callback
+
+. Configure the audience claim
++
+Navigate to the `Mappers` tab.
+Create a new mapper with the following values:
+[horizontal]
+Name:: static audience
+Mapper Type:: Audience
+Included Client Audience:: CLIENT_NAME (from the previous step)
+Included Custom Audience:: CLIENT_NAME (from the previous step)
+Add to ID token:: off
+Add to access token:: on
+
+. Copy the client secret
++
+Navigate to the `Credentials` tab.
+Copy the value from the _Secret_ field.
+
+. Add the proxy configuration to your clusters Prometheus configuration
++
+[source,yaml]
+----
+prometheus:
+  addons:
+    - oauth2-proxy
+
+  secrets:
+    oauth2-proxy:
+      metadata:
+        namespace: syn-example-prometheus <1>
+      stringData:
+        cookieSecret: '?{vaultkv:${cluster:tenant}/${cluster:name}/syn-example-prometheus/oauth2_cookie_secret}' <2>
+        clientSecret: '?{vaultkv:${cluster:tenant}/${cluster:name}/syn-example-prometheus/oauth2_client_secret}' <3>
+
+  instances:
+    example: <4>
+      prometheus:
+        enabled: true
+        config:
+          _oauth2Proxy:
+            ingress:
+              host: prometheus.example.com <5>
+              annotations:
+                cert-manager.io/cluster-issuer: letsencrypt-production <6>
+            proxyEnv:
+              OAUTH2_PROXY_COOKIE_SECRET:
+                secretKeyRef:
+                  name: oauth2-proxy
+                  key: cookieSecret
+              OAUTH2_PROXY_CLIENT_SECRET:
+                secretKeyRef:
+                  name: oauth2-proxy
+                  key: clientSecret
+            proxyArgs:
+              "provider": keycloak-oidc
+              "provider-display-name": "Example Account"
+              "client-id": "syn-prometheus-infra" <7>
+              "email-domain": vshn.net <8>
+              "oidc-issuer-url": https://keycloak.example.com/auth/realms/REALM <9>
+----
+<1> The namespace where the prometheus instance is deployed.
+<2> The cookie secret is used to encrypt the cookie.
+Must be 16 or 32 bytes long.
+Can be generated with `dd if=/dev/urandom bs=1 count=32 | base64`.
+<3> The client secret copied from the Keycloak admin console in an earlier step.
+<4> The name of the prometheus instance.
+<5> The hostname where the proxy should be exposed.
+Has to match the hostname of the _Valid Redirect URIs_.
+<6> Used to generate the certificate by cert-manager.
+<7> The client id of the client created in the previous step.
+<8> Optional email domain to restrict the users to.
+Can be set to `*` to allow all domains.
+<9> The URL of the Keycloak instance.
+Replace `REALM` with the realm name.
+
+. Commit the changes and compile the catalog.
