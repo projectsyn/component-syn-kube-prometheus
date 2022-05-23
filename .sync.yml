@@ -8,6 +8,7 @@
       - kubernetes_1.20
       - kubernetes_1.21
       - kubernetes_1.22
+      - multi
       - openshift
       - thanos
 
