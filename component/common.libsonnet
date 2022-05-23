@@ -2,7 +2,7 @@ local kap = import 'lib/kapitan.libjsonnet';
 local inv = kap.inventory();
 local com = import 'lib/commodore.libjsonnet';
 // The hiera parameters for the component
-local params = inv.parameters.syn_kube_prometheus;
+local params = inv.parameters.prometheus;
 
 local global = com.getValueOrDefault(inv.parameters, 'global', {
   registries: {
@@ -12,7 +12,7 @@ local global = com.getValueOrDefault(inv.parameters, 'global', {
   },
 });
 
-local addonImports = import 'compiled/syn-kube-prometheus/addons.libsonnet';
+local addonImports = import 'compiled/prometheus/addons.libsonnet';
 
 local withAddons = function(main, addons)
   std.foldl(
@@ -28,7 +28,7 @@ local commonLabels = {
 };
 
 local commonAnnotations = {
-  source: 'https://github.com/projectsyn/component-syn-kube-prometheus',
+  source: 'https://github.com/projectsyn/component-prometheus',
 };
 
 local commonMetadata = {

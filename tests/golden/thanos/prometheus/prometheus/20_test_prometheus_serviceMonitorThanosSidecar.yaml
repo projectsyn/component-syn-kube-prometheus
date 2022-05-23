@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/component: thanos-sidecar
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 2.29.1
+    prometheus: test
+  name: thanos-sidecar
+  namespace: syn-prometheus
+spec:
+  endpoints:
+    - interval: 30s
+      port: http
+  jobLabel: app.kubernetes.io/component
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: thanos-sidecar
+      prometheus: test

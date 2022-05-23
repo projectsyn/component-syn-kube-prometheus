@@ -4,8 +4,8 @@
 # The name and title can be customized in `.sync.yml` with `'docs/antora.yml'.title`, `'docs/antora.yml'.name`
 #
 
-name: syn-kube-prometheus
-title: syn-kube-prometheus
+name: prometheus
+title: prometheus
 version: master
 start_page: ROOT:index.adoc
 nav:

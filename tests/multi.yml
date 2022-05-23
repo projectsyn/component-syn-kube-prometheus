@@ -1,6 +1,6 @@
 ---
 parameters:
-  syn_kube_prometheus:
+  prometheus:
     instances:
       default-instance:
         prometheus:
