@@ -1,24 +1,18 @@
 apiVersion: monitoring.coreos.com/v1
-kind: Prometheus
+kind: Alertmanager
 metadata:
   annotations:
     source: https://github.com/projectsyn/component-prometheus
   labels:
-    app.kubernetes.io/component: prometheus
-    app.kubernetes.io/instance: default-instance
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/instance: alertmanager-default-instance
     app.kubernetes.io/managed-by: commodore
-    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.32.1
-  name: default-instance
+    app.kubernetes.io/version: 0.23.0
+  name: alertmanager-default-instance
   namespace: syn-prometheus
 spec:
-  alerting:
-    alertmanagers:
-      - apiVersion: v2
-        name: alertmanager-alertmanager-default-instance
-        namespace: syn-prometheus
-        port: web
   containers:
     - args:
         - --custom-sign-in-logo=https://example.com/_images/logo.png
@@ -31,7 +25,7 @@ spec:
         - --reverse-proxy=true
         - --silence-ping-logging=true
         - --skip-provider-button=true
-        - --upstream=http://127.0.0.1:9090
+        - --upstream=http://127.0.0.1:9093
       env:
         - name: OAUTH2_PROXY_CLIENT_SECRET
           valueFrom:
@@ -49,34 +43,28 @@ spec:
         requests:
           cpu: 20m
           memory: 100Mi
-  enableFeatures: []
-  externalLabels: {}
-  image: quay.io/prometheus/prometheus:v2.32.1
+  image: quay.io/prometheus/alertmanager:v0.23.0
   listenLocal: true
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
     labels:
-      app.kubernetes.io/component: prometheus
-      app.kubernetes.io/instance: default-instance
-      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/component: alert-router
+      app.kubernetes.io/instance: alertmanager-default-instance
+      app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.32.1
-  podMonitorNamespaceSelector: {}
-  podMonitorSelector: {}
-  probeNamespaceSelector: {}
-  probeSelector: {}
-  replicas: 2
+      app.kubernetes.io/version: 0.23.0
+  replicas: 3
   resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
     requests:
-      memory: 400Mi
-  ruleNamespaceSelector: {}
-  ruleSelector: {}
+      cpu: 4m
+      memory: 100Mi
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
     runAsUser: 1000
-  serviceAccountName: prometheus-default-instance
-  serviceMonitorNamespaceSelector: {}
-  serviceMonitorSelector: {}
-  version: 2.32.1
+  serviceAccountName: alertmanager-alertmanager-default-instance
+  version: 0.23.0

@@ -17,9 +17,14 @@ local defaults = {
     },
   },
 
+  resources: {
+    requests: {
+      cpu: '20m',
+      memory: '100Mi',
+    },
+  },
   proxyEnv: {},
   proxyArgs: {
-    upstream: 'http://127.0.0.1:9090',
     'http-address': '0.0.0.0:%s' % defaults.proxyPort,
     'silence-ping-logging': true,
     'skip-provider-button': true,
@@ -27,21 +32,35 @@ local defaults = {
   },
 };
 
-{
+local componentSpecificDefaults = {
+  prometheus: {
+    proxyArgs+: {
+      upstream: 'http://127.0.0.1:9090',
+    },
+  },
+  alertmanager: {
+    proxyArgs+: {
+      upstream: 'http://127.0.0.1:9093',
+    },
+  },
+};
+
+local proxyFor = function(component) {
   local config = self,
 
   values+:: {
-    prometheus+: {
+    [component]+: {
       name+: '',
       namespace+: '',
       _oauth2Proxy+: {},
     },
   },
 
-  local params = defaults + config.values.prometheus._oauth2Proxy,
+  local params = defaults + componentSpecificDefaults[component] + config.values[component]._oauth2Proxy,
   local oauthProxy = {
     name: 'oauth2-proxy',
     image: params.image,
+    resources: params.resources,
     args: std.map(
       function(arg) '--%s=%s' % [ arg, params.proxyArgs[arg] ],
       std.objectFields(params.proxyArgs),
@@ -49,8 +68,8 @@ local defaults = {
     env: com.envList(params.proxyEnv),
   },
 
-  prometheus+: {
-    prometheus+: {
+  [component]+: {
+    [component]+: {
       spec+: {
         listenLocal: true,
         containers+: [ oauthProxy ],
@@ -70,11 +89,11 @@ local defaults = {
     authService+: {
       apiVersion: 'v1',
       kind: 'Service',
-      metadata+: config.prometheus.service.metadata {
-        name: config.prometheus.service.metadata.name + '-auth',
+      metadata+: config[component].service.metadata {
+        name: config[component].service.metadata.name + '-auth',
       },
       spec: {
-        selector+: config.prometheus.service.spec.selector,
+        selector+: config[component].service.spec.selector,
         ports+: [
           {
             name: 'web',
@@ -90,8 +109,8 @@ local defaults = {
       apiVersion: 'networking.k8s.io/v1',
       kind: 'Ingress',
       metadata+: {
-        name: 'prometheus-' + config.values.prometheus.name,
-        namespace: config.values.prometheus.namespace,
+        name: '%s-%s' % [ component, config.values[component].name ],
+        namespace: config.values[component].namespace,
         annotations+: params.ingress.annotations,
       },
       spec+: {
@@ -103,7 +122,7 @@ local defaults = {
                 {
                   backend: {
                     service: {
-                      name: config.prometheus.service.metadata.name,
+                      name: config[component].service.metadata.name,
                       port: {
                         number: params.proxyPort,
                       },
@@ -128,4 +147,6 @@ local defaults = {
       },
     },
   },
-}
+};
+
+proxyFor('alertmanager') + proxyFor('prometheus')

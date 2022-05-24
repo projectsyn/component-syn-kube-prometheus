@@ -41,7 +41,9 @@ parameters:
         overrides: {}
       alertmanager:
         enabled: false
-        config: {}
+        config:
+          _oauth2Proxy:
+            image: ${prometheus:images:oauth2Proxy:registry}/${prometheus:images:oauth2Proxy:image}:${prometheus:images:oauth2Proxy:tag}
         overrides: {}
       grafana:
         enabled: false
