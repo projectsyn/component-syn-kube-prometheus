@@ -131,7 +131,6 @@ example::
 ----
 addons:
   - remove-securitycontext
-  - nodeexporter-remove-mountpropagation
   - podsecuritypolicies
 ----
 
