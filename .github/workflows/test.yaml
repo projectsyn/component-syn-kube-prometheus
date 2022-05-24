@@ -38,6 +38,7 @@ jobs:
           - kubernetes_1.22
           - multi
           - openshift
+          - rewrite-registries
           - thanos
     defaults:
       run:
@@ -59,6 +60,7 @@ jobs:
           - kubernetes_1.22
           - multi
           - openshift
+          - rewrite-registries
           - thanos
     defaults:
       run:

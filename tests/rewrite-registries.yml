@@ -1,0 +1,27 @@
+---
+parameters:
+  prometheus:
+
+    registries:
+      docker.io: 'docker-io.proxy.com'
+      quay.io: 'quay-io.proxy.com'
+      k8s.gcr.io: 'k8s-gcr-io.proxy.com'
+
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+        alertmanager:
+          enabled: true
+        grafana:
+          enabled: true
+        nodeExporter:
+          enabled: true
+        blackboxExporter:
+          enabled: true
+        kubernetesControlPlane:
+          enabled: true
+        prometheusAdapter:
+          enabled: true
+        kubeStateMetrics:
+          enabled: true

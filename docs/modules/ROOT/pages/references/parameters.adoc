@@ -32,6 +32,25 @@ kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_facts:ku
 
 The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
 
+== `registries`
+
+[horizontal]
+type:: dictionary
+default:: https://github.com/projectsyn/component-prometheus/blob/master/class/defaults.yml[See class/defaults.yml]
+example::
++
+[source,yaml]
+----
+registries:
+  docker.io: 'docker-io.proxy.com'
+  quay.io: 'quay-io.proxy.com'
+  k8s.gcr.io: 'k8s-gcr-io.proxy.com'
+----
+
+A dictionary of registries to use for the Prometheus components.
+Allows to map upstream images to a custom registry.
+Useful for air gapped clusters.
+
 
 == `images`
 
