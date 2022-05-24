@@ -5,6 +5,11 @@ parameters:
       kube_prometheus_version: ${prometheus:_kube_prometheus_version:${prometheus:kubernetes_version}}
     kubernetes_version: '1.21'
 
+    registries:
+      docker.io: 'docker.io'
+      quay.io: 'quay.io'
+      k8s.gcr.io: 'k8s.gcr.io'
+
     images:
       oauth2Proxy:
         registry: quay.io

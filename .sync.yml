@@ -10,6 +10,7 @@
       - kubernetes_1.22
       - multi
       - openshift
+      - rewrite-registries
       - thanos
 
 .github/workflows/test.yaml:
