@@ -16,7 +16,7 @@ spec:
         paths:
           - backend:
               service:
-                name: alertmanager-alertmanager-default-instance
+                name: alertmanager-alertmanager-default-instance-auth
                 port:
                   number: 4180
             path: /

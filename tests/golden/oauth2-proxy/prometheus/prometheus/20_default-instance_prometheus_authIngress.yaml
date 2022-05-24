@@ -16,7 +16,7 @@ spec:
         paths:
           - backend:
               service:
-                name: prometheus-default-instance
+                name: prometheus-default-instance-auth
                 port:
                   number: 4180
             path: /

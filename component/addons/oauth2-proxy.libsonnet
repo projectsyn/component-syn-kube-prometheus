@@ -122,7 +122,7 @@ local proxyFor = function(component) {
                 {
                   backend: {
                     service: {
-                      name: config[component].service.metadata.name,
+                      name: config[component].authService.metadata.name,
                       port: {
                         number: params.proxyPort,
                       },
