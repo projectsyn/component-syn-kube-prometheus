@@ -1,0 +1,156 @@
+= Deploying Prometheus instances
+
+This component uses https://github.com/prometheus-operator/kube-prometheus[kube-prometheus] to deploy the https://github.com/prometheus-operator/prometheus-operator[Prometheus Operator].
+It uses the Operator to deploy Prometheus and related components.
+Out of the box the component will only deploy the Prometheus Operator and its CRDs.
+
+This how-to will walk you through deploying and configuring one or more Prometheus instances using the Prometheus Operator and this component.
+
+
+== Single Prometheus Deployment
+
+The following configuration will deploy a Prometheus Operator into the default namespace `syn-prometheus-operator` and a Prometheus instance into the namespace `monitoring-infra`.
+
+[source,yaml]
+----
+parameters:
+  prometheus:
+    namespaces:
+      monitoring-infra: {} <1>
+    instances:
+      infra:
+        common:
+          namespace: monitoring-infra
+        prometheus:
+          enabled: true <2>
+----
+<1> Creates a new namespace called `monitoring-infra`
+<2> Deploys a Prometheus instance in the new namespace
+
+
+=== Configuration and Overrides
+
+You can further configure this instance through the `config` and `overrides` keys.
+
+The `config` key allows you to set the `values` map of the `kube-prometheus` library.
+This allows you to do most of the configuration, such as setting the number of replicas or enabling the Thanos sidecar.
+The available `config` parameters and their defaults can be found in the https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/components/prometheus.libsonnet[kube-prometheus library].
+The easiest way to find the allowed parameters is to look at the local `defaults` variable.
+
+If updating the `kube-prometheus` library arguments through the `config` key isn't enough, you also have the option to override any of the generated manifest using the `overrides` key.
+The provided object will be merged with the output of the `kube-prometheus` library.
+You can again look at the https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/components/prometheus.libsonnet[kube-prometheus library], to see what's generated and how it can be patched.
+
+[WARNING]
+Overriding manifests can lead to invalid configurations in other components.
+
+
+[source,yaml]
+----
+parameters:
+  prometheus:
+    namespaces:
+      monitoring-infra: {}
+    instances:
+      infra:
+        common:
+          namespace: monitoring-infra
+        prometheus:
+          enabled: true
+          config:
+            replicas: 1 <1>
+          overrides:
+            clusterRole: <2>
+              rules:
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['get']
+----
+<1> Deploy Prometheus with only a single replica
+<2> Give the Prometheus instance special privileges to get all pods
+
+INFO: This approach of `config` and `overrides` is used in the same way for all components, not just for Prometheus instances.
+
+== Multiple Prometheus Deployments
+
+This component isn't multi-instance capable.
+That means it isn't possible to instantiate this component.
+This feature was left out as it's rarely advisable to deploy multiple Prometheus operators on the same cluster.
+
+It's however still possible to deploy multiple Prometheus instances through this component.
+The component will deploy a single Prometheus operator and one Prometheus instance for each entry in `instances`.
+
+
+For example the following configuration will deploy an additional Prometheus instance called `apps` in namespace `monitoring-apps`.
+It also has a single replica but no additional cluster permissions.
+
+[source,yaml]
+----
+parameters:
+  prometheus:
+    namespaces:
+      monitoring-infra: {}
+      monitoring-apps: {}
+    instances:
+      infra:
+        common:
+          namespace: monitoring-infra
+        prometheus:
+          enabled: true
+          config:
+            replicas: 1
+          overrides:
+            clusterRole:
+              rules:
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['get']
+      apps:
+        common:
+          namespace: monitoring-apps
+        prometheus:
+          enabled: true
+          config:
+            replicas: 1
+----
+
+
+=== Base Configuration
+
+With this approach we can deploy an arbitrary number of Prometheus instances, but configuring them can become tedious.
+Most of the time all Prometheus instances on a cluster share a common configuration base.
+
+For this we can use the `base` key.
+The base configuration is shared by all instances.
+It can be overridden by the instance-specific configuration.
+
+
+With this we can for example simplify the previous configuration by moving enabling Prometheus and setting the number of replicas to the base configuration.
+
+[source,yaml]
+----
+parameters:
+  prometheus:
+    namespaces:
+      monitoring-infra: {}
+      monitoring-apps: {}
+    base:
+      prometheus:
+        enabled: true
+        config:
+          replicas: 1
+    instances:
+      infra:
+        common:
+          namespace: monitoring-infra
+        prometheus:
+          overrides:
+            clusterRole:
+              rules:
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['get']
+      apps:
+        common:
+          namespace: monitoring-apps
+----

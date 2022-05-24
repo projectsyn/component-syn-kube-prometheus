@@ -5,4 +5,5 @@
 ** xref:references/addon-oauth2-proxy.adoc[OAuth2 Proxy]
 
 .How-Tos
+* xref:how-tos/prometheus.adoc[Deploy Prometheus]
 * xref:how-tos/setup-keycloak.adoc[Setup with Keycloak]
