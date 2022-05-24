@@ -35,7 +35,7 @@ Add to access token:: on
 Navigate to the `Credentials` tab.
 Copy the value from the _Secret_ field.
 
-. Add the proxy configuration to your clusters Prometheus configuration
+. Add the proxy configuration to your cluster's Prometheus configuration
 +
 [source,yaml]
 ----
@@ -77,12 +77,12 @@ prometheus:
               "email-domain": vshn.net <9>
               "oidc-issuer-url": https://keycloak.example.com/auth/realms/REALM <10>
 ----
-<1> The namespace where the prometheus instance is deployed.
+<1> The namespace where the Prometheus instance is deployed.
 <2> The cookie secret is used to encrypt the cookie.
 Must be 16 or 32 bytes long.
 Can be generated with `dd if=/dev/urandom bs=1 count=32 | base64`.
 <3> The client secret copied from the Keycloak admin console in an earlier step.
-<4> The name of the prometheus instance.
+<4> The name of the Prometheus instance.
 <5> The hostname where the proxy should be exposed.
 Has to match the hostname of the _Valid Redirect URIs_.
 <6> Used to generate the certificate by cert-manager.
