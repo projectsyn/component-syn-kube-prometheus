@@ -18,6 +18,9 @@ This how-to will help you to setup Prometheus with Keycloak authentication.
 Access Type:: confidential
 Valid Redirect URIs:: https://prometheus.example.com/oauth2/callback
 
+NOTE:
+If using Alertmanager, you also need to add the following redirect uri: https://alertmanager.example.com/oauth2/callback.
+
 . Configure the audience claim
 +
 Navigate to the `Mappers` tab.
@@ -58,7 +61,7 @@ prometheus:
       prometheus:
         enabled: true
         config:
-          _oauth2Proxy:
+          _oauth2Proxy: &oauth2ProxyConfig
             ingress:
               host: prometheus.example.com <5>
               annotations:
@@ -78,6 +81,16 @@ prometheus:
               "client-id": "syn-prometheus-infra" <8>
               "email-domain": vshn.net <9>
               "oidc-issuer-url": https://keycloak.example.com/auth/realms/REALM <10>
+
+      alertmanager: <11>
+        enabled: true
+        config:
+          _oauth2Proxy:
+            <<: *oauth2ProxyConfig <12>
+            ingress:
+              host: alertmanager.example.com
+              annotations:
+                cert-manager.io/cluster-issuer: letsencrypt-production
 ----
 <1> The namespace where the Prometheus instance is deployed.
 <2> The cookie secret is used to encrypt the cookie.
@@ -94,6 +107,8 @@ Has to match the hostname of the _Valid Redirect URIs_.
 Can be set to `*` to allow all domains.
 <10> The URL of the Keycloak instance.
 Replace `REALM` with the realm name.
+<11> Optional Alertmanager configuration if using Alertmanager.
+<12> References a copy of the `_oauth2Proxy` configuration.
 
 NOTE:
 `allowed-group` or `allowed-role` can be used to further restrict the access to prometheus.
