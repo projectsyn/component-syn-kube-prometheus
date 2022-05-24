@@ -17,6 +17,7 @@ Multiple instances of the following components can be configured:
 * prometheus_adapter
 * kube_state_metrics
 
+
 == `kubernetes_version`
 
 [horizontal]
@@ -30,6 +31,16 @@ kubernetes_version: '${dynamic_facts:kubernetesVersion:major}.${dynamic_facts:ku
 ----
 
 The Kubernetes version of the cluster is used to consume the corresponding kube-prometheus version.
+
+
+== `images`
+
+[horizontal]
+type:: dictionary
+default:: https://github.com/projectsyn/component-prometheus/blob/master/class/defaults.yml[See class/defaults.yml]
+
+A dictionary of images used by this component.
+Doesn't include the `kube-prometheus` upstream images.
 
 
 == `namespaces`

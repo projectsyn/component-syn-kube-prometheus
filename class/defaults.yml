@@ -5,6 +5,12 @@ parameters:
       kube_prometheus_version: ${prometheus:_kube_prometheus_version:${prometheus:kubernetes_version}}
     kubernetes_version: '1.21'
 
+    images:
+      oauth2Proxy:
+        registry: quay.io
+        image: oauth2-proxy/oauth2-proxy
+        tag: v7.2.1
+
     # Map the Kubernetes version to the correct kube-prometheus version
     =_kube_prometheus_version:
       # renovate: branch=release-0.8
@@ -29,7 +35,9 @@ parameters:
         namespace: syn-prometheus
       prometheus:
         enabled: false
-        config: {}
+        config:
+          _oauth2Proxy:
+            image: ${prometheus:images:oauth2Proxy:registry}/${prometheus:images:oauth2Proxy:image}:${prometheus:images:oauth2Proxy:tag}
         overrides: {}
       alertmanager:
         enabled: false

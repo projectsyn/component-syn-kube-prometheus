@@ -3,7 +3,7 @@ local com = import 'lib/commodore.libjsonnet';
 local defaults = {
   local defaults = self,
 
-  image: 'quay.io/oauth2-proxy/oauth2-proxy:v7.2.1',
+  image: 'quay.io/oauth2-proxy/oauth2-proxy:latest',
 
   proxyPort: 4180,
 
