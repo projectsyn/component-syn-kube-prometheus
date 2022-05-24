@@ -53,6 +53,8 @@ prometheus:
 
   instances:
     example: <4>
+      common:
+        namespace: syn-example-prometheus <1>
       prometheus:
         enabled: true
         config:
