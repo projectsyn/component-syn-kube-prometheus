@@ -1,0 +1,57 @@
+---
+parameters:
+  prometheus:
+    kubernetes_version: '1.22'
+
+    secrets:
+      oauth2-proxy:
+        metadata:
+          namespace: syn-prometheus
+        stringData:
+          clientSecret: EXAMPLESECRET
+          # Must be 16 bytes
+          cookieSecret: EXAMPLESECRETEXA
+
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+          config:
+            _oauth2Proxy: &oauth2ProxyConfig
+              ingress:
+                host: prometheus.example.com
+                annotations: &oauth2ProxyIngressAnnotations
+                  cert-manager.io/cluster-issuer: letsencrypt-production
+              proxyEnv:
+                OAUTH2_PROXY_COOKIE_SECRET:
+                  secretKeyRef:
+                    name: oauth2-proxy
+                    key: cookieSecret
+                OAUTH2_PROXY_CLIENT_SECRET:
+                  secretKeyRef:
+                    name: oauth2-proxy
+                    key: clientSecret
+              proxyArgs:
+                "email-domain": example.com
+                "provider": keycloak-oidc
+                "provider-display-name": "Example Account"
+                "oidc-issuer-url": https://example.com/auth/realms/example-realm
+                "custom-sign-in-logo": https://example.com/_images/logo.png
+                "real-client-ip-header": X-Forwarded-For
+        alertmanager:
+          enabled: true
+          config:
+            _oauth2Proxy:
+              <<: *oauth2ProxyConfig
+              ingress:
+                host: alertmanager.example.com
+                annotations: *oauth2ProxyIngressAnnotations
+
+    addons:
+      - oauth2-proxy
+
+    namespaces:
+      default-instance: {}
+
+    prometheusOperator:
+      enabled: false

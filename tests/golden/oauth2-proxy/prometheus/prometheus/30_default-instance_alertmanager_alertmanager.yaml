@@ -1,0 +1,70 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/instance: alertmanager-default-instance
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.23.0
+  name: alertmanager-default-instance
+  namespace: syn-prometheus
+spec:
+  containers:
+    - args:
+        - --custom-sign-in-logo=https://example.com/_images/logo.png
+        - --email-domain=example.com
+        - --http-address=0.0.0.0:4180
+        - --oidc-issuer-url=https://example.com/auth/realms/example-realm
+        - --provider=keycloak-oidc
+        - --provider-display-name=Example Account
+        - --real-client-ip-header=X-Forwarded-For
+        - --reverse-proxy=true
+        - --silence-ping-logging=true
+        - --skip-provider-button=true
+        - --upstream=http://127.0.0.1:9093
+      env:
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: clientSecret
+              name: oauth2-proxy
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: cookieSecret
+              name: oauth2-proxy
+      image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.1
+      name: oauth2-proxy
+      resources:
+        requests:
+          cpu: 20m
+          memory: 100Mi
+  image: quay.io/prometheus/alertmanager:v0.23.0
+  listenLocal: true
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: alert-router
+      app.kubernetes.io/instance: alertmanager-default-instance
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 0.23.0
+  replicas: 3
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 4m
+      memory: 100Mi
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: alertmanager-alertmanager-default-instance
+  version: 0.23.0

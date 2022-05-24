@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+  name: prometheus-default-instance
+  namespace: syn-prometheus
+spec:
+  rules:
+    - host: prometheus.example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: prometheus-default-instance-auth
+                port:
+                  number: 4180
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - prometheus.example.com
+      secretName: prometheus-default-instance-tls
