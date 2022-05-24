@@ -1,6 +1,7 @@
 = Deploying Prometheus instances
 
-This component uses https://github.com/prometheus-operator/kube-prometheus[kube-prometheus] to deploy the https://github.com/prometheus-operator/prometheus-operator[Prometheus Operator] and to use it to deploy Prometheus and related components.
+This component uses https://github.com/prometheus-operator/kube-prometheus[kube-prometheus] to deploy the https://github.com/prometheus-operator/prometheus-operator[Prometheus Operator].
+It uses the Operator to deploy Prometheus and related components.
 Out of the box the component will only deploy the Prometheus Operator and its CRDs.
 
 This how-to will walk you through deploying and configuring one or more Prometheus instances using the Prometheus Operator and this component.
@@ -31,7 +32,7 @@ parameters:
 
 You can further configure this instance through the `config` and `overrides` keys.
 
-The `config` key allows you to set the `values` map for the `kube-prometheus` library.
+The `config` key allows you to set the `values` map of the `kube-prometheus` library.
 This allows you to do most of the configuration, such as setting the number of replicas or enabling the Thanos sidecar.
 The available `config` parameters and their defaults can be found in the https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/components/prometheus.libsonnet[kube-prometheus library].
 The easiest way to find the allowed parameters is to look at the local `defaults` variable.
@@ -39,6 +40,10 @@ The easiest way to find the allowed parameters is to look at the local `defaults
 If updating the `kube-prometheus` library arguments through the `config` key isn't enough, you also have the option to override any of the generated manifest using the `overrides` key.
 The provided object will be merged with the output of the `kube-prometheus` library.
 You can again look at the https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/components/prometheus.libsonnet[kube-prometheus library], to see what's generated and how it can be patched.
+
+[WARNING]
+Overriding manifests can lead to invalid configurations in other components.
+
 
 [source,yaml]
 ----
