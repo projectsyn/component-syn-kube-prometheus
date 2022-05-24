@@ -4,6 +4,8 @@ Adding the `oauth2-proxy` addon will allow you to use the https://github.com/oau
 
 Check the https://oauth2-proxy.github.io/oauth2-proxy/docs/[Oauth2 Proxy docs] for all possible configuration options.
 
+For cluster internal authentication a https://github.com/brancz/kube-rbac-proxy[brancz/kube-rbac-proxy] sidecar is also deployed.
+
 The addon adds the following configuration options under the `INSTANCE.prometheus.config._oauth2Proxy` and `INSTANCE.alertmanager.config._oauth2Proxy` key:
 
 == `ingress.enabled`

@@ -14,8 +14,12 @@ metadata:
   namespace: syn-prometheus
 spec:
   endpoints:
-    - interval: 30s
-      port: web
+    - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      path: /metrics
+      port: rbac
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true
     - interval: 30s
       port: reloader-web
   selector:

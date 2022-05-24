@@ -46,9 +46,30 @@ spec:
       image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.1
       name: oauth2-proxy
       resources:
+        limits:
+          cpu: 500m
+          memory: 128Mi
         requests:
-          cpu: 20m
-          memory: 100Mi
+          cpu: 5m
+          memory: 64Mi
+    - args:
+        - --logtostderr=true
+        - --secure-listen-address=0.0.0.0:4181
+        - --upstream=http://127.0.0.1:9090
+        - --v=0
+      image: quay.io/brancz/kube-rbac-proxy:v0.11.0
+      name: kube-rbac-proxy
+      ports:
+        - containerPort: 4181
+          name: rbac
+          protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 128Mi
+        requests:
+          cpu: 5m
+          memory: 64Mi
   enableFeatures: []
   externalLabels: {}
   image: quay.io/prometheus/prometheus:v2.32.1
