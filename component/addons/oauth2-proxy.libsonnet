@@ -262,4 +262,39 @@ local proxyFor = function(component) {
   },
 };
 
-proxyFor('alertmanager') + proxyFor('prometheus')
+proxyFor('alertmanager') + proxyFor('prometheus') + {
+  local config = self,
+
+  values+:: {
+    prometheus+: {
+      alerting+: {},
+    },
+  },
+
+  prometheus+: {
+    prometheus+: {
+      spec+: {
+        alerting+: {
+          [if config.values.prometheus.alerting != {} then 'alertmanagers']: [ {
+            namespace: config.values.alertmanager.namespace,
+            name: 'alertmanager-' + config.values.alertmanager.name,
+            port: 'rbac',
+            apiVersion: 'v2',
+            scheme: 'https',
+            bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+            tlsConfig: {
+              insecureSkipVerify: true,
+            },
+          } ],
+        },
+      },
+    },
+
+    clusterRole+: {
+      rules+: [ {
+        nonResourceURLs: [ '/api/v2/alerts' ],
+        verbs: [ '*' ],
+      } ],
+    },
+  },
+}

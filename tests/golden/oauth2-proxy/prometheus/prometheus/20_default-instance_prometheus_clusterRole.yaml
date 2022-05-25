@@ -23,3 +23,7 @@ rules:
       - /metrics
     verbs:
       - get
+  - nonResourceURLs:
+      - /api/v2/alerts
+    verbs:
+      - '*'
