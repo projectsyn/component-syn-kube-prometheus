@@ -280,6 +280,7 @@ proxyFor('alertmanager') + proxyFor('prometheus') + {
             name: 'alertmanager-' + config.values.alertmanager.name,
             port: 'rbac',
             apiVersion: 'v2',
+            scheme: 'https',
             bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
             tlsConfig: {
               insecureSkipVerify: true,
@@ -287,6 +288,13 @@ proxyFor('alertmanager') + proxyFor('prometheus') + {
           } ],
         },
       },
+    },
+
+    clusterRole+: {
+      rules+: [ {
+        nonResourceURLs: [ '/api/v2/alerts' ],
+        verbs: [ '*' ],
+      } ],
     },
   },
 }

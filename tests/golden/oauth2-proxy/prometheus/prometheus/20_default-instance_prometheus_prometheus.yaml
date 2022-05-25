@@ -20,6 +20,7 @@ spec:
         name: alertmanager-alertmanager-default-instance
         namespace: syn-prometheus
         port: rbac
+        scheme: https
         tlsConfig:
           insecureSkipVerify: true
   containers:
