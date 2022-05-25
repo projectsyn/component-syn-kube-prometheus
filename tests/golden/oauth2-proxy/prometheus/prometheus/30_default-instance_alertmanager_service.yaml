@@ -20,6 +20,9 @@ spec:
     - name: reloader-web
       port: 8080
       targetPort: reloader-web
+    - name: rbac
+      port: 4181
+      targetPort: 4181
   selector:
     app.kubernetes.io/component: alert-router
     app.kubernetes.io/instance: alertmanager-default-instance

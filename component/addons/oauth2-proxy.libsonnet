@@ -5,7 +5,8 @@ local defaults = {
 
   image: 'quay.io/oauth2-proxy/oauth2-proxy:latest',
 
-  proxyPort: 4180,
+  oauth2ProxyPort: 4180,
+  rbacProxyPort: 4181,
 
   ingress: {
     enabled: true,
@@ -18,14 +19,18 @@ local defaults = {
   },
 
   resources: {
+    limits: {
+      cpu: '500m',
+      memory: '128Mi',
+    },
     requests: {
-      cpu: '20m',
-      memory: '100Mi',
+      cpu: '5m',
+      memory: '64Mi',
     },
   },
   proxyEnv: {},
   proxyArgs: {
-    'http-address': '0.0.0.0:%s' % defaults.proxyPort,
+    'http-address': '0.0.0.0:%s' % defaults.oauth2ProxyPort,
     'silence-ping-logging': true,
     'skip-provider-button': true,
     'reverse-proxy': true,
@@ -45,10 +50,21 @@ local componentSpecificDefaults = {
   },
 };
 
+local formatArgs = function(args)
+  std.map(
+    function(arg) '--%s=%s' % [ arg, args[arg] ],
+    std.objectFields(args),
+  );
+
 local proxyFor = function(component) {
   local config = self,
 
   values+:: {
+    common+: {
+      images+: {
+        kubeRbacProxy+: '',
+      },
+    },
     [component]+: {
       name+: '',
       namespace+: '',
@@ -61,18 +77,36 @@ local proxyFor = function(component) {
     name: 'oauth2-proxy',
     image: params.image,
     resources: params.resources,
-    args: std.map(
-      function(arg) '--%s=%s' % [ arg, params.proxyArgs[arg] ],
-      std.objectFields(params.proxyArgs),
-    ),
+    args: formatArgs(params.proxyArgs),
     env: com.envList(params.proxyEnv),
+  },
+
+  local rbacProxy = {
+    args: formatArgs(componentSpecificDefaults[component].proxyArgs {
+      'secure-listen-address': '0.0.0.0:%s' % params.rbacProxyPort,
+      logtostderr: true,
+      v: 0,
+    }),
+    image: config.values.common.images.kubeRbacProxy,
+    name: 'kube-rbac-proxy',
+    ports: [
+      {
+        containerPort: params.rbacProxyPort,
+        name: 'rbac',
+        protocol: 'TCP',
+      },
+    ],
+    resources: params.resources,
   },
 
   [component]+: {
     [component]+: {
+      metadata+: {
+        labels+: {},
+      },
       spec+: {
         listenLocal: true,
-        containers+: [ oauthProxy ],
+        containers+: [ oauthProxy, rbacProxy ],
       },
     },
 
@@ -83,6 +117,85 @@ local proxyFor = function(component) {
       spec+: {
         selector+: {
         },
+        ports+: [
+          {
+            name: 'rbac',
+            port: params.rbacProxyPort,
+            targetPort: params.rbacProxyPort,
+          },
+        ],
+      },
+    },
+
+    local serviceAccountName = '%s-%s' % [ component, config.values[component].name ],
+    local clusterRoleProxyName = '%s-proxy' % serviceAccountName,
+
+    clusterRoleProxy: {
+      apiVersion: 'rbac.authorization.k8s.io/v1',
+      kind: 'ClusterRole',
+      metadata: {
+        labels: config[component][component].metadata.labels,
+        name: clusterRoleProxyName,
+      },
+      rules: [
+        {
+          apiGroups: [
+            'authentication.k8s.io',
+          ],
+          resources: [
+            'tokenreviews',
+          ],
+          verbs: [
+            'create',
+          ],
+        },
+        {
+          apiGroups: [
+            'authorization.k8s.io',
+          ],
+          resources: [
+            'subjectaccessreviews',
+          ],
+          verbs: [
+            'create',
+          ],
+        },
+      ],
+    },
+
+    clusterRoleBindingProxy: {
+      apiVersion: 'rbac.authorization.k8s.io/v1',
+      kind: 'ClusterRoleBinding',
+      metadata: {
+        labels: config[component][component].metadata.labels,
+        name: clusterRoleProxyName,
+      },
+      roleRef: {
+        apiGroup: 'rbac.authorization.k8s.io',
+        kind: 'ClusterRole',
+        name: clusterRoleProxyName,
+      },
+      subjects: [ {
+        kind: 'ServiceAccount',
+        name: serviceAccountName,
+        namespace: config.values[component].namespace,
+      } ],
+    },
+
+    serviceMonitor+: {
+      spec+: {
+        endpoints: [
+          {
+            bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+            path: '/metrics',
+            port: 'rbac',
+            scheme: 'https',
+            tlsConfig: {
+              insecureSkipVerify: true,
+            },
+          },
+          { port: 'reloader-web', interval: '30s' },
+        ],
       },
     },
 
@@ -97,8 +210,8 @@ local proxyFor = function(component) {
         ports+: [
           {
             name: 'web',
-            port: params.proxyPort,
-            targetPort: params.proxyPort,
+            port: params.oauth2ProxyPort,
+            targetPort: params.oauth2ProxyPort,
           },
         ],
       },
@@ -124,7 +237,7 @@ local proxyFor = function(component) {
                     service: {
                       name: config[component].authService.metadata.name,
                       port: {
-                        number: params.proxyPort,
+                        number: params.oauth2ProxyPort,
                       },
                     },
                   },

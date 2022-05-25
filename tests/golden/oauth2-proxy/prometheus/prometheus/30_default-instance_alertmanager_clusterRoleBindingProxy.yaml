@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/instance: alertmanager-default-instance
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.23.0
+  name: alertmanager-alertmanager-default-instance-proxy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: alertmanager-alertmanager-default-instance-proxy
+subjects:
+  - kind: ServiceAccount
+    name: alertmanager-alertmanager-default-instance
+    namespace: syn-prometheus
