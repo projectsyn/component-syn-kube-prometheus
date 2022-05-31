@@ -5,6 +5,7 @@
   kubernetesControlPlane+: {
     serviceMonitorKubeScheduler+: {
       spec+: {
+        jobLabel: 'prometheus',
         namespaceSelector: {
           matchNames: [ 'openshift-kube-scheduler' ],
         },
@@ -16,6 +17,7 @@
 
     serviceMonitorKubeControllerManager+: {
       spec+: {
+        jobLabel: 'prometheus',
         namespaceSelector: {
           matchNames: [ 'openshift-kube-controller-manager' ],
         },
@@ -27,6 +29,7 @@
 
     serviceMonitorCoreDNS+: {
       spec+: {
+        jobLabel:: null,
         namespaceSelector: {
           matchNames: [ 'openshift-dns' ],
         },

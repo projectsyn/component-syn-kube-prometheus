@@ -54,7 +54,7 @@ spec:
       scheme: https
       tlsConfig:
         insecureSkipVerify: true
-  jobLabel: app.kubernetes.io/name
+  jobLabel: prometheus
   namespaceSelector:
     matchNames:
       - openshift-kube-controller-manager

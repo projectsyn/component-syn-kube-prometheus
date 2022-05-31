@@ -19,7 +19,6 @@ spec:
           sourceLabels:
             - __name__
       port: metrics
-  jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
       - openshift-dns
