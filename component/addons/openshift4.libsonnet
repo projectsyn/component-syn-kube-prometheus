@@ -1,6 +1,10 @@
 // This addon changes openshift specific paths/namespaces/services.
 // The `remove-securitycontext` addon is also needed for running on openshift.
 
+local kubeSchedulerNamespace = 'openshift-kube-scheduler';
+local kubeControllerManagerNamespace = 'openshift-kube-controller-manager';
+local kubeDNSNamespace = 'openshift-dns';
+
 local patchPortName = function(spec)
   spec {
     endpoints: [
@@ -12,12 +16,36 @@ local patchPortName = function(spec)
   };
 
 {
+  values+:: {
+    prometheus+: {
+      namespaces+: [ kubeSchedulerNamespace, kubeControllerManagerNamespace, kubeDNSNamespace ],
+    },
+  },
+
+  kubernetesControlPlane+: {
+    serviceMonitorKubeScheduler+: {
+      spec+: {
+        endpoints+: [],
+      },
+    },
+
+    serviceMonitorKubeControllerManager+: {
+      spec+: {
+        endpoints+: [],
+      },
+    },
+  },
+}
++
+{
+  local config = self,
+
   kubernetesControlPlane+: {
     serviceMonitorKubeScheduler+: {
       spec+: patchPortName(super.spec) {
         jobLabel: 'prometheus',
         namespaceSelector: {
-          matchNames: [ 'openshift-kube-scheduler' ],
+          matchNames: [ kubeSchedulerNamespace ],
         },
         selector: {
           matchLabels: { prometheus: 'kube-scheduler' },
@@ -29,7 +57,7 @@ local patchPortName = function(spec)
       spec+: patchPortName(super.spec) {
         jobLabel: 'prometheus',
         namespaceSelector: {
-          matchNames: [ 'openshift-kube-controller-manager' ],
+          matchNames: [ kubeControllerManagerNamespace ],
         },
         selector: {
           matchLabels: { prometheus: 'kube-controller-manager' },
@@ -41,7 +69,7 @@ local patchPortName = function(spec)
       spec+: {
         jobLabel:: null,
         namespaceSelector: {
-          matchNames: [ 'openshift-dns' ],
+          matchNames: [ kubeDNSNamespace ],
         },
       },
     },
