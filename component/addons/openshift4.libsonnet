@@ -1,5 +1,7 @@
-// This addon changes openshift specific paths/namespaces/services.
-// The `remove-securitycontext` addon is also needed for running on openshift.
+// This addon allows this component to be deployed on OpenShift clusters.
+// It:
+// - patches the upstream ServiceMonitors to work with OpenShift.
+// - adds the `remove-securitycontext` addon to remove the security context from deployments.
 
 local kubeSchedulerNamespace = 'openshift-kube-scheduler';
 local kubeControllerManagerNamespace = 'openshift-kube-controller-manager';
@@ -15,6 +17,8 @@ local patchPortName = function(spec)
     ],
   };
 
+(import './remove-securitycontext.libsonnet')
++
 {
   values+:: {
     prometheus+: {

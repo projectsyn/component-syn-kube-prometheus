@@ -23,7 +23,6 @@ parameters:
           enabled: true
 
     addons:
-      - remove-securitycontext
       - openshift4
 
     namespaces:
