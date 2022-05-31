@@ -18,7 +18,11 @@ local patchPortName = function(spec)
 {
   values+:: {
     prometheus+: {
-      namespaces+: [ kubeSchedulerNamespace, kubeControllerManagerNamespace, kubeDNSNamespace ],
+      namespaces+: [
+        kubeSchedulerNamespace,
+        kubeControllerManagerNamespace,
+        kubeDNSNamespace,
+      ],
     },
   },
 
@@ -30,6 +34,12 @@ local patchPortName = function(spec)
     },
 
     serviceMonitorKubeControllerManager+: {
+      spec+: {
+        endpoints+: [],
+      },
+    },
+
+    serviceMonitorCoreDNS+: {
       spec+: {
         endpoints+: [],
       },
@@ -67,10 +77,21 @@ local patchPortName = function(spec)
 
     serviceMonitorCoreDNS+: {
       spec+: {
+        endpoints: [
+          ep {
+            scheme: 'https',
+            tlsConfig: {
+              insecureSkipVerify: true,
+            },
+          }
+          for ep in super.endpoints
+        ],
+
         jobLabel:: null,
         namespaceSelector: {
           matchNames: [ kubeDNSNamespace ],
         },
+        selector: {},
       },
     },
   },
