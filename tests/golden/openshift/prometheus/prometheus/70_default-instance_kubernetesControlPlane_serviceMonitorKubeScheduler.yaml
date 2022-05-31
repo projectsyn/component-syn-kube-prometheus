@@ -20,7 +20,7 @@ spec:
   jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
-      - kube-system
+      - openshift-kube-scheduler
   selector:
     matchLabels:
-      app.kubernetes.io/name: kube-scheduler
+      prometheus: kube-scheduler

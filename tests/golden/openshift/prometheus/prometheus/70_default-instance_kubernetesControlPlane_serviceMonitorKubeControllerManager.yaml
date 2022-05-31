@@ -57,7 +57,7 @@ spec:
   jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
-      - kube-system
+      - openshift-kube-controller-manager
   selector:
     matchLabels:
-      app.kubernetes.io/name: kube-controller-manager
+      prometheus: kube-controller-manager

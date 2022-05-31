@@ -24,6 +24,7 @@ parameters:
 
     addons:
       - remove-securitycontext
+      - openshift4
 
     namespaces:
       default-instance: {}

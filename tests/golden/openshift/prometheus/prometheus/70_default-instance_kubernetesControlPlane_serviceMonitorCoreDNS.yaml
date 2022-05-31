@@ -22,7 +22,7 @@ spec:
   jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
-      - kube-system
+      - openshift-dns
   selector:
     matchLabels:
       k8s-app: kube-dns
