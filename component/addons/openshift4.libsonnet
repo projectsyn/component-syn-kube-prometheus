@@ -1,10 +1,20 @@
 // This addon changes openshift specific paths/namespaces/services.
 // The `remove-securitycontext` addon is also needed for running on openshift.
 
+local patchPortName = function(spec)
+  spec {
+    endpoints: [
+      ep {
+        port: 'https',
+      }
+      for ep in super.endpoints
+    ],
+  };
+
 {
   kubernetesControlPlane+: {
     serviceMonitorKubeScheduler+: {
-      spec+: {
+      spec+: patchPortName(super.spec) {
         jobLabel: 'prometheus',
         namespaceSelector: {
           matchNames: [ 'openshift-kube-scheduler' ],
@@ -16,7 +26,7 @@
     },
 
     serviceMonitorKubeControllerManager+: {
-      spec+: {
+      spec+: patchPortName(super.spec) {
         jobLabel: 'prometheus',
         namespaceSelector: {
           matchNames: [ 'openshift-kube-controller-manager' ],
