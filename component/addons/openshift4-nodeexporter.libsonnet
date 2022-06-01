@@ -3,6 +3,14 @@ local kube = import 'lib/kube.libjsonnet';
 
 {
   local config = self,
+
+  values+:: {
+    nodeExporter+: {
+      port: 9101,  // Change default port as OCP's monitoring stack already uses 9100
+    },
+  },
+
+
   local sccName = '%s-%s' % [ config.values.common.namespace, config.values.nodeExporter.name ],
   nodeExporter+: {
     securityContextConstraints: {
