@@ -50,14 +50,14 @@ spec:
           regex: etcd_(debugging|disk|request|server).*
           sourceLabels:
             - __name__
-      port: https-metrics
+      port: https
       scheme: https
       tlsConfig:
         insecureSkipVerify: true
-  jobLabel: app.kubernetes.io/name
+  jobLabel: prometheus
   namespaceSelector:
     matchNames:
-      - kube-system
+      - openshift-kube-controller-manager
   selector:
     matchLabels:
-      app.kubernetes.io/name: kube-controller-manager
+      prometheus: kube-controller-manager

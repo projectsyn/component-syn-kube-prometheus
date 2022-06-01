@@ -19,10 +19,10 @@ spec:
           sourceLabels:
             - __name__
       port: metrics
-  jobLabel: app.kubernetes.io/name
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true
   namespaceSelector:
     matchNames:
-      - kube-system
-  selector:
-    matchLabels:
-      k8s-app: kube-dns
+      - openshift-dns
+  selector: {}
