@@ -1,0 +1,43 @@
+= Using this Component on OpenShift
+
+You can use this component on OpenShift.
+However there are a few things to consider to do so.
+
+First and foremost, OpenShift4 comes with it's own Prometheus Operator.
+This means that the Prometheus Operator CRDs are already present.
+You need to first make sure that the installed CRDs are compatible with the operator version you are about to install and disable CRD installation in this component
+
+Next you need to enable the `openshift4` addon.
+It comes with changes to multiple components which are necessary to properly run on OpenShift4.
+
+Finally if you deploy your own node exporter, you will need to remove the default node selector from the namespace in which it will be deployed.
+Otherwise it won't be schedulable on master or infrastructure nodes.
+
+.Example
+[source,yaml]
+----
+parameters:
+  prometheus:
+    kubernetes_version: '1.22'
+    instances:
+      default-instance:
+        common:
+          namespace: default-instance
+        prometheus:
+          enabled: true
+        nodeExporter:
+          enabled: true
+    addons:
+      - openshift4 <1>
+
+    namespaces:
+      default-instance:
+        annotations:
+          openshift.io/node-selector: "" <2>
+
+    prometheusOperator:
+      installCRDs: false <3>
+----
+<1> Enable the `openshift4` addon
+<2> Remove the default node selector
+<3> Don't install CRDs
