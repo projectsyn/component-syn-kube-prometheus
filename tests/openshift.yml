@@ -26,7 +26,9 @@ parameters:
       - openshift4
 
     namespaces:
-      default-instance: {}
+      default-instance:
+        annotations:
+          openshift.io/node-selector: ""
 
     prometheusOperator:
       installCRDs: false
