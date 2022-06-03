@@ -1,0 +1,9 @@
+---
+parameters:
+  prometheus:
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+    addons:
+      - cluster-monitoring
