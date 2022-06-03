@@ -18,6 +18,7 @@ local configuredOperator =
       } + com.makeMergeable(params.base.common) + com.makeMergeable(params.prometheusOperator.common),
     } + { prometheusOperator+: com.makeMergeable(params.prometheusOperator.config) },
 
+    local namespaces = std.join(',', std.filter(function(name) params.namespaces[name] != null, std.objectFields(params.namespaces))),
     prometheusOperator+: {
       deployment+: {
         spec+: {
@@ -27,7 +28,9 @@ local configuredOperator =
                 if c.name == config.values.prometheusOperator.name then
                   c {
                     args+: [
-                      '-namespaces=%s' % std.join(',', std.filter(function(name) params.namespaces[name] != null, std.objectFields(params.namespaces))),
+                      '--prometheus-instance-namespaces=%s' % namespaces,
+                      '--thanos-ruler-instance-namespaces=%s' % namespaces,
+                      '--alertmanager-instance-namespaces=%s' % namespaces,
                     ],
                   }
                 else
