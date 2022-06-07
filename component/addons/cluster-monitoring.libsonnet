@@ -13,7 +13,7 @@ local kube = import 'lib/kube.libjsonnet';
       rules: [
         {
           apiGroups: [ '' ],
-          resources: [ 'namespaces', 'services', 'endpoints', 'pods' ],
+          resources: [ 'services', 'endpoints', 'pods' ],
           verbs: [ 'get', 'list', 'watch' ],
         },
         {
@@ -26,13 +26,6 @@ local kube = import 'lib/kube.libjsonnet';
           resources: [ 'ingresses' ],
           verbs: [ 'get', 'list', 'watch' ],
         },
-        /* TODO(glrf) DO WE NEED THIS? How is this managed?
-        {
-          apiGroups: [ 'monitoring.coreos.com' ],
-          resources: [ 'servicemonitors', 'podmonitors', 'prometheusrules' ],
-          verbs: [ 'get', 'list', 'watch' ],
-        },
-        */
       ],
     },
     ClusterMonitoringRole: clusterMonitoringRole,
@@ -42,7 +35,7 @@ local kube = import 'lib/kube.libjsonnet';
       },
       roleRef_: clusterMonitoringRole,
       subjects_: [
-        config.nodeExporter.serviceAccount,
+        config.prometheus.serviceAccount,
       ],
     },
 

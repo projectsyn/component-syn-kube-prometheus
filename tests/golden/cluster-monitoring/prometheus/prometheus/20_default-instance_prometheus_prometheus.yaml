@@ -34,10 +34,9 @@ spec:
     matchLabels:
       monitoring.syn.tools/default-instance: 'true'
   podMonitorSelector: {}
-  probeMonitorNamespaceSelector:
+  probeNamespaceSelector:
     matchLabels:
       monitoring.syn.tools/default-instance: 'true'
-  probeNamespaceSelector: {}
   probeSelector: {}
   replicas: 2
   resources:
