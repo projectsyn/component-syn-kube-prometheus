@@ -32,7 +32,9 @@ spec:
         - args:
             - --kubelet-service=kube-system/kubelet
             - --prometheus-config-reloader=quay-io.proxy.com/prometheus-operator/prometheus-config-reloader:v0.49.0
-            - -namespaces=
+            - --prometheus-instance-namespaces=
+            - --thanos-ruler-instance-namespaces=
+            - --alertmanager-instance-namespaces=
           image: quay-io.proxy.com/prometheus-operator/prometheus-operator:v0.49.0
           name: syn-prometheus-operator
           ports:
