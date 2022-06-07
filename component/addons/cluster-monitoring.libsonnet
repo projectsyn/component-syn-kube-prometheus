@@ -12,11 +12,6 @@ local kube = import 'lib/kube.libjsonnet';
       },
       rules: [
         {
-          apiGroups: [ '*' ],
-          resources: [ '*' ],
-          verbs: [ '*' ],
-        },
-        {
           apiGroups: [ '' ],
           resources: [ 'namespaces', 'services', 'endpoints', 'pods' ],
           verbs: [ 'get', 'list', 'watch' ],
