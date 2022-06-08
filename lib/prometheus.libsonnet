@@ -9,13 +9,9 @@ local inv = kap.inventory();
 local params = inv.parameters.prometheus;
 
 
-local defaultInstance = if std.length(params.instances) > 0
-then std.objectFields(params.instances)[0]  // TODO(glrf): Probably not a reasonable default. Switch to some explicit default instance?
-else null;
-
 local getInstanceConfig(instance) = params.base + com.makeMergeable(params.instances[instance]);
 
-local registerNamespace(namespace, instance=defaultInstance) = namespace {
+local registerNamespace(namespace, instance=params.defaultInstance) = namespace {
   metadata+: {
     labels+: {
       [if instance != null then 'monitoring.syn.tools/%s' % instance]: 'true',
@@ -23,23 +19,27 @@ local registerNamespace(namespace, instance=defaultInstance) = namespace {
   },
 };
 
-local networkPolicy(instance=defaultInstance) = kube.NetworkPolicy('allow-from-prometheus-%s' % instance) {
-  local config = getInstanceConfig(instance),
-  local namespace = (config.common + com.makeMergeable(config.prometheus)).namespace,
-  spec+: {
-    ingress+: [ {
-      from: [
-        {
-          namespaceSelector: {
-            matchLabels: {
-              'kubernetes.io/metadata.name': namespace,
+local networkPolicy(instance=params.defaultInstance) =
+  if instance == null then
+    {}
+  else
+    kube.NetworkPolicy('allow-from-prometheus-%s' % instance) {
+      local config = getInstanceConfig(instance),
+      local namespace = (config.common + com.makeMergeable(config.prometheus)).namespace,
+      spec+: {
+        ingress+: [ {
+          from: [
+            {
+              namespaceSelector: {
+                matchLabels: {
+                  'kubernetes.io/metadata.name': namespace,
+                },
+              },
             },
-          },
-        },
-      ],
-    } ],
-  },
-};
+          ],
+        } ],
+      },
+    };
 
 {
   RegisterNamespace: registerNamespace,
