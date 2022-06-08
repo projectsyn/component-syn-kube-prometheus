@@ -42,7 +42,9 @@ spec:
   resources:
     requests:
       memory: 400Mi
-  ruleNamespaceSelector: {}
+  ruleNamespaceSelector:
+    matchLabels:
+      monitoring.syn.tools/default-instance: 'true'
   ruleSelector: {}
   securityContext:
     fsGroup: 2000

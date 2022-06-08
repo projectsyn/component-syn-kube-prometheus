@@ -9,11 +9,20 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
+local instanceStacks = std.mapWithKey(
+  function(name, param) common.stackForInstance(name),
+  params.instances
+);
+local mergedParams = std.mapWithKey(
+  function(name, param) params.base + com.makeMergeable(param),
+  params.instances
+);
+
+
 local namespacesPromLabels =
   local f(prev, i) =
-    local inst = params.instances[i];
-    local p = params.base + com.makeMergeable(inst);
-    local stack = common.stackForInstance(i);
+    local p = mergedParams[i];
+    local stack = instanceStacks[i];
     prev {
       [if p.prometheus.enabled then stack.values.prometheus.namespace]+: {
         ['monitoring.syn.tools/%s' % i]: 'true',
@@ -42,7 +51,6 @@ local namespaces = std.foldl(
   , std.objectFields(params.namespaces), {}
 );
 
-
 local secrets = std.foldl(
   function(secrets, secret) secrets {
     ['01_secret_%s' % secret.metadata.name]: secret {
@@ -57,7 +65,6 @@ local secrets = std.foldl(
     },
   },
   com.generateResources(
-
     params.secrets,
     function(name) kube.Secret(name) {
       metadata+: {
@@ -68,9 +75,8 @@ local secrets = std.foldl(
   {}
 );
 
-local renderInstance = function(instanceName, instanceParams)
-  local p = params.base + com.makeMergeable(instanceParams);
-  local stack = common.stackForInstance(instanceName);
+
+local renderInstance = function(instanceName, stack)
   local prometheus = common.render_component(stack, 'prometheus', 20, instanceName);
   local alertmanager = common.render_component(stack, 'alertmanager', 30, instanceName);
   local grafana = common.render_component(stack, 'grafana', 40, instanceName);
@@ -80,6 +86,7 @@ local renderInstance = function(instanceName, instanceParams)
   local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80, instanceName);
   local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90, instanceName);
 
+  local p = mergedParams[instanceName];
   (if p.prometheus.enabled then prometheus else {}) +
   (if p.alertmanager.enabled then alertmanager else {}) +
   (if p.grafana.enabled then grafana else {}) +
@@ -90,6 +97,16 @@ local renderInstance = function(instanceName, instanceParams)
   (if p.kubeStateMetrics.enabled then kubeStateMetrics else {})
 ;
 
-local instances = std.mapWithKey(function(name, params) renderInstance(name, params), params.instances);
+local instances = std.mapWithKey(
+  function(name, params) renderInstance(name, params),
+  instanceStacks
+);
 
-(import 'operator.libsonnet') + namespaces + secrets + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})
+(import 'operator.libsonnet')
++ namespaces
++ secrets
++ std.foldl(
+  function(prev, i) prev + instances[i],
+  std.objectFields(instances),
+  {}
+)
