@@ -49,6 +49,7 @@ local kube = import 'lib/kube.libjsonnet';
         serviceMonitorNamespaceSelector+: selector,
         podMonitorNamespaceSelector+: selector,
         probeNamespaceSelector+: selector,
+        ruleNamespaceSelector+: selector,
       },
     },
   },
