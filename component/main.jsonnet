@@ -9,12 +9,34 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
+local namespacesPromLabels =
+  local f(prev, i) =
+    local inst = params.instances[i];
+    local p = params.base + com.makeMergeable(inst);
+    local stack = common.stackForInstance(i);
+    prev {
+      [if p.prometheus.enabled then stack.values.prometheus.namespace]+: {
+        ['monitoring.syn.tools/%s' % i]: 'true',
+      },
+    };
+  std.foldl(f, std.objectFields(params.instances), {});
+
 local namespaces = std.foldl(
   function(namespaces, nsName)
     if params.namespaces[nsName] != null then
-      namespaces { ['00_namespace_%s' % nsName]: kube.Namespace(nsName) + {
-        metadata+: com.makeMergeable(params.namespaces[nsName]),
-      } }
+      namespaces {
+        ['00_namespace_%s' % nsName]:
+          kube.Namespace(nsName)
+          +
+          {
+            metadata+: {
+              labels+: com.getValueOrDefault(namespacesPromLabels, nsName, {}),
+            },
+          }
+          + {
+            metadata+: com.makeMergeable(params.namespaces[nsName]),
+          },
+      }
     else
       namespaces
   , std.objectFields(params.namespaces), {}
@@ -35,6 +57,7 @@ local secrets = std.foldl(
     },
   },
   com.generateResources(
+
     params.secrets,
     function(name) kube.Secret(name) {
       metadata+: {

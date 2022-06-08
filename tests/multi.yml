@@ -1,6 +1,8 @@
 ---
 parameters:
   prometheus:
+    namespaces:
+      syn-prometheus: {}
     instances:
       default-instance:
         prometheus:
