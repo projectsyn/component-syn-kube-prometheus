@@ -17,10 +17,6 @@
   goldenTest_makeTarget: golden-diff -e instance=${{ matrix.instance }}
   makeTarget: test -e instance=${{ matrix.instance }}
 
-docs/antora.yml:
-  name: prometheus
-  title: prometheus
-
 .gitignore:
   additionalEntries:
     - jsonnetfile.json
