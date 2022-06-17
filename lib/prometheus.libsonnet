@@ -25,6 +25,7 @@ local getInstanceConfig(instance) = params.base + com.makeMergeable(params.insta
  *
  * \arg `namespace` The namespace to annotate
  * \arg `instance` The name of the instance that should pick up the namespace
+ * \return A namespace with correct label
  */
 local registerNamespace(namespace, instance=params.defaultInstance) = namespace {
   metadata+: {
@@ -45,6 +46,7 @@ local registerNamespace(namespace, instance=params.defaultInstance) = namespace 
  * function will return an empty object.
  *
  * \arg `instance` The name of the instance to allow traffic from
+ * \return A NetworkPolicy allowing ingress from Prometheus namespace
  */
 local networkPolicy(instance=params.defaultInstance) =
   if instance == null then
@@ -68,7 +70,50 @@ local networkPolicy(instance=params.defaultInstance) =
       },
     };
 
+// Define Prometheus Operator API versions
+local api_version = {
+  monitoring: 'monitoring.coreos.com/v1',
+};
+
+/**
+  * \brief Helper to create PrometheusRule objects.
+  *
+  * \arg The name of the PrometheusRule.
+  * \return A PrometheusRule object.
+  */
+local prometheusRule(name) = kube._Object(api_version.monitoring, 'PrometheusRule', name);
+
+/**
+ * \brief Helper to create ServiceMonitor objects.
+ *
+ * \arg The name of the ServiceMonitor.
+ * \return A ServiceMonitor object.
+ */
+local serviceMonitor(name) = kube._Object(api_version.monitoring, 'ServiceMonitor', name);
+
+
+/**
+ * \brief Helper to create PodMonitor objects.
+ *
+ * \arg The name of the PodMonitor.
+ * \return A PodMonitor object.
+ */
+local podMonitor(name) = kube._Object(api_version.monitoring, 'PodMonitor', name);
+
+/**
+ * \brief Helper to create Probe objects.
+ *
+ * \arg The name of the Probe.
+ * \return A Probe object.
+ */
+local probe(name) = kube._Object(api_version.monitoring, 'Probe', name);
+
 {
   RegisterNamespace: registerNamespace,
   NetworkPolicy: networkPolicy,
+
+  PrometheusRule: prometheusRule,
+  ServiceMonitor: serviceMonitor,
+  PodMonitor: podMonitor,
+  Probe: probe,
 }
