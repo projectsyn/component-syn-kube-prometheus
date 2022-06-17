@@ -186,6 +186,18 @@ kube_state_metrics:
 The base configuration shared by all instances.
 Can be overridden by the instance-specific configuration.
 
+
+== `defaultInstance`
+
+[horizontal]
+type:: string
+default:: null
+example:: `infra`
+
+The key of the default instance in the `instances` dict.
+
+The specified instance is used for library functions when no instance is provided.
+
 == `instances`
 
 [horizontal]
