@@ -1,0 +1,38 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+    name: syn-cluster-monitoring-default-instance
+  name: syn-cluster-monitoring-default-instance
+  namespace: syn-prometheus
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - services
+      - endpoints
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations: {}
+  labels:
+    monitoring.syn.tools/default-instance: 'true'
+    monitoring.syn.tools/other-instance: 'true'
+    name: syn-prometheus
+  name: syn-prometheus

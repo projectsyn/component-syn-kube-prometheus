@@ -12,6 +12,7 @@
       - openshift
       - rewrite-registries
       - thanos
+      - cluster-monitoring
 
 .github/workflows/test.yaml:
   goldenTest_makeTarget: golden-diff -e instance=${{ matrix.instance }}

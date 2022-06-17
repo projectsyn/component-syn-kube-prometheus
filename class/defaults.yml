@@ -85,4 +85,5 @@ parameters:
         name: syn-prometheus-operator
       overrides: {}
 
+    defaultInstance: null
     instances: {}

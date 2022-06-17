@@ -3,14 +3,14 @@ parameters:
   prometheus:
     namespaces:
       syn-prometheus: {}
+      syn-not-prometheus: {}
+    defaultInstance: default-instance
     instances:
       default-instance:
         prometheus:
           enabled: true
-        prometheusAdapter:
-          enabled: true
-      other-instance:
+      other_instance:
         prometheus:
           enabled: true
-        kubeStateMetrics:
-          enabled: true
+    addons:
+      - cluster-monitoring

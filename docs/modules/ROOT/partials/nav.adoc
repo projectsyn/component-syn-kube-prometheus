@@ -8,3 +8,4 @@
 * xref:how-tos/prometheus.adoc[Deploy Prometheus]
 * xref:how-tos/openshift.adoc[OpenShift]
 * xref:how-tos/setup-keycloak.adoc[Setup with Keycloak]
+* xref:how-tos/cluster-monitoring.adoc[Monitor other Commodore Components]

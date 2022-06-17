@@ -9,17 +9,47 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
+local instanceStacks = std.mapWithKey(
+  function(name, param) common.stackForInstance(name),
+  params.instances
+);
+local mergedParams = std.mapWithKey(
+  function(name, param) params.base + com.makeMergeable(param),
+  params.instances
+);
+
+
+local namespacesPromLabels =
+  local f(prev, i) =
+    local p = mergedParams[i];
+    local stack = instanceStacks[i];
+    prev {
+      [if p.prometheus.enabled then stack.values.prometheus.namespace]+: {
+        ['monitoring.syn.tools/%s' % i]: 'true',
+      },
+    };
+  std.foldl(f, std.objectFields(params.instances), {});
+
 local namespaces = std.foldl(
   function(namespaces, nsName)
     if params.namespaces[nsName] != null then
-      namespaces { ['00_namespace_%s' % nsName]: kube.Namespace(nsName) + {
-        metadata+: com.makeMergeable(params.namespaces[nsName]),
-      } }
+      namespaces {
+        ['00_namespace_%s' % nsName]:
+          kube.Namespace(nsName)
+          +
+          {
+            metadata+: {
+              labels+: com.getValueOrDefault(namespacesPromLabels, nsName, {}),
+            },
+          }
+          + {
+            metadata+: com.makeMergeable(params.namespaces[nsName]),
+          },
+      }
     else
       namespaces
   , std.objectFields(params.namespaces), {}
 );
-
 
 local secrets = std.foldl(
   function(secrets, secret) secrets {
@@ -45,9 +75,8 @@ local secrets = std.foldl(
   {}
 );
 
-local renderInstance = function(instanceName, instanceParams)
-  local p = params.base + com.makeMergeable(instanceParams);
-  local stack = common.stackForInstance(instanceName);
+
+local renderInstance = function(instanceName, stack)
   local prometheus = common.render_component(stack, 'prometheus', 20, instanceName);
   local alertmanager = common.render_component(stack, 'alertmanager', 30, instanceName);
   local grafana = common.render_component(stack, 'grafana', 40, instanceName);
@@ -57,6 +86,7 @@ local renderInstance = function(instanceName, instanceParams)
   local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80, instanceName);
   local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90, instanceName);
 
+  local p = mergedParams[instanceName];
   (if p.prometheus.enabled then prometheus else {}) +
   (if p.alertmanager.enabled then alertmanager else {}) +
   (if p.grafana.enabled then grafana else {}) +
@@ -67,6 +97,16 @@ local renderInstance = function(instanceName, instanceParams)
   (if p.kubeStateMetrics.enabled then kubeStateMetrics else {})
 ;
 
-local instances = std.mapWithKey(function(name, params) renderInstance(name, params), params.instances);
+local instances = std.mapWithKey(
+  function(name, params) renderInstance(name, params),
+  instanceStacks
+);
 
-(import 'operator.libsonnet') + namespaces + secrets + std.foldl(function(prev, i) prev + instances[i], std.objectFields(instances), {})
+(import 'operator.libsonnet')
++ namespaces
++ secrets
++ std.foldl(
+  function(prev, i) prev + instances[i],
+  std.objectFields(instances),
+  {}
+)

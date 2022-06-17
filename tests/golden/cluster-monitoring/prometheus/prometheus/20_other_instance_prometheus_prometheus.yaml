@@ -1,0 +1,58 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 2.29.1
+    prometheus: other_instance
+  name: other_instance
+  namespace: syn-prometheus
+spec:
+  alerting:
+    alertmanagers:
+      - apiVersion: v2
+        name: alertmanager-alertmanager-other_instance
+        namespace: syn-prometheus
+        port: web
+  enableFeatures: []
+  externalLabels: {}
+  image: quay.io/prometheus/prometheus:v2.29.1
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 2.29.1
+  podMonitorNamespaceSelector:
+    matchLabels:
+      monitoring.syn.tools/other_instance: 'true'
+  podMonitorSelector: {}
+  probeNamespaceSelector:
+    matchLabels:
+      monitoring.syn.tools/other_instance: 'true'
+  probeSelector: {}
+  replicas: 2
+  resources:
+    requests:
+      memory: 400Mi
+  ruleNamespaceSelector:
+    matchLabels:
+      monitoring.syn.tools/other_instance: 'true'
+  ruleSelector: {}
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus-other_instance
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      monitoring.syn.tools/other_instance: 'true'
+  serviceMonitorSelector: {}
+  version: 2.29.1
