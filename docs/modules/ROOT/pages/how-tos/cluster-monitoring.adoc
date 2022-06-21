@@ -10,12 +10,12 @@ To enable monitoring other components we simply need to add the `cluster-monitor
 
 This sets namespace selectors on every Prometheus instance that will result in them picking up all `ServiceMonitors`, `PodMonitors`, and `Probes` in namespaces with the label `monitoring.syn.tools/<instance>`.
 
-`PrometheusRules` are only pick up rules if they're in a labeled namespace AND the rule is labeled with `monitoring.syn.tools/enabled: "true"`.
+`PrometheusRules` are only picked up if they're in a labeled namespace AND the rule is labeled with `monitoring.syn.tools/enabled: "true"`.
 This should ensure that rules are added consciously and prevent a massive import of upstream alerts that aren't actionable or don't meet our standards.
 
 You also have the option to disable `ServiceMonitors`, `PodMonitors`, or `Probes` by labeling them with `monitoring.syn.tools/enabled: "false"`.
 
-The example blow will make the Prometheus instance `default-instance` pick up all namespaces with a label `monitoring.syn.tools/default-instance: "true"`.
+The example below will make the Prometheus instance `default-instance` pick up all namespaces with a label `monitoring.syn.tools/default-instance: "true"`.
 
 .Example
 [source,yaml]
