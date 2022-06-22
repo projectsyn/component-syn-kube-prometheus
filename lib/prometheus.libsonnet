@@ -76,12 +76,44 @@ local api_version = {
 };
 
 /**
+  * \brief Helper to enable Monitor or Rule
+  *
+  * The`cluster-monitoring` addon needs to be enabled for this to have an effect.
+  *
+  * \arg A ServiceMonitor, PodMonitor, Probe, or PrometheusRule
+  * \return The given object with the necessary labels for Prometheus to pick it up
+  */
+local enable(object) = object {
+  metadata+: {
+    labels+: {
+      'monitoring.syn.tools/enabled': 'true',
+    },
+  },
+};
+
+/**
+  * \brief Helper to disable Monitor or Rule
+  *
+  * The`cluster-monitoring` addon needs to be enabled for this to have an effect.
+  *
+  * \arg A ServiceMonitor, PodMonitor, Probe, or PrometheusRule
+  * \return The given object with the necessary labels that makes Prometheus ignore it
+  */
+local disable(object) = object {
+  metadata+: {
+    labels+: {
+      'monitoring.syn.tools/enabled': 'false',
+    },
+  },
+};
+
+/**
   * \brief Helper to create PrometheusRule objects.
   *
   * \arg The name of the PrometheusRule.
   * \return A PrometheusRule object.
   */
-local prometheusRule(name) = kube._Object(api_version.monitoring, 'PrometheusRule', name);
+local prometheusRule(name) = enable(kube._Object(api_version.monitoring, 'PrometheusRule', name));
 
 /**
  * \brief Helper to create ServiceMonitor objects.
@@ -111,6 +143,9 @@ local probe(name) = kube._Object(api_version.monitoring, 'Probe', name);
 {
   RegisterNamespace: registerNamespace,
   NetworkPolicy: networkPolicy,
+
+  Enable: enable,
+  Disable: disable,
 
   PrometheusRule: prometheusRule,
   ServiceMonitor: serviceMonitor,

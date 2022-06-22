@@ -33,11 +33,23 @@ spec:
   podMonitorNamespaceSelector:
     matchLabels:
       monitoring.syn.tools/other_instance: 'true'
-  podMonitorSelector: {}
+  podMonitorSelector:
+    matchExpressions:
+      - key: monitoring.syn.tools/enabled
+        operator: NotIn
+        values:
+          - 'false'
+          - 'False'
   probeNamespaceSelector:
     matchLabels:
       monitoring.syn.tools/other_instance: 'true'
-  probeSelector: {}
+  probeSelector:
+    matchExpressions:
+      - key: monitoring.syn.tools/enabled
+        operator: NotIn
+        values:
+          - 'false'
+          - 'False'
   replicas: 2
   resources:
     requests:
@@ -45,7 +57,13 @@ spec:
   ruleNamespaceSelector:
     matchLabels:
       monitoring.syn.tools/other_instance: 'true'
-  ruleSelector: {}
+  ruleSelector:
+    matchExpressions:
+      - key: monitoring.syn.tools/enabled
+        operator: In
+        values:
+          - 'true'
+          - 'True'
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
@@ -54,5 +72,11 @@ spec:
   serviceMonitorNamespaceSelector:
     matchLabels:
       monitoring.syn.tools/other_instance: 'true'
-  serviceMonitorSelector: {}
+  serviceMonitorSelector:
+    matchExpressions:
+      - key: monitoring.syn.tools/enabled
+        operator: NotIn
+        values:
+          - 'false'
+          - 'False'
   version: 2.29.1

@@ -8,9 +8,14 @@ However it also supports picking up metrics and alerts from other workloads depl
 
 To enable monitoring other components we simply need to add the `cluster-monitoring` addon.
 
-This sets namespace slectors on every Prometheus instance that will result in them picking up all `ServiceMonitors`, `PodMonitors`, `Probes`, and `PrometheusRules` in namespaces with the label `monitoring.syn.tools/<instance>`.
+This sets namespace selectors on every Prometheus instance that will result in them picking up all `ServiceMonitors`, `PodMonitors`, and `Probes` in namespaces with the label `monitoring.syn.tools/<instance>`.
 
-The example blow will make the Prometheus instance `default-instance` pick up all namespaces with a label `monitoring.syn.tools/default-instance: "true"`.
+`PrometheusRules` are only picked up if they're in a labeled namespace AND the rule is labeled with `monitoring.syn.tools/enabled: "true"`.
+This should ensure that rules are added consciously and prevent a massive import of upstream alerts that aren't actionable or don't meet our standards.
+
+You also have the option to disable `ServiceMonitors`, `PodMonitors`, or `Probes` by labeling them with `monitoring.syn.tools/enabled: "false"`.
+
+The example below will make the Prometheus instance `default-instance` pick up all namespaces with a label `monitoring.syn.tools/default-instance: "true"`.
 
 .Example
 [source,yaml]
@@ -43,13 +48,16 @@ parameters:
 When writing a component we can advertise metrics and rules to Prometheus by creating `ServiceMonitors` or `PrometheusRules` and correctly labeling the namespace of the component.
 To do this, the component-prometheus provides helper functions as the library `lib/prometheus.libsonnet`.
 
-The component namespace can easily be annotated by using the `RegisterNamespace` function.
+The component namespace can easily be labeled by using the `RegisterNamespace` function.
 This function takes a namespace and returns the provided namespace with additional necessary labels for Prometheus to pick it up.
 
 The function `NetworkPolicy` returns a network policy that allows ingress traffic from the Prometheus namespace.
 This means when writing a component you don't need to know where Prometheus is deployed.
 
 We also provide helper functions to create `ServiceMonitors`, `PodMonitors`, `Probes`, and `PrometheusRules`.
+
+The `PrometheusRule` helper function already ensures that the necessary `enabled` label is set.
+If you need to enable an existing `PrometheusRule` you can use the `Enable()` helper functions to set the label.
 
 
 .Example
@@ -70,6 +78,7 @@ We also provide helper functions to create `ServiceMonitors`, `PodMonitors`, `Pr
     '10_servicemonitor': prometheus.ServiceMonitor('foo'){ <3>
       ...
     },
+    '10_alert': prometheus.Enable(upstreamAlert), <4>
   }
 ----
 <1> Add a label so the default instance will pick up the namespace
@@ -77,6 +86,7 @@ We also provide helper functions to create `ServiceMonitors`, `PodMonitors`, `Pr
 Without it Prometheus won't be able to scape the targets.
 The `NetworkPolicy` functions will provide a correctly configured NetworkPolicy to allow ingress traffic from the Prometheus instance.
 <3> Create a ServiceMonitor called 'foo' that's guaranteed to be picked up by Prometheus.
+<4> Assuming there is an existing `upstreamAlert` rule you can enable it using the `Enable` helper function.
 
 WARNING: Don't create a NetworkPolicy for permissive clusters without default NetworkPolicies.
 Doing so will drop any traffic not originating from Prometheus.

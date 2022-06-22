@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/name: nodeexporter-default-instance
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 1.1.2
+    monitoring.syn.tools/enabled: 'true'
     prometheus: default-instance
     role: alert-rules
   name: nodeexporter-default-instance-rules

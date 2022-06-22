@@ -41,15 +41,33 @@ local kube = import 'lib/kube.libjsonnet';
 
     prometheus+: {
       spec+: {
-        local selector = {
+        local nsSelector = {
           matchLabels: {
             ['monitoring.syn.tools/%s' % config.values.prometheus.name]: 'true',
           },
         },
-        serviceMonitorNamespaceSelector+: selector,
-        podMonitorNamespaceSelector+: selector,
-        probeNamespaceSelector+: selector,
-        ruleNamespaceSelector+: selector,
+        local optOutSelector = {
+          matchExpressions: [ {
+            key: 'monitoring.syn.tools/enabled',
+            operator: 'NotIn',
+            values: [ 'false', 'False' ],
+          } ],
+        },
+        local optInSelector = {
+          matchExpressions: [ {
+            key: 'monitoring.syn.tools/enabled',
+            operator: 'In',
+            values: [ 'true', 'True' ],
+          } ],
+        },
+        serviceMonitorNamespaceSelector+: nsSelector,
+        serviceMonitorSelector+: optOutSelector,
+        podMonitorNamespaceSelector+: nsSelector,
+        podMonitorSelector+: optOutSelector,
+        probeNamespaceSelector+: nsSelector,
+        probeSelector+: optOutSelector,
+        ruleNamespaceSelector+: nsSelector,
+        ruleSelector+: optInSelector,
       },
     },
   },

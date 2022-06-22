@@ -2,6 +2,9 @@
 local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
+
+local lib = import 'lib/prometheus.libsonnet';
+
 local inv = kap.inventory();
 // The hiera parameters for the component
 local params = inv.parameters.prometheus;
@@ -102,11 +105,19 @@ local instances = std.mapWithKey(
   instanceStacks
 );
 
+local enableAlert(name, object) =
+  if object.kind == 'PrometheusRule' then
+    lib.Enable(object)
+  else object;
+
 (import 'operator.libsonnet')
 + namespaces
 + secrets
-+ std.foldl(
-  function(prev, i) prev + instances[i],
-  std.objectFields(instances),
-  {}
++ std.mapWithKey(
+  enableAlert,
+  std.foldl(
+    function(prev, i) prev + instances[i],
+    std.objectFields(instances),
+    {}
+  )
 )

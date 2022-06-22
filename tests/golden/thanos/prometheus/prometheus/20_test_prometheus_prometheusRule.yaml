@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.29.1
+    monitoring.syn.tools/enabled: 'true'
     prometheus: test
     role: alert-rules
   name: prometheus-test-prometheus-rules

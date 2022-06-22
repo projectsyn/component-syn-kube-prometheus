@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.22.2
+    monitoring.syn.tools/enabled: 'true'
     prometheus: default-instance
     role: alert-rules
   name: alertmanager-alertmanager-default-instance-rules
