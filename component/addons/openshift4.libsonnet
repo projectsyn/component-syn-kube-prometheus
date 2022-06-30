@@ -9,3 +9,5 @@
 (import './openshift4-nodeexporter.libsonnet')
 +
 (import './openshift4-control-plane.libsonnet')
++
+(import './openshift-certs.libsonnet')
