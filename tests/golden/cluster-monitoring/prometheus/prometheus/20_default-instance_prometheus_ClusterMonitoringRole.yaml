@@ -13,6 +13,13 @@ rules:
   - apiGroups:
       - ''
     resources:
+      - namespaces
+      - namespace/metrics
+    verbs:
+      - get
+  - apiGroups:
+      - ''
+    resources:
       - services
       - endpoints
       - pods
