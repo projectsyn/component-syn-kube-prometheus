@@ -7,6 +7,8 @@ However it also supports picking up metrics and alerts from other workloads depl
 == Enabling `cluster-monitoring`
 
 To enable monitoring other components we simply need to add the `cluster-monitoring` addon.
+The addon will deploy a `ClusterRole` and a `ClusterRoleBinding` which allows the Prometheus instances managed by the component to scrape metrics from all namespaces in the cluster.
+Additionally, the `ClusterRole` provides RBAC rules for commonly used resources for `SubjectAccessReview` queries for metrics endpoints which are secured with `oauth-proxy`.
 
 This sets namespace selectors on every Prometheus instance that will result in them picking up all `ServiceMonitors`, `PodMonitors`, and `Probes` in namespaces with the label `monitoring.syn.tools/<instance>`.
 
