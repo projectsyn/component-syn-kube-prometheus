@@ -1,49 +1,79 @@
 local kube = import 'lib/kube.libjsonnet';
 local rl = import 'lib/resource-locker.libjsonnet';
 
-local name = 'copy-metric-certs';
-
-local sourceNamespace = 'openshift-monitoring';
-local sourceName = 'metrics-client-certs';
-
-local toAdd = kube.Secret(name);
-
+local sourceSecretNamespace = 'openshift-monitoring';
+local sourceSecretName = 'metrics-client-certs';
 
 {
   local config = self,
+
+  local targetSecret = kube.Secret('ocp-metric-client-certs-' + config.values.prometheus.name),
+
   local rlPatch = [
-    if o.kind == 'ResourceLocker' then o {
-      spec+: {
-        patches: [
-          {
-            id: 'patch-1',
-            targetObjectRef: {
-              apiVersion: toAdd.apiVersion,
-              kind: toAdd.kind,
-              name: toAdd.metadata.name,
-              namespace: config.values.common.namespace,
-            },
-            patchTemplate: |||
-              data:
-                tls.crt: {{ index (index . 0).data "tls.crt" }}
-                tls.key: {{ index (index . 0).data "tls.key" }}
-            |||,
-            patchType: 'application/strategic-merge-patch+json',
-            sourceObjectRefs: [
-              {
-                apiVersion: toAdd.apiVersion,
-                kind: toAdd.kind,
-                name: sourceName,
-                namespace: sourceNamespace,
+    if o.kind == 'ResourceLocker' then
+      o {
+        spec+: {
+          resources: [
+            {
+              object: {
+                apiVersion: targetSecret.apiVersion,
+                kind: targetSecret.kind,
+                metadata: {
+                  name: targetSecret.metadata.name,
+                  namespace: config.values.common.namespace,
+                },
+                data: {},
               },
-            ],
-          },
-        ],
-      },
-    } else o
-    for o in rl.Patch(toAdd, {})
+              excludedPaths: [
+                // We patch .data in the patch definition
+                '.data',
+                // Need to be here or we get an argocd diff. The resoucre locker operator will add them.
+                '.spec.replicas',
+                '.metadata',
+                '.status',
+              ],
+            },
+          ],
+          patches: [
+            {
+              id: 'patch-1',
+              targetObjectRef: {
+                apiVersion: targetSecret.apiVersion,
+                kind: targetSecret.kind,
+                name: targetSecret.metadata.name,
+                namespace: config.values.common.namespace,
+              },
+              patchTemplate: |||
+                data:
+                  tls.crt: {{ index (index . 0).data "tls.crt" }}
+                  tls.key: {{ index (index . 0).data "tls.key" }}
+              |||,
+              patchType: 'application/strategic-merge-patch+json',
+              sourceObjectRefs: [
+                {
+                  apiVersion: targetSecret.apiVersion,
+                  kind: targetSecret.kind,
+                  name: sourceSecretName,
+                  namespace: sourceSecretNamespace,
+                },
+              ],
+            },
+          ],
+        },
+      }
+    else if o.kind == 'ClusterRole' then
+      o {
+        rules: [ r { verbs+: [ 'create' ] } for r in o.rules ],
+      }
+    else o
+    for o in rl.Patch(targetSecret, {})
   ],
 
-
-  prometheus+: std.foldl(function(p, x) p { [x.metadata.name + '_' + x.kind]: x }, rlPatch, {}),
+  prometheus+: {
+    prometheus+: {
+      spec+: {
+        secrets+: [ targetSecret.metadata.name ],
+      },
+    },
+  } + std.foldl(function(p, x) p { [x.metadata.name + '_' + x.kind]: x }, rlPatch, {}),
 }

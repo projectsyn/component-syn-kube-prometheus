@@ -7,8 +7,8 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/part-of: syn
-    name: copy-metric-certs
-  name: copy-metric-certs
+    name: ocp-metric-client-certs-default-instance
+  name: ocp-metric-client-certs-default-instance
   namespace: syn-resource-locker
 spec:
   patches:
@@ -24,7 +24,20 @@ spec:
       targetObjectRef:
         apiVersion: v1
         kind: Secret
-        name: copy-metric-certs
+        name: ocp-metric-client-certs-default-instance
         namespace: syn-prometheus
+  resources:
+    - excludedPaths:
+        - .data
+        - .spec.replicas
+        - .metadata
+        - .status
+      object:
+        apiVersion: v1
+        data: {}
+        kind: Secret
+        metadata:
+          name: ocp-metric-client-certs-default-instance
+          namespace: syn-prometheus
   serviceAccountRef:
-    name: copy-metric-certs-manager
+    name: ocp-metric-client-certs-default-instance-manager

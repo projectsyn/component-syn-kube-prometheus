@@ -41,6 +41,8 @@ spec:
       memory: 400Mi
   ruleNamespaceSelector: {}
   ruleSelector: {}
+  secrets:
+    - ocp-metric-client-certs-default-instance
   serviceAccountName: prometheus-default-instance
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}

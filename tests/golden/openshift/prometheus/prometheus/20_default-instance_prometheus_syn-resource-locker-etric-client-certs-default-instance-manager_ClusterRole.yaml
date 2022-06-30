@@ -6,8 +6,8 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/part-of: syn
-    name: syn-resource-locker-copy-metric-certs-manager
-  name: syn-resource-locker-copy-metric-certs-manager
+    name: syn-resource-locker-etric-client-certs-default-instance-manager
+  name: syn-resource-locker-etric-client-certs-default-instance-manager
 rules:
   - apiGroups:
       - ''
@@ -18,3 +18,4 @@ rules:
       - list
       - patch
       - watch
+      - create
