@@ -1,0 +1,30 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+    name: ocp-metric-client-certs-default-instance
+  name: ocp-metric-client-certs-default-instance
+  namespace: syn-resource-locker
+spec:
+  patches:
+    - id: patch1
+      patchTemplate: "\"data\":\n  \"tls.crt\": \"{{ index (index . 0).data `tls.crt`\
+        \ }}\"\n  \"tls.key\": \"{{ index (index . 0).data `tls.key` }}\""
+      patchType: application/strategic-merge-patch+json
+      sourceObjectRefs:
+        - apiVersion: v1
+          kind: Secret
+          name: metrics-client-certs
+          namespace: openshift-monitoring
+      targetObjectRef:
+        apiVersion: v1
+        kind: Secret
+        name: ocp-metric-client-certs-default-instance
+        namespace: syn-prometheus
+  serviceAccountRef:
+    name: ocp-metric-client-certs-default-instance-manager
