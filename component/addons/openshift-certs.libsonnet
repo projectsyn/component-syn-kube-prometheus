@@ -33,8 +33,8 @@ local sourceSecretName = 'metrics-client-certs';
     else o
     for o in rl.Patch(targetSecret, {
       data: {
-        'tls.crt': '{{ index (index . 0).data "tls.crt" }}',
-        'tls.key': '{{ index (index . 0).data "tls.key" }}',
+        'tls.crt': '{{ index (index . 0).data `tls.crt` }}',
+        'tls.key': '{{ index (index . 0).data `tls.key` }}',
       },
     })
   ],
