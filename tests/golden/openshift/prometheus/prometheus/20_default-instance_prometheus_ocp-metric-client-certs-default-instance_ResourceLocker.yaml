@@ -26,18 +26,5 @@ spec:
         kind: Secret
         name: ocp-metric-client-certs-default-instance
         namespace: syn-prometheus
-  resources:
-    - excludedPaths:
-        - .data
-        - .spec.replicas
-        - .metadata
-        - .status
-      object:
-        apiVersion: v1
-        data: {}
-        kind: Secret
-        metadata:
-          name: ocp-metric-client-certs-default-instance
-          namespace: syn-prometheus
   serviceAccountRef:
     name: ocp-metric-client-certs-default-instance-manager

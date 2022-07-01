@@ -13,27 +13,6 @@ local sourceSecretName = 'metrics-client-certs';
     if o.kind == 'ResourceLocker' then
       o {
         spec+: {
-          resources: [
-            {
-              object: {
-                apiVersion: targetSecret.apiVersion,
-                kind: targetSecret.kind,
-                metadata: {
-                  name: targetSecret.metadata.name,
-                  namespace: config.values.common.namespace,
-                },
-                data: {},
-              },
-              excludedPaths: [
-                // We patch .data in the patch definition
-                '.data',
-                // Need to be here or we get an argocd diff. The resoucre locker operator will add them.
-                '.spec.replicas',
-                '.metadata',
-                '.status',
-              ],
-            },
-          ],
           patches: [
             super.patches[0] {
               targetObjectRef+: {
@@ -51,10 +30,6 @@ local sourceSecretName = 'metrics-client-certs';
           ],
         },
       }
-    else if o.kind == 'ClusterRole' then
-      o {
-        rules: [ r { verbs+: [ 'create' ] } for r in o.rules ],
-      }
     else o
     for o in rl.Patch(targetSecret, {
       data: {
@@ -65,6 +40,12 @@ local sourceSecretName = 'metrics-client-certs';
   ],
 
   prometheus+: {
+    ocpMetricsClientCertSecret: targetSecret {
+      metadata+: {
+        namespace: config.values.common.namespace,
+      },
+      data:: {},
+    },
     prometheus+: {
       spec+: {
         secrets+: [ targetSecret.metadata.name ],
