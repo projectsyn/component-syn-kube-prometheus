@@ -35,20 +35,10 @@ local sourceSecretName = 'metrics-client-certs';
             },
           ],
           patches: [
-            {
-              id: 'patch-1',
-              targetObjectRef: {
-                apiVersion: targetSecret.apiVersion,
-                kind: targetSecret.kind,
-                name: targetSecret.metadata.name,
+            super.patches[0] {
+              targetObjectRef+: {
                 namespace: config.values.common.namespace,
               },
-              patchTemplate: |||
-                data:
-                  tls.crt: {{ index (index . 0).data "tls.crt" }}
-                  tls.key: {{ index (index . 0).data "tls.key" }}
-              |||,
-              patchType: 'application/strategic-merge-patch+json',
               sourceObjectRefs: [
                 {
                   apiVersion: targetSecret.apiVersion,
@@ -66,7 +56,12 @@ local sourceSecretName = 'metrics-client-certs';
         rules: [ r { verbs+: [ 'create' ] } for r in o.rules ],
       }
     else o
-    for o in rl.Patch(targetSecret, {})
+    for o in rl.Patch(targetSecret, {
+      data: {
+        'tls.crt': '{{ index (index . 0).data "tls.crt" }}',
+        'tls.key': '{{ index (index . 0).data "tls.key" }}',
+      },
+    })
   ],
 
   prometheus+: {

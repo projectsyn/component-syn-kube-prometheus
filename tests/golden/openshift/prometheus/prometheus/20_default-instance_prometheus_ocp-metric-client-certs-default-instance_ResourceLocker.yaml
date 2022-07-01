@@ -12,9 +12,9 @@ metadata:
   namespace: syn-resource-locker
 spec:
   patches:
-    - id: patch-1
-      patchTemplate: "data:\n  tls.crt: {{ index (index . 0).data \"tls.crt\" }}\n\
-        \  tls.key: {{ index (index . 0).data \"tls.key\" }}\n"
+    - id: patch1
+      patchTemplate: "\"data\":\n  \"tls.crt\": \"{{ index (index . 0).data \\\"tls.crt\\\
+        \" }}\"\n  \"tls.key\": \"{{ index (index . 0).data \\\"tls.key\\\" }}\""
       patchType: application/strategic-merge-patch+json
       sourceObjectRefs:
         - apiVersion: v1
