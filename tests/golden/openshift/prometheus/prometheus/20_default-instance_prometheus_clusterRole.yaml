@@ -23,3 +23,9 @@ rules:
       - /metrics
     verbs:
       - get
+  - apiGroups:
+      - image.openshift.io
+    resources:
+      - registry/metrics
+    verbs:
+      - get

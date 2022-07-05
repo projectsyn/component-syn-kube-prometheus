@@ -12,3 +12,5 @@
 (import './openshift4-control-plane.libsonnet')
 +
 (import './openshift-certs.libsonnet')
++
+(import './openshift4-registry-metrics-clusterrole.libsonnet')
