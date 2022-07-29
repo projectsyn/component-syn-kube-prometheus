@@ -19,5 +19,5 @@ local app = argocd.App(instance, null) {
 };
 
 {
-  [instance]: app,
+  [instance]: std.prune(app),
 }
