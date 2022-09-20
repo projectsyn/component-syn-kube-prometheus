@@ -38,6 +38,7 @@ local instanceComponents = [
   'nodeExporter',
   'prometheus',
   'prometheusAdapter',
+  'kubePrometheus',
 ];
 
 local imageIsDockerIOShort = function(image)
