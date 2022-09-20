@@ -25,3 +25,5 @@ parameters:
           enabled: true
         kubeStateMetrics:
           enabled: true
+        kubePrometheus:
+          enabled: true
