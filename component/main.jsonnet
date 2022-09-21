@@ -88,6 +88,7 @@ local renderInstance = function(instanceName, stack)
   local kubernetesControlPlane = common.render_component(stack, 'kubernetesControlPlane', 70, instanceName);
   local prometheusAdapter = common.render_component(stack, 'prometheusAdapter', 80, instanceName);
   local kubeStateMetrics = common.render_component(stack, 'kubeStateMetrics', 90, instanceName);
+  local kubePrometheus = common.render_component(stack, 'kubePrometheus', 100, instanceName);
 
   local p = mergedParams[instanceName];
   (if p.prometheus.enabled then prometheus else {}) +
@@ -97,7 +98,9 @@ local renderInstance = function(instanceName, stack)
   (if p.blackboxExporter.enabled then blackboxExporter else {}) +
   (if p.kubernetesControlPlane.enabled then kubernetesControlPlane else {}) +
   (if p.prometheusAdapter.enabled then prometheusAdapter else {}) +
-  (if p.kubeStateMetrics.enabled then kubeStateMetrics else {})
+  (if p.kubeStateMetrics.enabled then kubeStateMetrics else {}) +
+  (if p.kubePrometheus.enabled then kubePrometheus else {})
+
 ;
 
 local instances = std.mapWithKey(

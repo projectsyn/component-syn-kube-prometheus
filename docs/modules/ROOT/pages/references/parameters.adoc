@@ -181,10 +181,16 @@ kubeStateMetrics:
   enabled: false
   config: {}
   overrides: {}
+kubePrometheus:
+  enabled: false
+  config: {}
+  overrides: {}
 ----
 
 The base configuration shared by all instances.
 Can be overridden by the instance-specific configuration.
+
+General rules and alerts are grouped in the `kubePrometheus` component.
 
 
 == `defaultInstance`

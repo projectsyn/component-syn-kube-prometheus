@@ -74,6 +74,10 @@ parameters:
         enabled: false
         config: {}
         overrides: {}
+      kubePrometheus:
+        enabled: false
+        config: {}
+        overrides: {}
 
     prometheusOperator:
       enabled: true

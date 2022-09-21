@@ -38,6 +38,7 @@ local instanceComponents = [
   'nodeExporter',
   'prometheus',
   'prometheusAdapter',
+  'kubePrometheus',
 ];
 
 local imageIsDockerIOShort = function(image)
@@ -69,6 +70,13 @@ local formatComponentName = function(componentName, instanceName)
 
   std.asciiLower(name);
 
+// We manage the namespace ourselves in this component
+local removeNamespace = {
+  kubePrometheus+:: {
+    namespace:: null,
+  },
+};
+
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
@@ -88,7 +96,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + com.makeMergeable(cm),
-  } + com.makeMergeable(overrides);
+  } + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];
