@@ -41,6 +41,8 @@ jobs:
           - rewrite-registries
           - thanos
           - cluster-monitoring
+          - kubernetes_1.23
+          - kubernetes_1.24
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -64,6 +66,8 @@ jobs:
           - rewrite-registries
           - thanos
           - cluster-monitoring
+          - kubernetes_1.23
+          - kubernetes_1.24
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
