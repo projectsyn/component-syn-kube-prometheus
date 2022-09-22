@@ -113,13 +113,19 @@ local enableAlert(name, object) =
     lib.Enable(object)
   else object;
 
+local removePartialManifests(obj) = {
+  [k]: obj[k]
+  for k in std.objectFields(obj)
+  if std.objectHas(obj[k], 'kind')
+};
+
 (import 'operator.libsonnet')
 + namespaces
 + secrets
 + std.mapWithKey(
   enableAlert,
   std.foldl(
-    function(prev, i) prev + instances[i],
+    function(prev, i) prev + removePartialManifests(instances[i]),
     std.objectFields(instances),
     {}
   )

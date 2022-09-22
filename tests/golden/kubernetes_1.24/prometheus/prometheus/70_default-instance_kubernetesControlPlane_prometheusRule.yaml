@@ -193,35 +193,6 @@ spec:
           for: 15m
           labels:
             severity: warning
-        - alert: KubeHpaReplicasMismatch
-          annotations:
-            description: HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }}
-              has not matched the desired number of replicas for longer than 15 minutes.
-            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpareplicasmismatch
-            summary: HPA has not matched descired number of replicas.
-          expr: "(kube_horizontalpodautoscaler_status_desired_replicas{job=\"kube-state-metrics\"\
-            }\n  !=\nkube_horizontalpodautoscaler_status_current_replicas{job=\"kube-state-metrics\"\
-            })\n  and\n(kube_horizontalpodautoscaler_status_current_replicas{job=\"\
-            kube-state-metrics\"}\n  >\nkube_horizontalpodautoscaler_spec_min_replicas{job=\"\
-            kube-state-metrics\"})\n  and\n(kube_horizontalpodautoscaler_status_current_replicas{job=\"\
-            kube-state-metrics\"}\n  <\nkube_horizontalpodautoscaler_spec_max_replicas{job=\"\
-            kube-state-metrics\"})\n  and\nchanges(kube_horizontalpodautoscaler_status_current_replicas{job=\"\
-            kube-state-metrics\"}[15m]) == 0\n"
-          for: 15m
-          labels:
-            severity: warning
-        - alert: KubeHpaMaxedOut
-          annotations:
-            description: HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }}
-              has been running at max replicas for longer than 15 minutes.
-            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpamaxedout
-            summary: HPA is running at max replicas
-          expr: "kube_horizontalpodautoscaler_status_current_replicas{job=\"kube-state-metrics\"\
-            }\n  ==\nkube_horizontalpodautoscaler_spec_max_replicas{job=\"kube-state-metrics\"\
-            }\n"
-          for: 15m
-          labels:
-            severity: warning
     - name: kubernetes-resources
       rules:
         - alert: KubeCPUOvercommit
@@ -319,19 +290,6 @@ spec:
           for: 15m
           labels:
             severity: warning
-        - alert: CPUThrottlingHigh
-          annotations:
-            description: '{{ $value | humanizePercentage }} throttling of CPU in namespace
-              {{ $labels.namespace }} for container {{ $labels.container }} in pod
-              {{ $labels.pod }}.'
-            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/cputhrottlinghigh
-            summary: Processes experience elevated CPU throttling.
-          expr: "sum(increase(container_cpu_cfs_throttled_periods_total{container!=\"\
-            \", }[5m])) by (container, pod, namespace)\n  /\nsum(increase(container_cpu_cfs_periods_total{}[5m]))\
-            \ by (container, pod, namespace)\n  > ( 25 / 100 )\n"
-          for: 15m
-          labels:
-            severity: info
     - name: kubernetes-storage
       rules:
         - alert: KubePersistentVolumeFillingUp

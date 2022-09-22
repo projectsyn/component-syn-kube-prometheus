@@ -1,0 +1,30 @@
+= Addon: Disable Alerts
+
+Adding the `disable-alerts` addon (enabled by default) will allow you to disable alert rules based on their name.
+Furthermore the addon already disables the following alerts by default:
+
+* KubeHpaMaxedOut
+* KubeHpaReplicasMismatch
+* CPUThrottlingHigh
+
+Those alerts usually generate a lot of noice and are therefore removed by default.
+
+The addon adds the following configuration option under the `INSTANCE.addon_configs.disable_alerts` key:
+
+== `ignoreNames`
+
+[horizontal]
+type:: array
+default:: `[]`
+example::
++
+[source,yaml]
+----
+addon_configs:
+  disable_alerts:
+    ignoreNames:
+      -  KubeCPUOvercommit
+----
+
+List of alert names to disable completely.
+Entries added previously in the hierarchy can be removed again by prefixing them with `~`.
