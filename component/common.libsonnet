@@ -77,6 +77,18 @@ local removeNamespace = {
   },
 };
 
+local resetAlertManagerConfig = {
+  alertmanager+:: {
+    config+:: {
+      receivers: [],
+      inhibit_rules: [],
+      route+: {
+        routes: [],
+      },
+    },
+  },
+};
+
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
@@ -95,7 +107,7 @@ local stackForInstance = function(instanceName)
         // We need to explicitly handle enabling thanos, as upstream has a "null" in the field, making standard merge impossible
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
-    } + com.makeMergeable(cm),
+    } + resetAlertManagerConfig + com.makeMergeable(cm),
   } + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
