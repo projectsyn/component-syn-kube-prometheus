@@ -28,7 +28,7 @@ spec:
               hours.
           expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 20\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
+            ,fstype!=\"\"} * 100 < 15\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
             nodeexporter-default-instance\",fstype!=\"\"}[6h], 24*60*60) < 0\nand\n\
             \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
             \"} == 0\n)\n"
@@ -45,7 +45,7 @@ spec:
               hours.
           expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
             ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 15\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
+            ,fstype!=\"\"} * 100 < 10\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
             nodeexporter-default-instance\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
             \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
             \"} == 0\n)\n"
