@@ -3,6 +3,7 @@
 
 .Addons
 ** xref:references/addon-oauth2-proxy.adoc[OAuth2 Proxy]
+** xref:references/addon-disable-alerts.adoc[Disable Alerts]
 
 .How-Tos
 * xref:how-tos/prometheus.adoc[Deploy Prometheus]
