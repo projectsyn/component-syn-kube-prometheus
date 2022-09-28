@@ -36,6 +36,7 @@ parameters:
     addons:
       - disable-alerts
     addon_configs:
+      additional_rules: {}
       disable_alerts:
         # List of alertnames to exclude from the final ruleset
         ignoreNames:

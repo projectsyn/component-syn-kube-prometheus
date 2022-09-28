@@ -1,13 +1,13 @@
 {
   "template": "https://github.com/projectsyn/commodore-component-template.git",
-  "commit": "f104a5fd69856c0e8cb7b27860876bd2f6386cf6",
+  "commit": "32f6976d3a3028d3fdb34ea312454f2ea7fda4a2",
   "checkout": "main",
   "context": {
     "cookiecutter": {
       "name": "prometheus",
       "slug": "prometheus",
       "parameter_key": "prometheus",
-      "test_cases": "defaults kubernetes_1.20 kubernetes_1.21 kubernetes_1.22 multi openshift rewrite-registries thanos cluster-monitoring kubernetes_1.23 kubernetes_1.24",
+      "test_cases": "defaults kubernetes_1.20 kubernetes_1.21 kubernetes_1.22 multi openshift rewrite-registries thanos cluster-monitoring kubernetes_1.23 kubernetes_1.24 additional_rules",
       "add_lib": "y",
       "add_pp": "n",
       "add_golden": "y",
