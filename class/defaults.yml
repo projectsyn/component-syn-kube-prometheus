@@ -8,7 +8,7 @@ parameters:
     registries:
       docker.io: "docker.io"
       quay.io: "quay.io"
-      k8s.gcr.io: "k8s.gcr.io"
+      k8s.gcr.io: "registry.k8s.io"
 
     images:
       oauth2Proxy:
