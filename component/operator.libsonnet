@@ -53,10 +53,25 @@ local filterCRDs = function(obj)
       for name in std.objectFields(obj)
     };
 
+local crdArgoAnnotation = function(obj)
+  if obj.kind == 'CustomResourceDefinition' then
+    obj {
+      metadata+: {
+        annotations+: {
+          // Use replace for CRDs to avoid errors because the
+          // last-applied-configuration annotation gets too big.
+          'argocd.argoproj.io/sync-options': 'Replace=true',
+        },
+      },
+    }
+  else
+    obj;
+
 local prometheusOperator = {
-  ['10_prometheusOperator_%s' % name]: configuredOperator.prometheusOperator[name] {
-    metadata+: common.metadata,
-  }
+  ['10_prometheusOperator_%s' % name]:
+    crdArgoAnnotation(configuredOperator.prometheusOperator[name]) {
+      metadata+: common.metadata,
+    }
   for name in std.objectFields(filterCRDs(configuredOperator.prometheusOperator))
 };
 
