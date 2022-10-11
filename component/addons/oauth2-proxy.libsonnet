@@ -271,6 +271,12 @@ proxyFor('alertmanager') + proxyFor('prometheus') + {
     },
   },
 
+  alertmanager+: {
+    serviceAccount+: {
+      automountServiceAccountToken: true,
+    },
+  },
+
   prometheus+: {
     prometheus+: {
       spec+: {
