@@ -12,8 +12,9 @@ Additionally, the `ClusterRole` provides RBAC rules for commonly used resources 
 
 This sets namespace selectors on every Prometheus instance that will result in them picking up all `ServiceMonitors`, `PodMonitors`, and `Probes` in namespaces with the label `monitoring.syn.tools/<instance>`.
 
-`PrometheusRules` are only picked up if they're in a labeled namespace AND the rule is labeled with `monitoring.syn.tools/enabled: "true"`.
+`PrometheusRules`, `ServiveMonitors`, `PodMonitors` and `Probes` are only picked up if they're in a labeled namespace AND the rule is labeled with `monitoring.syn.tools/enabled: "true"`.
 This should ensure that rules are added consciously and prevent a massive import of upstream alerts that aren't actionable or don't meet our standards.
+It's possible to pick up the rules from any namespace by setting the parameter `addon_configs.cluster_monitoring.restrict_selectors` to `false`.
 
 You also have the option to disable `ServiceMonitors`, `PodMonitors`, or `Probes` by labeling them with `monitoring.syn.tools/enabled: "false"`.
 

@@ -1,5 +1,8 @@
 local com = import 'lib/commodore.libjsonnet';
+local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
+local inv = kap.inventory();
+local params = inv.parameters.prometheus;
 
 {
   local config = self,
@@ -44,7 +47,7 @@ local kube = import 'lib/kube.libjsonnet';
       ],
     },
 
-    prometheus+: {
+    [if params.addon_configs.cluster_monitoring.restrict_selectors then 'prometheus']+: {
       spec+: {
         local nsSelector = {
           matchLabels: {

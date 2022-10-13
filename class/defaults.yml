@@ -37,6 +37,8 @@ parameters:
       - disable-alerts
     addon_configs:
       additional_rules: {}
+      cluster_monitoring:
+        restrict_selectors: true
       disable_alerts:
         # List of alertnames to exclude from the final ruleset
         ignoreNames:
