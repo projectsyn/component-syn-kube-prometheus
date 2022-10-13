@@ -138,6 +138,13 @@ A list of addons to configure the Prometheus stack.
 Upstream addons can be found in the https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/addons[`addons` folder] of the `kube-prometheus` project.
 Addons provided by this component can be found in the https://github.com/projectsyn/component-prometheus/tree/master/component/addons[`component/addons` folder].
 
+== `addon_configs`
+
+[horizontal]
+type:: dict
+
+A list of configuration options for various addons. For supported configuration options, see the documentation of the respective addon.
+The key is set to the addon name (replace hyphens with underscore - eg. for addon `disable-alerts` the key is `disable_alerts`)
 
 == `base`
 
