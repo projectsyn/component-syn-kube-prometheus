@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/part-of: syn
-  name: nodeexporter-infra
+  name: nodeexporter-default-instance
   namespace: syn-prometheus
 spec:
   scopeSelector:
