@@ -8,7 +8,7 @@ local params = inv.parameters.prometheus;
     apiVersion: 'v1',
     kind: 'ResourceQuota',
     metadata: {
-      name: 'nodeexporter-infra',
+      name: config.values.nodeExporter.name,
       namespace: config.values.common.namespace,
     },
     spec: {
@@ -17,7 +17,7 @@ local params = inv.parameters.prometheus;
           {
             operator: 'In',
             scopeName: 'PriorityClass',
-            values: ['system-cluster-critical'],
+            values: [ 'system-cluster-critical' ],
           },
         ],
       },
