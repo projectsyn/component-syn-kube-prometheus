@@ -14,7 +14,8 @@ This sets namespace selectors on every Prometheus instance that will result in t
 
 `PrometheusRules`, `ServiveMonitors`, `PodMonitors` and `Probes` are only picked up if they're in a labeled namespace AND the rule is labeled with `monitoring.syn.tools/enabled: "true"`.
 This should ensure that rules are added consciously and prevent a massive import of upstream alerts that aren't actionable or don't meet our standards.
-It's possible to pick up the rules from any namespace by setting the parameter `addon_configs.cluster_monitoring.restrict_selectors` to `false`.
+It's possible to pick up the PrometheusRules`, `ServiveMonitors`, `PodMonitors` and `Probes` from any namespace by setting the parameter `addon_configs.cluster_monitoring.restrict_selectors` to `false`. This will apply to all configured prometheus instances.
+To set this only for a specific instance you can set the parameter `addon_configs.cluster_monitoring.<instance_name>.restrict_selectors` to `false`.
 
 You also have the option to disable `ServiceMonitors`, `PodMonitors`, or `Probes` by labeling them with `monitoring.syn.tools/enabled: "false"`.
 

@@ -4,6 +4,13 @@ local kube = import 'lib/kube.libjsonnet';
 local inv = kap.inventory();
 local params = inv.parameters.prometheus;
 
+local restrict_selectors = function(instanceName)
+  if std.objectHas(params.addon_configs.cluster_monitoring, instanceName) && std.objectHas(params.addon_configs.cluster_monitoring[instanceName], 'restrict_selectors') then
+    params.addon_configs.cluster_monitoring[instanceName].restrict_selectors
+  else
+    params.addon_configs.cluster_monitoring.restrict_selectors
+;
+
 {
   local config = self,
 
@@ -47,7 +54,8 @@ local params = inv.parameters.prometheus;
       ],
     },
 
-    [if params.addon_configs.cluster_monitoring.restrict_selectors then 'prometheus']+: {
+
+    [if restrict_selectors(config.values.prometheus.name) then 'prometheus']+: {
       spec+: {
         local nsSelector = {
           matchLabels: {
