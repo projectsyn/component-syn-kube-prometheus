@@ -1,3 +1,9 @@
-# Overwrite parameters here
-
-# parameters: {...}
+---
+parameters:
+  prometheus:
+    addons:
+      - resourcequota
+    instances:
+      default-instance:
+        nodeExporter:
+          enabled: true
