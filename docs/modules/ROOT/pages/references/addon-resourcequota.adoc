@@ -1,0 +1,4 @@
+= Addon: ResourceQuota
+
+Adding the `resourcequota` addon (disabled by default) will deploy a `ResourceQuota` object in the component namespace.
+This will allow the node-exporter DaemonSet to consume `PriorityClass` resources on clusters, which https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default[limit Priority Class consumption by default] (for example GKE).

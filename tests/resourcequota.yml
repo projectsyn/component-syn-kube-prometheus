@@ -1,0 +1,9 @@
+---
+parameters:
+  prometheus:
+    addons:
+      - resourcequota
+    instances:
+      default-instance:
+        nodeExporter:
+          enabled: true

@@ -57,4 +57,4 @@ KUBENT_IMAGE    ?= ghcr.io/doitintl/kube-no-trouble:latest
 KUBENT_DOCKER   ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) --entrypoint=/app/kubent $(KUBENT_IMAGE)
 
 instance ?= defaults
-test_instances = tests/defaults.yml tests/kubernetes_1.20.yml tests/kubernetes_1.21.yml tests/kubernetes_1.22.yml tests/multi.yml tests/openshift.yml tests/rewrite-registries.yml tests/thanos.yml tests/cluster-monitoring.yml tests/kubernetes_1.23.yml tests/kubernetes_1.24.yml tests/additional_rules.yml
+test_instances = tests/defaults.yml tests/kubernetes_1.20.yml tests/kubernetes_1.21.yml tests/kubernetes_1.22.yml tests/multi.yml tests/openshift.yml tests/rewrite-registries.yml tests/thanos.yml tests/cluster-monitoring.yml tests/kubernetes_1.23.yml tests/kubernetes_1.24.yml tests/additional_rules.yml tests/resourcequota.yml
