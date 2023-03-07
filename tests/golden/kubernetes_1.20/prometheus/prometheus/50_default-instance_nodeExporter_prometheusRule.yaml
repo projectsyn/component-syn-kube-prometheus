@@ -26,12 +26,14 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemspacefillingup
             summary: Filesystem is predicted to run out of space within the next 24
               hours.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 40\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
-            nodeexporter-default-instance\",fstype!=\"\"}[6h], 24*60*60) < 0\nand\n\
-            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
-            \"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_avail_bytes{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_size_bytes{job="nodeexporter-default-instance",fstype!=""} * 100 < 40
+            and
+              predict_linear(node_filesystem_avail_bytes{job="nodeexporter-default-instance",fstype!=""}[6h], 24*60*60) < 0
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: warning
@@ -43,12 +45,14 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemspacefillingup
             summary: Filesystem is predicted to run out of space within the next 4
               hours.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 15\nand\n  predict_linear(node_filesystem_avail_bytes{job=\"\
-            nodeexporter-default-instance\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
-            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
-            \"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_avail_bytes{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_size_bytes{job="nodeexporter-default-instance",fstype!=""} * 100 < 15
+            and
+              predict_linear(node_filesystem_avail_bytes{job="nodeexporter-default-instance",fstype!=""}[6h], 4*60*60) < 0
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: critical
@@ -58,10 +62,12 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available space left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutofspace
             summary: Filesystem has less than 5% space left.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 5\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_avail_bytes{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_size_bytes{job="nodeexporter-default-instance",fstype!=""} * 100 < 5
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: warning
@@ -71,10 +77,12 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available space left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutofspace
             summary: Filesystem has less than 3% space left.
-          expr: "(\n  node_filesystem_avail_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_size_bytes{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 3\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_avail_bytes{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_size_bytes{job="nodeexporter-default-instance",fstype!=""} * 100 < 3
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: critical
@@ -86,12 +94,14 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemfilesfillingup
             summary: Filesystem is predicted to run out of inodes within the next
               24 hours.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 40\nand\n  predict_linear(node_filesystem_files_free{job=\"\
-            nodeexporter-default-instance\",fstype!=\"\"}[6h], 24*60*60) < 0\nand\n\
-            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
-            \"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_files_free{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_files{job="nodeexporter-default-instance",fstype!=""} * 100 < 40
+            and
+              predict_linear(node_filesystem_files_free{job="nodeexporter-default-instance",fstype!=""}[6h], 24*60*60) < 0
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: warning
@@ -103,12 +113,14 @@ spec:
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemfilesfillingup
             summary: Filesystem is predicted to run out of inodes within the next
               4 hours.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 20\nand\n  predict_linear(node_filesystem_files_free{job=\"\
-            nodeexporter-default-instance\",fstype!=\"\"}[6h], 4*60*60) < 0\nand\n\
-            \  node_filesystem_readonly{job=\"nodeexporter-default-instance\",fstype!=\"\
-            \"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_files_free{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_files{job="nodeexporter-default-instance",fstype!=""} * 100 < 20
+            and
+              predict_linear(node_filesystem_files_free{job="nodeexporter-default-instance",fstype!=""}[6h], 4*60*60) < 0
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: critical
@@ -118,10 +130,12 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available inodes left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutoffiles
             summary: Filesystem has less than 5% inodes left.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 5\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_files_free{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_files{job="nodeexporter-default-instance",fstype!=""} * 100 < 5
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: warning
@@ -131,10 +145,12 @@ spec:
               }} has only {{ printf "%.2f" $value }}% available inodes left.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefilesystemalmostoutoffiles
             summary: Filesystem has less than 3% inodes left.
-          expr: "(\n  node_filesystem_files_free{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} / node_filesystem_files{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} * 100 < 3\nand\n  node_filesystem_readonly{job=\"nodeexporter-default-instance\"\
-            ,fstype!=\"\"} == 0\n)\n"
+          expr: |
+            (
+              node_filesystem_files_free{job="nodeexporter-default-instance",fstype!=""} / node_filesystem_files{job="nodeexporter-default-instance",fstype!=""} * 100 < 3
+            and
+              node_filesystem_readonly{job="nodeexporter-default-instance",fstype!=""} == 0
+            )
           for: 1h
           labels:
             severity: critical
@@ -145,10 +161,8 @@ spec:
               minutes.'
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodenetworkreceiveerrs
             summary: Network interface is reporting many receive errors.
-          expr: 'rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m])
-            > 0.01
-
-            '
+          expr: |
+            rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m]) > 0.01
           for: 1h
           labels:
             severity: warning
@@ -159,10 +173,8 @@ spec:
               minutes.'
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodenetworktransmiterrs
             summary: Network interface is reporting many transmit errors.
-          expr: 'rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m])
-            > 0.01
-
-            '
+          expr: |
+            rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m]) > 0.01
           for: 1h
           labels:
             severity: warning
@@ -172,9 +184,8 @@ spec:
               used.'
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodehighnumberconntrackentriesused
             summary: Number of conntrack are getting close to the limit.
-          expr: '(node_nf_conntrack_entries / node_nf_conntrack_entries_limit) > 0.75
-
-            '
+          expr: |
+            (node_nf_conntrack_entries / node_nf_conntrack_entries_limit) > 0.75
           labels:
             severity: warning
         - alert: NodeTextFileCollectorScrapeError
@@ -182,10 +193,8 @@ spec:
             description: Node Exporter text file collector failed to scrape.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodetextfilecollectorscrapeerror
             summary: Node Exporter text file collector failed to scrape.
-          expr: 'node_textfile_scrape_error{job="nodeexporter-default-instance"} ==
-            1
-
-            '
+          expr: |
+            node_textfile_scrape_error{job="nodeexporter-default-instance"} == 1
           labels:
             severity: warning
         - alert: NodeClockSkewDetected
@@ -194,9 +203,18 @@ spec:
               300s. Ensure NTP is configured correctly on this host.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodeclockskewdetected
             summary: Clock skew detected.
-          expr: "(\n  node_timex_offset_seconds > 0.05\nand\n  deriv(node_timex_offset_seconds[5m])\
-            \ >= 0\n)\nor\n(\n  node_timex_offset_seconds < -0.05\nand\n  deriv(node_timex_offset_seconds[5m])\
-            \ <= 0\n)\n"
+          expr: |
+            (
+              node_timex_offset_seconds > 0.05
+            and
+              deriv(node_timex_offset_seconds[5m]) >= 0
+            )
+            or
+            (
+              node_timex_offset_seconds < -0.05
+            and
+              deriv(node_timex_offset_seconds[5m]) <= 0
+            )
           for: 10m
           labels:
             severity: warning
@@ -206,13 +224,10 @@ spec:
               NTP is configured on this host.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodeclocknotsynchronising
             summary: Clock not synchronising.
-          expr: 'min_over_time(node_timex_sync_status[5m]) == 0
-
+          expr: |
+            min_over_time(node_timex_sync_status[5m]) == 0
             and
-
             node_timex_maxerror_seconds >= 16
-
-            '
           for: 10m
           labels:
             severity: warning
@@ -223,10 +238,8 @@ spec:
               spare drives is insufficient to fix issue automatically.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/noderaiddegraded
             summary: RAID Array is degraded
-          expr: 'node_md_disks_required - ignoring (state) (node_md_disks{state="active"})
-            > 0
-
-            '
+          expr: |
+            node_md_disks_required - ignoring (state) (node_md_disks{state="active"}) > 0
           for: 15m
           labels:
             severity: critical
@@ -237,49 +250,64 @@ spec:
               a disk swap.
             runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/noderaiddiskfailure
             summary: Failed device in RAID array
-          expr: 'node_md_disks{state="failed"} > 0
-
-            '
+          expr: |
+            node_md_disks{state="failed"} > 0
           labels:
             severity: warning
     - name: node-exporter.rules
       rules:
-        - expr: "count without (cpu) (\n  count without (mode) (\n    node_cpu_seconds_total{job=\"\
-            nodeexporter-default-instance\"}\n  )\n)\n"
+        - expr: |
+            count without (cpu) (
+              count without (mode) (
+                node_cpu_seconds_total{job="nodeexporter-default-instance"}
+              )
+            )
           record: instance:node_num_cpu:sum
-        - expr: "1 - avg without (cpu, mode) (\n  rate(node_cpu_seconds_total{job=\"\
-            nodeexporter-default-instance\", mode=\"idle\"}[1m])\n)\n"
+        - expr: |
+            1 - avg without (cpu, mode) (
+              rate(node_cpu_seconds_total{job="nodeexporter-default-instance", mode="idle"}[1m])
+            )
           record: instance:node_cpu_utilisation:rate1m
-        - expr: "(\n  node_load1{job=\"nodeexporter-default-instance\"}\n/\n  instance:node_num_cpu:sum{job=\"\
-            nodeexporter-default-instance\"}\n)\n"
+        - expr: |
+            (
+              node_load1{job="nodeexporter-default-instance"}
+            /
+              instance:node_num_cpu:sum{job="nodeexporter-default-instance"}
+            )
           record: instance:node_load1_per_cpu:ratio
-        - expr: "1 - (\n  node_memory_MemAvailable_bytes{job=\"nodeexporter-default-instance\"\
-            }\n/\n  node_memory_MemTotal_bytes{job=\"nodeexporter-default-instance\"\
-            }\n)\n"
+        - expr: |
+            1 - (
+              node_memory_MemAvailable_bytes{job="nodeexporter-default-instance"}
+            /
+              node_memory_MemTotal_bytes{job="nodeexporter-default-instance"}
+            )
           record: instance:node_memory_utilisation:ratio
-        - expr: 'rate(node_vmstat_pgmajfault{job="nodeexporter-default-instance"}[1m])
-
-            '
+        - expr: |
+            rate(node_vmstat_pgmajfault{job="nodeexporter-default-instance"}[1m])
           record: instance:node_vmstat_pgmajfault:rate1m
-        - expr: 'rate(node_disk_io_time_seconds_total{job="nodeexporter-default-instance",
-            device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
-
-            '
+        - expr: |
+            rate(node_disk_io_time_seconds_total{job="nodeexporter-default-instance", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
           record: instance_device:node_disk_io_time_seconds:rate1m
-        - expr: 'rate(node_disk_io_time_weighted_seconds_total{job="nodeexporter-default-instance",
-            device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
-
-            '
+        - expr: |
+            rate(node_disk_io_time_weighted_seconds_total{job="nodeexporter-default-instance", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
           record: instance_device:node_disk_io_time_weighted_seconds:rate1m
-        - expr: "sum without (device) (\n  rate(node_network_receive_bytes_total{job=\"\
-            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
+        - expr: |
+            sum without (device) (
+              rate(node_network_receive_bytes_total{job="nodeexporter-default-instance", device!="lo"}[1m])
+            )
           record: instance:node_network_receive_bytes_excluding_lo:rate1m
-        - expr: "sum without (device) (\n  rate(node_network_transmit_bytes_total{job=\"\
-            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
+        - expr: |
+            sum without (device) (
+              rate(node_network_transmit_bytes_total{job="nodeexporter-default-instance", device!="lo"}[1m])
+            )
           record: instance:node_network_transmit_bytes_excluding_lo:rate1m
-        - expr: "sum without (device) (\n  rate(node_network_receive_drop_total{job=\"\
-            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
+        - expr: |
+            sum without (device) (
+              rate(node_network_receive_drop_total{job="nodeexporter-default-instance", device!="lo"}[1m])
+            )
           record: instance:node_network_receive_drop_excluding_lo:rate1m
-        - expr: "sum without (device) (\n  rate(node_network_transmit_drop_total{job=\"\
-            nodeexporter-default-instance\", device!=\"lo\"}[1m])\n)\n"
+        - expr: |
+            sum without (device) (
+              rate(node_network_transmit_drop_total{job="nodeexporter-default-instance", device!="lo"}[1m])
+            )
           record: instance:node_network_transmit_drop_excluding_lo:rate1m

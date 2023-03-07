@@ -89,6 +89,25 @@ local resetAlertManagerConfig = {
   },
 };
 
+local patchGrafanaDataSource(instanceName) = {
+  grafana+:: {
+    local defaults = self,
+    // We override the Grafana datesource because
+    // the Prometheus URL doesn't match with instanceName
+    datasources: [
+      {
+        name: 'prometheus',
+        type: 'prometheus',
+        access: 'proxy',
+        orgId: 1,
+        url: 'http://prometheus-' + instanceName + '.' + defaults.namespace + '.svc:9090',
+        version: 1,
+        editable: false,
+      },
+    ],
+  },
+};
+
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
@@ -107,7 +126,7 @@ local stackForInstance = function(instanceName)
         // We need to explicitly handle enabling thanos, as upstream has a "null" in the field, making standard merge impossible
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
-    } + resetAlertManagerConfig + com.makeMergeable(cm),
+    } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + com.makeMergeable(cm),
   } + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
