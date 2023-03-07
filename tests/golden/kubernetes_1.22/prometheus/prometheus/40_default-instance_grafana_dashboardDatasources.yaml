@@ -12,9 +12,19 @@ metadata:
   name: grafana-datasources
   namespace: syn-prometheus
 stringData:
-  datasources.yaml: "{\n    \"apiVersion\": 1,\n    \"datasources\": [\n        {\n\
-    \            \"access\": \"proxy\",\n            \"editable\": false,\n      \
-    \      \"name\": \"prometheus\",\n            \"orgId\": 1,\n            \"type\"\
-    : \"prometheus\",\n            \"url\": \"http://prometheus-k8s.syn-prometheus.svc:9090\"\
-    ,\n            \"version\": 1\n        }\n    ]\n}"
+  datasources.yaml: |-
+    {
+        "apiVersion": 1,
+        "datasources": [
+            {
+                "access": "proxy",
+                "editable": false,
+                "name": "prometheus",
+                "orgId": 1,
+                "type": "prometheus",
+                "url": "http://prometheus-default-instance.syn-prometheus.svc:9090",
+                "version": 1
+            }
+        ]
+    }
 type: Opaque

@@ -23,9 +23,8 @@ spec:
             description: Thanos Sidecar {{$labels.instance}} cannot connect to Prometheus.
             runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/thanossidecarprometheusdown
             summary: Thanos Sidecar cannot connect to Prometheus
-          expr: 'thanos_sidecar_prometheus_up{job="thanos-sidecar"} == 0
-
-            '
+          expr: |
+            thanos_sidecar_prometheus_up{job="thanos-sidecar"} == 0
           for: 5m
           labels:
             severity: critical
@@ -35,10 +34,8 @@ spec:
               failing
             runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/thanossidecarbucketoperationsfailed
             summary: Thanos Sidecar bucket operations are failing
-          expr: 'sum by (job, instance) (rate(thanos_objstore_bucket_operation_failures_total{job="thanos-sidecar"}[5m]))
-            > 0
-
-            '
+          expr: |
+            sum by (job, instance) (rate(thanos_objstore_bucket_operation_failures_total{job="thanos-sidecar"}[5m])) > 0
           for: 5m
           labels:
             severity: critical
@@ -48,10 +45,8 @@ spec:
               than {{$value}} seconds.
             runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/thanossidecarunhealthy
             summary: Thanos Sidecar is unhealthy.
-          expr: 'time() - max by (job, instance) (thanos_sidecar_last_heartbeat_success_time_seconds{job="thanos-sidecar"})
-            >= 240
-
-            '
+          expr: |
+            time() - max by (job, instance) (thanos_sidecar_last_heartbeat_success_time_seconds{job="thanos-sidecar"}) >= 240
           for: 5m
           labels:
             severity: critical
