@@ -92,8 +92,8 @@ local resetAlertManagerConfig = {
 local patchGrafanaDataSource(instanceName) = {
   grafana+:: {
     local defaults = self,
-    // We override the Grafana datesource because
-    // the Prometheus URL doesn't match with instanceName
+    // We override the default Grafana datasource provided by the library because
+    // the library hard-codes the Prometheus instance name in the URL
     datasources: [
       {
         name: 'prometheus',
