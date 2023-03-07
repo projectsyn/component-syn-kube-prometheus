@@ -110,7 +110,7 @@ local patchGrafanaDataSource(instanceName) = {
 
 local patchKubeControlPlaneSelectors(instanceName) = {
   kubernetesControlPlane+:: {
-    // We override the default Grafana dashboard metric label selectors provided by the library because
+    // We override the default kube-state-metrics and node-exporter job selectors defined by the library because
     // the library doesn't automatically set the correct labels based on the instance name
     mixin+:: {
       _config+:: {
