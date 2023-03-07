@@ -108,6 +108,19 @@ local patchGrafanaDataSource(instanceName) = {
   },
 };
 
+local patchKubeControlPlaneSelectors(instanceName) = {
+  kubernetesControlPlane+:: {
+    // We override the default kube-state-metrics and node-exporter job selectors defined by the library because
+    // the library doesn't automatically set the correct labels based on the instance name
+    mixin+:: {
+      _config+:: {
+        kubeStateMetricsSelector: 'job="kubestatemetrics-' + instanceName + '"',
+        nodeExporterSelector: 'job="nodeexporter-' + instanceName + '"',
+      },
+    },
+  },
+};
+
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
@@ -126,7 +139,7 @@ local stackForInstance = function(instanceName)
         // We need to explicitly handle enabling thanos, as upstream has a "null" in the field, making standard merge impossible
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
-    } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + com.makeMergeable(cm),
+    } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
   } + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
