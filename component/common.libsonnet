@@ -108,6 +108,30 @@ local patchGrafanaDataSource(instanceName) = {
   },
 };
 
+local patchPrometheusNetworkPolicy(instanceName) = {
+  // We need to add an ingress rule to the Prometheus network policy to allow
+  // access from Grafana using the correct label selector
+  prometheus+: {
+    networkPolicy+: {
+      spec+: {
+        ingress+: [ {
+          from: [ {
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'grafana-' + instanceName,
+              },
+            },
+          } ],
+          ports: [ {
+            port: 9090,
+            protocol: 'TCP',
+          } ],
+        } ],
+      },
+    },
+  },
+};
+
 local patchKubeControlPlaneSelectors(instanceName) = {
   kubernetesControlPlane+:: {
     // We override the default kube-state-metrics and node-exporter job selectors defined by the library because
@@ -140,7 +164,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + com.makeMergeable(overrides) + removeNamespace;
+  } + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];
