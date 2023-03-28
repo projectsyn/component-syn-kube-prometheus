@@ -45,6 +45,7 @@ jobs:
           - kubernetes_1.24
           - additional_rules
           - resourcequota
+          - kubernetes_1.25
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -72,6 +73,7 @@ jobs:
           - kubernetes_1.24
           - additional_rules
           - resourcequota
+          - kubernetes_1.25
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
