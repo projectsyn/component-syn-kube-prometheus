@@ -181,7 +181,8 @@ local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.i
           ingress: [
             {
               from: [
-                params.ingressNetworkPolicySource,
+                { [s]: params.ingressNetworkPolicySource[s] }
+                for s in std.objectFields(params.ingressNetworkPolicySource)
               ],
               ports: [
                 {
