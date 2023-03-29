@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/part-of: syn
     name: grafana
   name: grafana
+  namespace: syn-prometheus
 spec:
   ingressClassName: nginx
   rules:
