@@ -214,6 +214,36 @@ local patchKubeControlPlaneSelectors(instanceName) = {
   },
 };
 
+local prometheusRemoteWrite(instanceName, instanceParams) = if instanceParams.remoteWrite then
+  {
+    prometheus+: {
+      synPrometheusRemotewrite: kube.ConfigMap('cluster-monitoring-config') {
+        metadata+: {
+          namespace: instanceParams.common.namespace,
+        },
+        data: {
+          'config.yaml': std.manifestYamlDoc(
+            std.mapWithKey(
+              function(field, value) value + instanceParams.defaultConfig,
+              instanceParams.configs {
+                prometheusK8s+: {
+                  _remoteWrite+:: {},
+                } + {
+                  local rwd = super._remoteWrite,
+                  remoteWrite+: std.filterMap(
+                    function(name) rwd[name] != null,
+                    function(name) rwd[name] { name: name },
+                    std.objectFields(rwd)
+                  ),
+                },
+              },
+            )
+          ),
+        },
+      },
+    },
+  };
+
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
