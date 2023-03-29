@@ -146,6 +146,22 @@ type:: dict
 A list of configuration options for various addons. For supported configuration options, see the documentation of the respective addon.
 The key is set to the addon name (replace hyphens with underscore - eg. for addon `disable-alerts` the key is `disable_alerts`)
 
+== `ingressNetworkPolicySource`
+
+[horizontal]
+type:: dict
+default::
++
+[source,yaml]
+----
+namespaceSelector:
+  matchLabels: {}
+  podSelector: {}
+----
+
+A dict containing the `namespaceSelector` and `podSelector` to match the ingress controller pods.
+Required when configuring ingress for Grafana.
+
 == `base`
 
 [horizontal]
@@ -168,6 +184,12 @@ grafana:
   enabled: false
   config: {}
   overrides: {}
+  ingress:
+    enabled: false
+    host: ""
+    annotations: {}
+    tls: {}
+    ingressClassName: ""
 nodeExporter:
   enabled: false
   config: {}

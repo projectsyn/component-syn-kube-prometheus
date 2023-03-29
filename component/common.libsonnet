@@ -4,6 +4,8 @@ local com = import 'lib/commodore.libjsonnet';
 // The hiera parameters for the component
 local params = inv.parameters.prometheus;
 
+local kube = import 'lib/kube.libjsonnet';
+
 local addonImports = import 'compiled/prometheus/addons.libsonnet';
 
 local withAddons = function(main, addons)
@@ -132,6 +134,69 @@ local patchPrometheusNetworkPolicy(instanceName) = {
   },
 };
 
+
+local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.ingress.enabled then
+  assert instanceParams.grafana.ingress.host != '' : 'Ingress host cannot be empty when ingress enabled';
+  {
+    grafana+: {
+      synIngress: kube.Ingress('grafana') {
+        metadata+: {
+          annotations+: instanceParams.grafana.ingress.annotations,
+        },
+        spec: {
+          ingressClassName: instanceParams.grafana.ingress.ingressClassName,
+          rules: [
+            {
+              host: instanceParams.grafana.ingress.host,
+              http: {
+                paths: [
+                  {
+                    path: '/',
+                    pathType: 'Prefix',
+                    backend: {
+                      service: {
+                        name: 'grafana',
+                        port: {
+                          number: 3000,
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+          tls: [
+            instanceParams.grafana.ingress.tls,
+          ],
+        },
+      },
+      synIngressNetworkPolicy: kube.NetworkPolicy('grafana-ingress') {
+        spec: {
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'grafana-' + instanceName,
+            },
+          },
+          ingress: [
+            {
+              from: [
+                { [s]: params.ingressNetworkPolicySource[s] }
+                for s in std.objectFields(params.ingressNetworkPolicySource)
+              ],
+              ports: [
+                {
+                  protocol: 'TCP',
+                  port: 3000,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  } else {};
+
 local patchKubeControlPlaneSelectors(instanceName) = {
   kubernetesControlPlane+:: {
     // We override the default kube-state-metrics and node-exporter job selectors defined by the library because
@@ -164,7 +229,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaIngress(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];

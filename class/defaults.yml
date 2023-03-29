@@ -48,6 +48,10 @@ parameters:
           - KubeHpaReplicasMismatch
           - CPUThrottlingHigh
 
+    ingressNetworkPolicySource:
+      namespaceSelector: {}
+      podSelector: {}
+
     base:
       common:
         namespace: syn-prometheus
@@ -67,6 +71,12 @@ parameters:
         enabled: false
         config: {}
         overrides: {}
+        ingress:
+          enabled: false
+          host: ""
+          annotations: {}
+          tls: {}
+          ingressClassName: ""
       nodeExporter:
         enabled: false
         config: {}

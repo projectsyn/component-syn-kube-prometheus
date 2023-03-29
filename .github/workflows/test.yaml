@@ -46,6 +46,7 @@ jobs:
           - additional_rules
           - resourcequota
           - kubernetes_1.25
+          - grafana-ingress
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -74,6 +75,7 @@ jobs:
           - additional_rules
           - resourcequota
           - kubernetes_1.25
+          - grafana-ingress
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
