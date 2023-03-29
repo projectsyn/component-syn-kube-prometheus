@@ -142,6 +142,7 @@ local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.i
       synIngress: kube.Ingress('grafana') {
         metadata+: {
           annotations+: instanceParams.grafana.ingress.annotations,
+          namespace: instanceParams.common.namespace,
         },
         spec: {
           ingressClassName: instanceParams.grafana.ingress.ingressClassName,
@@ -172,6 +173,9 @@ local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.i
         },
       },
       synIngressNetworkPolicy: kube.NetworkPolicy('grafana-ingress') {
+        metadata+: {
+          namespace: instanceParams.common.namespace,
+        },
         spec: {
           podSelector: {
             matchLabels: {

@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: syn
     name: grafana-ingress
   name: grafana-ingress
+  namespace: syn-prometheus
 spec:
   ingress:
     - from:
