@@ -49,12 +49,8 @@ parameters:
           - CPUThrottlingHigh
 
     ingressNetworkPolicySource:
-      namespaceSelector:
-        matchLabels:
-          name: syn-ingress-nginx
-      podSelector:
-        matchLabels:
-          app.kubernetes.io/name: ingress-nginx
+      namespaceSelector: {}
+      podSelector: {}
 
     base:
       common:
