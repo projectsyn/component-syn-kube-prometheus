@@ -91,6 +91,28 @@ local resetAlertManagerConfig = {
   },
 };
 
+local addNodeExporterContainerArgs(instanceName, instanceParams) = {
+  nodeExporter+: {
+    daemonset+: {
+      spec+: {
+        template+: {
+          spec+: {
+            containers: [
+              if c.name == 'nodeexporter-' + instanceName then
+                c {
+                  args+: instanceParams.nodeExporter.containers.nodeExporter.additionalArgs,
+                }
+              else
+                c
+              for c in super.containers
+            ],
+          },
+        },
+      },
+    },
+  },
+};
+
 local patchGrafanaDataSource(instanceName) = {
   grafana+:: {
     local defaults = self,
@@ -233,7 +255,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + grafanaIngress(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];

@@ -47,6 +47,7 @@ jobs:
           - resourcequota
           - kubernetes_1.25
           - grafana-ingress
+          - additional_nodeexporter_args
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -76,6 +77,7 @@ jobs:
           - resourcequota
           - kubernetes_1.25
           - grafana-ingress
+          - additional_nodeexporter_args
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}

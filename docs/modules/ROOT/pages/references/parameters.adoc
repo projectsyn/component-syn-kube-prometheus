@@ -194,6 +194,9 @@ nodeExporter:
   enabled: false
   config: {}
   overrides: {}
+  containers:
+    nodeExporter:
+      additionalArgs: []
 blackboxExporter:
   enabled: false
   config: {}
