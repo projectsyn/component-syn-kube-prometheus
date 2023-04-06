@@ -1,3 +1,11 @@
-# Overwrite parameters here
-
-# parameters: {...}
+---
+parameters:
+  prometheus:
+    instances:
+      default-instance:
+        nodeExporter:
+          enabled: true
+          containers:
+            nodeExporter:
+              additionalArgs:
+                - --collector.cpu.info
