@@ -130,7 +130,6 @@ example::
 [source,yaml]
 ----
 addons:
-  - remove-securitycontext
   - podsecuritypolicies
 ----
 
