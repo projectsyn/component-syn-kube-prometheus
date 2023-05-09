@@ -37,7 +37,6 @@ jobs:
           - kubernetes_1.21
           - kubernetes_1.22
           - multi
-          - openshift
           - rewrite-registries
           - thanos
           - cluster-monitoring
@@ -68,7 +67,6 @@ jobs:
           - kubernetes_1.21
           - kubernetes_1.22
           - multi
-          - openshift
           - rewrite-registries
           - thanos
           - cluster-monitoring
