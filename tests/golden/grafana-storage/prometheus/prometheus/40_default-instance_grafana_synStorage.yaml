@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+    volume.beta.kubernetes.io/storage-class: standard
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+    name: grafana-default-instance-storage
+  name: grafana-default-instance-storage
+  namespace: syn-prometheus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
