@@ -190,6 +190,10 @@ grafana:
     annotations: {}
     tls: {}
     ingressClassName: ""
+  persistence:
+    enabled: false
+    storageClass: ""
+    size: ""
 nodeExporter:
   enabled: false
   config: {}

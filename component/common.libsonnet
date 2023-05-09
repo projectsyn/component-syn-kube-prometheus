@@ -223,6 +223,42 @@ local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.i
     },
   } else {};
 
+local grafanaStorage(instanceName, instanceParams) = if instanceParams.grafana.persistence.enabled then
+  assert instanceParams.grafana.persistence.size != '' : 'Storage size cannot be empty when persistence enabled';
+  {
+    grafana+: {
+      deployment+: {
+        spec+: {
+          template+: {
+            spec+: {
+              volumes:
+                std.map(
+                  function(v)
+                    if v.name == 'grafana-storage' then
+                      {
+                        name: 'grafana-storage',
+                        persistentVolumeClaim: {
+                          claimName: 'grafana-' + instanceName + '-storage',
+                        },
+                      }
+                    else
+                      v,
+                  super.volumes
+                ),
+            },
+          },
+        },
+      },
+      synStorage: kube.PersistentVolumeClaim('grafana-' + instanceName + '-storage') {
+        metadata+: {
+          namespace: instanceParams.common.namespace,
+        },
+        storage: instanceParams.grafana.persistence.size,
+        storageClass: instanceParams.grafana.persistence.storageClass,
+      },
+    },
+  } else {};
+
 local patchKubeControlPlaneSelectors(instanceName) = {
   kubernetesControlPlane+:: {
     // We override the default kube-state-metrics and node-exporter job selectors defined by the library because
@@ -255,7 +291,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];

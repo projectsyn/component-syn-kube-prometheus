@@ -1,0 +1,28 @@
+---
+parameters:
+  prometheus:
+    kubernetes_version: "1.23"
+    instances:
+      default-instance:
+        prometheus:
+          enabled: false
+        alertmanager:
+          enabled: false
+        grafana:
+          enabled: true
+          persistence:
+            enabled: true
+            size: 1Gi
+            storageClass: standard
+        nodeExporter:
+          enabled: false
+        blackboxExporter:
+          enabled: false
+        kubernetesControlPlane:
+          enabled: false
+        prometheusAdapter:
+          enabled: false
+        kubeStateMetrics:
+          enabled: false
+        kubePrometheus:
+          enabled: false
