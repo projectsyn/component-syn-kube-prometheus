@@ -48,6 +48,7 @@ jobs:
           - kubernetes_1.25
           - grafana-ingress
           - additional_nodeexporter_args
+          - grafana-storage
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -78,6 +79,7 @@ jobs:
           - kubernetes_1.25
           - grafana-ingress
           - additional_nodeexporter_args
+          - grafana-storage
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
