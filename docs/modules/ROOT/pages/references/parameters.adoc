@@ -303,6 +303,29 @@ This means configuration side effects don't apply and the configuration can cont
 The easiest way to find the allowed parameters is to look at the local `defaults` variable.
 See the kube state metrics defaults as an example: https://github.com/prometheus-operator/kube-prometheus/blob/aeb50f066eadf9831c53cdf9228e09dd4e9d28b2/jsonnet/kube-prometheus/components/kube-state-metrics.libsonnet#L7-L48[kube-prometheus/components/kube-state-metrics.libsonnet]
 
+== `instances.*.(prometheus|alertmanager|grafana).networkPolicy.additionalIngressRules`
+
+[horizontal]
+type:: list
+default:: null
+example::
+[source,yaml]
+----
+prometheus:
+  networkPolicy:
+    additionalIngressRules:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                kubernetes.io/metadata.name: kube-system
+            podSelector:
+              matchLabels:
+                app: konnectivity-agent
+----
+
+Can be used to supply additional ingress rules to the NetworkPolicies for Prometheus, Grafana or Alertmanager.
+Configured rules will be appended to the existing NetworkPolicy and must adhere to the https://kubernetes.io/docs/reference/kubernetes-api/policy-resources/network-policy-v1/#NetworkPolicySpec[Kubernetes NetworkPolicy spec].
+
 [[common]]
 == `base.common`, `instances.common`
 
