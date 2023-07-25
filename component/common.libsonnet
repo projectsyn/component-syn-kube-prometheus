@@ -156,6 +156,16 @@ local patchPrometheusNetworkPolicy(instanceName) = {
   },
 };
 
+local patchNetworkPolicy(componentName, instanceParams) = if std.objectHas(instanceParams[componentName], 'networkPolicy') then
+  {
+    [componentName]+: {
+      networkPolicy+: {
+        spec+: {
+          ingress+: instanceParams[componentName].networkPolicy.additionalIngressRules,
+        },
+      },
+    },
+  } else {};
 
 local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.ingress.enabled then
   assert instanceParams.grafana.ingress.host != '' : 'Ingress host cannot be empty when ingress enabled';
@@ -291,7 +301,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];

@@ -48,6 +48,7 @@ jobs:
           - grafana-ingress
           - additional_nodeexporter_args
           - grafana-storage
+          - additional-netpols
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -78,6 +79,7 @@ jobs:
           - grafana-ingress
           - additional_nodeexporter_args
           - grafana-storage
+          - additional-netpols
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
