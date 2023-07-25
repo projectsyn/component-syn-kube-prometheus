@@ -156,7 +156,7 @@ local patchPrometheusNetworkPolicy(instanceName) = {
   },
 };
 
-local patchNetworkPolicy(componentName, instanceName, instanceParams) = if std.objectHas(instanceParams[componentName], 'networkPolicy') then
+local patchNetworkPolicy(componentName, instanceParams) = if std.objectHas(instanceParams[componentName], 'networkPolicy') then
   {
     [componentName]+: {
       networkPolicy+: {
@@ -301,7 +301,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', instanceName, confWithBase) + patchNetworkPolicy('grafana', instanceName, confWithBase) + patchNetworkPolicy('alertmanager', instanceName, confWithBase) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];

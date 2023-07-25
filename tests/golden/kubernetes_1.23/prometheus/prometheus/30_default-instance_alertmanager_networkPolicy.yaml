@@ -34,13 +34,6 @@ spec:
           protocol: TCP
         - port: 9094
           protocol: UDP
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-          podSelector:
-            matchLabels:
-              app: konnectivity-agent
   podSelector:
     matchLabels:
       app.kubernetes.io/component: alert-router

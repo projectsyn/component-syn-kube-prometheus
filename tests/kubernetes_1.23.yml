@@ -1,42 +1,15 @@
 ---
 parameters:
   prometheus:
-    kubernetes_version: "1.23"
+    kubernetes_version: '1.23'
     instances:
       default-instance:
         prometheus:
           enabled: true
-          networkPolicy:
-            additionalIngressRules:
-              - from:
-                  - namespaceSelector:
-                      matchLabels:
-                        kubernetes.io/metadata.name: kube-system
-                    podSelector:
-                      matchLabels:
-                        app: konnectivity-agent
         alertmanager:
           enabled: true
-          networkPolicy:
-            additionalIngressRules:
-              - from:
-                  - namespaceSelector:
-                      matchLabels:
-                        kubernetes.io/metadata.name: kube-system
-                    podSelector:
-                      matchLabels:
-                        app: konnectivity-agent
         grafana:
           enabled: true
-          networkPolicy:
-            additionalIngressRules:
-              - from:
-                  - namespaceSelector:
-                      matchLabels:
-                        kubernetes.io/metadata.name: kube-system
-                    podSelector:
-                      matchLabels:
-                        app: konnectivity-agent
         nodeExporter:
           enabled: true
         blackboxExporter:
