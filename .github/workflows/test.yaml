@@ -49,6 +49,7 @@ jobs:
           - additional_nodeexporter_args
           - grafana-storage
           - additional-netpols
+          - kubernetes_1.26
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -80,6 +81,7 @@ jobs:
           - additional_nodeexporter_args
           - grafana-storage
           - additional-netpols
+          - kubernetes_1.26
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
