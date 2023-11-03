@@ -30,6 +30,12 @@ parameters:
       "1.24": e3066575dc8be21f578f12887563bda3ee7a2eff
       # renovate: branch=release-0.12
       "1.25": 0198f98f682f1d7e40b1dd5615437a916107f1aa
+      # renovate: branch=release-0.13
+      "1.26": 2648d6fc4e5fb1f98c2914aa2be902476e68cc7a
+      # renovate: branch=release-0.13
+      "1.27": 2648d6fc4e5fb1f98c2914aa2be902476e68cc7a
+      # renovate: branch=release-0.13
+      "1.28": 2648d6fc4e5fb1f98c2914aa2be902476e68cc7a
 
     namespaces: {}
 
