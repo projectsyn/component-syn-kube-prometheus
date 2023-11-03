@@ -50,6 +50,7 @@ jobs:
           - grafana-storage
           - additional-netpols
           - kubernetes_1.26
+          - kubernetes_1.27
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -82,6 +83,7 @@ jobs:
           - grafana-storage
           - additional-netpols
           - kubernetes_1.26
+          - kubernetes_1.27
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
