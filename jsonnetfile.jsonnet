@@ -10,6 +10,14 @@
       },
       version: std.extVar('kube_prometheus_version'),
     },
+    {
+      source: {
+        git: {
+          remote: 'https://github.com/grafana/jsonnet-libs.git',
+        },
+      },
+      version: 'bf12954197422f36f0803ee217e378ad055f3837',
+    },
   ],
   legacyImports: true,
 }
