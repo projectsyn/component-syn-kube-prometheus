@@ -33,15 +33,10 @@ jobs:
       matrix:
         instance:
           - defaults
-          - kubernetes_1.20
-          - kubernetes_1.21
-          - kubernetes_1.22
           - multi
           - rewrite-registries
           - thanos
           - cluster-monitoring
-          - kubernetes_1.23
-          - kubernetes_1.24
           - additional_rules
           - resourcequota
           - kubernetes_1.25
@@ -67,15 +62,10 @@ jobs:
       matrix:
         instance:
           - defaults
-          - kubernetes_1.20
-          - kubernetes_1.21
-          - kubernetes_1.22
           - multi
           - rewrite-registries
           - thanos
           - cluster-monitoring
-          - kubernetes_1.23
-          - kubernetes_1.24
           - additional_rules
           - resourcequota
           - kubernetes_1.25
