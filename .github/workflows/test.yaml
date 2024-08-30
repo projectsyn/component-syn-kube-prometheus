@@ -33,7 +33,6 @@ jobs:
       matrix:
         instance:
           - defaults
-          - kubernetes_1.22
           - multi
           - rewrite-registries
           - thanos
@@ -65,7 +64,6 @@ jobs:
       matrix:
         instance:
           - defaults
-          - kubernetes_1.22
           - multi
           - rewrite-registries
           - thanos
