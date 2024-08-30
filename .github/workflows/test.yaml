@@ -37,7 +37,6 @@ jobs:
           - rewrite-registries
           - thanos
           - cluster-monitoring
-          - kubernetes_1.23
           - kubernetes_1.24
           - additional_rules
           - resourcequota
@@ -68,7 +67,6 @@ jobs:
           - rewrite-registries
           - thanos
           - cluster-monitoring
-          - kubernetes_1.23
           - kubernetes_1.24
           - additional_rules
           - resourcequota
