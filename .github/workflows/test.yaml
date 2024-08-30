@@ -33,7 +33,6 @@ jobs:
       matrix:
         instance:
           - defaults
-          - kubernetes_1.21
           - kubernetes_1.22
           - multi
           - rewrite-registries
@@ -66,7 +65,6 @@ jobs:
       matrix:
         instance:
           - defaults
-          - kubernetes_1.21
           - kubernetes_1.22
           - multi
           - rewrite-registries
