@@ -42,6 +42,7 @@ jobs:
           - kubernetes_1.25
           - grafana-ingress
           - additional_nodeexporter_args
+          - additional_kubestatemetrics_args
           - grafana-storage
           - additional-netpols
           - kubernetes_1.26
@@ -72,6 +73,7 @@ jobs:
           - kubernetes_1.25
           - grafana-ingress
           - additional_nodeexporter_args
+          - additional_kubestatemetrics_args
           - grafana-storage
           - additional-netpols
           - kubernetes_1.26

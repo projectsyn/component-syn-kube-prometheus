@@ -269,6 +269,28 @@ local grafanaStorage(instanceName, instanceParams) = if instanceParams.grafana.p
     },
   } else {};
 
+local addKubeStateMetricsContainerArgs(instanceName, instanceParams) = {
+  kubeStateMetrics+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            containers: [
+              if c.name == 'kube-state-metrics' then
+                c {
+                  args+: instanceParams.kubeStateMetrics.containers.kubeStateMetrics.additionalArgs,
+                }
+              else
+                c
+              for c in super.containers
+            ],
+          },
+        },
+      },
+    },
+  },
+};
+
 local patchKubeControlPlaneSelectors(instanceName) = {
   kubernetesControlPlane+:: {
     // We override the default kube-state-metrics and node-exporter job selectors defined by the library because
@@ -301,7 +323,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + addKubeStateMetricsContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];

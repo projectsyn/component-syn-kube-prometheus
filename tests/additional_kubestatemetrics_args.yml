@@ -1,0 +1,11 @@
+---
+parameters:
+  prometheus:
+    instances:
+      default-instance:
+        kubeStateMetrics:
+          enabled: true
+          containers:
+            kubeStateMetrics:
+              additionalArgs:
+                - --metric-labels-allowlist=nodes=[kube_node_labes, kube_node_role]
