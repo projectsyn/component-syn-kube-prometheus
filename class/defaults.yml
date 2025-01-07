@@ -1,5 +1,8 @@
 parameters:
   prometheus:
+    =_metadata:
+      multi_tenant: true
+
     # Dependency resolution
     jsonnetfile_parameters:
       kube_prometheus_version: ${prometheus:_kube_prometheus_version:${prometheus:kubernetes_version}}

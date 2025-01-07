@@ -10,7 +10,7 @@ parameters:
       - input_paths:
           - prometheus/component/app.jsonnet
         input_type: jsonnet
-        output_path: apps/
+        output_path: .
       - input_paths:
           - prometheus/component/main.jsonnet
         input_type: jsonnet
